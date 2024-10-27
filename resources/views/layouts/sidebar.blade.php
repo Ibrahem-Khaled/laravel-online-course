@@ -14,20 +14,44 @@
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('home.dashboard') }}">
-                    <span class="nav-link-text me-1">الرئيسية</span>
                     <i class="fas fa-home ms-2"></i>
+                    <span class="nav-link-text me-1">الرئيسية</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('users.index') }}">
-                    <span class="nav-link-text me-1">إدارة المستخدمين</span>
                     <i class="fas fa-user ms-2"></i>
+                    <span class="nav-link-text me-1">إدارة المستخدمين</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('categories.index') }}">
-                    <span class="nav-link-text me-1">إدارة التصنيفات</span>
                     <i class="fas fa-list ms-2"></i>
+                    <span class="nav-link-text me-1">إدارة التصنيفات</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ route('courses.index') }}">
+                    <i class="fas fa-book ms-2"></i>
+                    <span class="nav-link-text me-1">إدارة الدورات</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ route('contact_us.index') }}">
+                    <i class="fas fa-envelope ms-2"></i>
+                    <span class="nav-link-text me-1">إدارة التواصل</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ route('course_ratings.index') }}">
+                    <i class="fas fa-star ms-2"></i>
+                    <span class="nav-link-text me-1">إدارة التقييمات</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ route('course_videos.index') }}">
+                    <i class="fas fa-video ms-2"></i>
+                    <span class="nav-link-text me-1">إدارة الفيديو للدورات</span>
                 </a>
             </li>
 

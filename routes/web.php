@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\dashboard\CategoryController;
+use App\Http\Controllers\dashboard\ContactUsController;
+use App\Http\Controllers\dashboard\CourseController;
+use App\Http\Controllers\dashboard\CourseRatingController;
+use App\Http\Controllers\dashboard\CourseVideoController;
 use App\Http\Controllers\dashboard\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,4 +35,18 @@ Route::group(['prefix' => 'dashboard'], function () {
 
     //this category controller for dashboard
     Route::resource('categories', CategoryController::class);
+
+    //this course controller for dashboard
+    Route::resource('courses', CourseController::class);
+
+    //this contact-us controller for dashboard
+    Route::resource('contact_us', ContactUsController::class);
+
+    //this course-rating controller for dashboard
+    Route::resource('course_ratings', CourseRatingController::class);
+
+    //this course-video controller for dashboard
+    Route::resource('course_videos', CourseVideoController::class);
+    Route::get('/courses/{course}/videos', [CourseVideoController::class, 'showByCourse'])->name('course_videos.by_course');
+
 });
