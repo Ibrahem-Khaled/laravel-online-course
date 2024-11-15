@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -28,7 +28,7 @@ class CategoryController extends Controller
         // التعامل مع رفع الصورة
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->move(public_path('categories'), time() . '.' . $request->file('image')->extension());
+            $imagePath = $request->file('image')->store('categories', 'public'); // تخزين في storage/app/public/categories
         }
 
         // إنشاء فئة جديدة
@@ -36,7 +36,7 @@ class CategoryController extends Controller
             'name' => $validated['name'],
             'description' => $validated['description'],
             'status' => $validated['status'],
-            'image' => $imagePath,
+            'image' => $imagePath, // تخزين المسار النسبي للصورة
         ]);
 
         return redirect()->back()->with('success', 'تمت إضافة الفئة بنجاح.');
@@ -54,12 +54,12 @@ class CategoryController extends Controller
 
         // تحديث الصورة
         if ($request->hasFile('image')) {
-            if ($category->image && File::exists(public_path($category->image))) {
-                File::delete(public_path($category->image)); // حذف الصورة القديمة
+            if ($category->image && Storage::exists('public/' . $category->image)) {
+                Storage::delete('public/' . $category->image); // حذف الصورة القديمة من storage
             }
-            $imagePath = $request->file('image')->move(public_path('categories'), time() . '.' . $request->file('image')->extension());
+            $imagePath = $request->file('image')->store('categories', 'public'); // رفع الصورة الجديدة
         } else {
-            $imagePath = $category->image;
+            $imagePath = $category->image; // الاحتفاظ بالصورة القديمة إذا لم يتم رفع صورة جديدة
         }
 
         // تحديث بيانات الفئة
@@ -75,8 +75,8 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        if ($category->image && File::exists(public_path($category->image))) {
-            File::delete(public_path($category->image)); // حذف الصورة
+        if ($category->image && Storage::exists('public/' . $category->image)) {
+            Storage::delete('public/' . $category->image); // حذف الصورة
         }
 
         $category->delete();

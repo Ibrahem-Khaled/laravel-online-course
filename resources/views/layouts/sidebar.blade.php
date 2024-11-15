@@ -10,8 +10,14 @@
         </a>
     </div>
     <hr class="horizontal light mt-0">
-    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+    <div class="collapse navbar-collapse w-auto" style="height: 100%" id="sidenav-collapse-main">
         <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ route('home') }}">
+                    <i class="fas fa-book ms-2"></i>
+                    <span class="nav-link-text me-1">المنصة التعليمية</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('home.dashboard') }}">
                     <i class="fas fa-home ms-2"></i>

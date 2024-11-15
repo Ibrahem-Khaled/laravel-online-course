@@ -41,4 +41,9 @@ class Course extends Model
     {
         return $this->hasMany(CourseVideo::class);
     }
+
+    public function ratings()
+    {
+        return $this->hasMany(CourseRating::class);
+    }
 }

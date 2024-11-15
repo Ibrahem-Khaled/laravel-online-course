@@ -24,7 +24,7 @@
             @foreach($course->videos as $video)
                 <tr>
                     <td>{{ $video->title }}</td>
-                    <td>{{ $video->video }}</td>
+                    <td> {!! $video->video !!}</td>
                     <td>{{ $video->description }}</td>
                     <td>
                         @if($video->image)

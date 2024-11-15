@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -30,11 +31,13 @@ class UserController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // التعامل مع رفع الصورة
-        $imagePath = null;
+        // في وظيفة التخزين
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->move(public_path('avatars'), time() . '.' . $request->file('image')->extension());
+            $imagePath = $request->file('image')->store('avatars', 'public');
+        } else {
+            $imagePath = null;
         }
+
 
         // إنشاء مستخدم جديد
         User::create([
@@ -66,12 +69,12 @@ class UserController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // تحديث الصورة
+        // في وظيفة التحديث
         if ($request->hasFile('image')) {
-            if ($user->image && File::exists(public_path($user->image))) {
-                File::delete(public_path($user->image));
+            if ($user->image && Storage::disk('public')->exists($user->image)) {
+                Storage::disk('public')->delete($user->image);
             }
-            $imagePath = $request->file('image')->move(public_path('avatars'), time() . '.' . $request->file('image')->extension());
+            $imagePath = $request->file('image')->store('avatars', 'public');
         } else {
             $imagePath = $user->image;
         }
@@ -94,9 +97,9 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        // حذف الصورة
-        if ($user->image && File::exists(public_path($user->image))) {
-            File::delete(public_path($user->image));
+        // في وظيفة الحذف
+        if ($user->image && Storage::disk('public')->exists($user->image)) {
+            Storage::disk('public')->delete($user->image);
         }
 
         $user->delete();

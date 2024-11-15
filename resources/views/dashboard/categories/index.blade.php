@@ -30,7 +30,7 @@
                         <td>{{ $category->status == 'active' ? 'نشط' : 'غير نشط' }}</td>
                         <td>
                             @if ($category->image)
-                                <img src="{{ asset($category->image) }}" alt="Category Image" width="50">
+                                <img src="{{ asset('storage/' . $category->image) }}" alt="Category Image" width="50">
                             @else
                                 لا توجد صورة
                             @endif
