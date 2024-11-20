@@ -75,6 +75,6 @@ class AuthController extends Controller
         $request->session()->invalidate(); // إبطال الجلسة
         $request->session()->regenerateToken(); // إعادة توليد التوكن
 
-        return redirect()->route('login')->with('success', 'تم تسجيل الخروج بنجاح');
+        return redirect()->back()->with('success', 'تم تسجيل الخروج بنجاح');
     }
 }

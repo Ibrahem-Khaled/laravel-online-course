@@ -18,7 +18,7 @@
         }
 
         .navbar-brand img {
-            margin-left: 50%
+            margin-left: 50%;
         }
 
         .navbar-nav {
@@ -46,7 +46,7 @@
         }
 
         .btn-action {
-            background-color: #287c8d; 
+            background-color: #287c8d;
             color: white;
             padding: 0.5rem 1.2rem;
             border: none;
@@ -57,6 +57,50 @@
         }
 
         .btn-action:hover {
+            background-color: #1f6674;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content button {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropdown-btn {
             background-color: #1f6674;
         }
     </style>
@@ -70,10 +114,27 @@
             </a>
             <div class="navbar-nav">
                 <a class="nav-link" href="#">برنامج طموح</a>
-                <a class="nav-link" href="#">الدورات</a>
-                <a class="nav-link" href="#">البرامج التدريبية</a>
-                <a class="nav-link active" href="#">الرئيسية</a>
-                <a class="btn-action" href="#">ابدأ النسخة التجريبية</a>
+                <a class="nav-link {{ Route::currentRouteName() == 'all-courses' ? 'active' : '' }} "
+                    href="{{ route('all-courses') }}">الدورات</a>
+                <a class="nav-link " href="#">البرامج التدريبية</a>
+                <a class="nav-link {{ Route::currentRouteName() == 'home' ? 'active' : '' }}"
+                    href="{{ route('home') }}">الرئيسية</a>
+
+                @auth
+                    <div class="dropdown">
+                        <button class="btn-action dropdown-btn">الحساب</button>
+                        <div class="dropdown-content">
+                            <a href="#">الملف الشخصي</a>
+                            <a href="#">إعدادات</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit">تسجيل الخروج</button>
+                            </form>
+                        </div>
+                    </div>
+                @else
+                    <a class="btn-action" href="{{ route('login') }}">ابدأ النسخة التجريبية</a>
+                @endauth
             </div>
         </div>
     </nav>

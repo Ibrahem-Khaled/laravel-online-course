@@ -34,4 +34,10 @@ class HomeController extends Controller
 
         return view('video-courses', compact('course', 'video', 'progress', 'currentVideoIndex', 'totalVideos'));
     }
+
+    public function allCourses()
+    {
+        $courses = Course::paginate(6);
+        return view('all-courses', compact('courses'));
+    }
 }

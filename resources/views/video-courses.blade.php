@@ -54,6 +54,7 @@
             position: relative;
             overflow: hidden;
             border-radius: 10px;
+            margin-bottom: 20px;
         }
 
         .trainer-info {
@@ -67,6 +68,33 @@
             border-radius: 50%;
             margin-left: 10px;
         }
+
+        .nav-tabs {
+            border-bottom: 2px solid #02475E;
+            justify-content: space-around;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 0;
+            background-color: transparent;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #ff9c00;
+            border-bottom: 3px solid #ff9c00;
+            background-color: #072D38;
+        }
+
+        .tab-content {
+            background-color: #02475E;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -77,7 +105,6 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="course-info">
-
                     <h2 class="course-title">{{ $course->title }}</h2>
                     <div class="course-meta">
                         <div class="trainer-info">
@@ -104,12 +131,50 @@
                         <h6>|</h6>
                         <span>السعر: ${{ $course->price }}</span>
                     </div>
-
                 </div>
 
                 <!-- تضمين الفيديو -->
                 <div class="video-container">
                     {!! $video->video !!}
+                </div>
+
+                <!-- التابات -->
+                <ul class="nav nav-tabs" id="videoTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details"
+                            type="button" role="tab" aria-controls="details" aria-selected="true">تفاصيل
+                            الدورة</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="sources-tab" data-bs-toggle="tab" data-bs-target="#sources"
+                            type="button" role="tab" aria-controls="sources" aria-selected="false">
+                            المرفقات
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="homework-tab" data-bs-toggle="tab" data-bs-target="#homework"
+                            type="button" role="tab" aria-controls="homework"
+                            aria-selected="false">الواجبات</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="discussion-tab" data-bs-toggle="tab" data-bs-target="#discussion"
+                            type="button" role="tab" aria-controls="discussion"
+                            aria-selected="false">المناقشة</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="videoTabsContent">
+                    <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                        <h6 class="text-white text-center mt-3 p-3">{{ $video->description }}</h6>
+                    </div>
+                    <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
+                        {{-- @include('homeComponents.video-sources') --}}
+                    </div>
+                    <div class="tab-pane fade" id="homework" role="tabpanel" aria-labelledby="homework-tab">
+                        @include('homeComponents.video-courses.video-homework')
+                    </div>
+                    <div class="tab-pane fade" id="discussion" role="tabpanel" aria-labelledby="discussion-tab">
+                        @include('homeComponents.video-courses.video-discussion')
+                    </div>
                 </div>
             </div>
 
@@ -118,6 +183,8 @@
         </div>
     </div>
     @include('homeComponents.footer')
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

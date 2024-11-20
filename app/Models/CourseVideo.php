@@ -25,4 +25,14 @@ class CourseVideo extends Model
     {
         return $this->hasMany(VideoComment::class);
     }
+
+    public function homeWorks()
+    {
+        return $this->hasMany(VideoHomeWork::class, 'course_videos_id');
+    }
+
+    public function videoDiscussions()
+    {
+        return $this->hasMany(VideoDiscussion::class);
+    }
 }

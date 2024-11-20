@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\dashboard\CategoryController;
 use App\Http\Controllers\dashboard\ContactUsController;
 use App\Http\Controllers\dashboard\CourseController;
@@ -8,6 +7,7 @@ use App\Http\Controllers\dashboard\CourseRatingController;
 use App\Http\Controllers\dashboard\CourseVideoController;
 use App\Http\Controllers\dashboard\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\webController\videoCourseController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,21 +21,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => 'auth'], function () {
-    Route::get('login', [AuthController::class, 'login'])->name('login');
-    Route::post('loginPost', [AuthController::class, 'loginPost'])->name('loginPost');
 
-    Route::get('register', [AuthController::class, 'register'])->name('register');
-    Route::post('registerPost', [AuthController::class, 'registerPost'])->name('registerPost');
+Route::group([], function () {
 
-    Route::get('forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+
+    //this routes for video-courses with home works and comments and rating
+    Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos');
+
+    Route::post('add-homework', [videoCourseController::class, 'addHomewor'])->name('add-homework')->middleware('auth');
+    Route::post('add-comment', [videoCourseController::class, 'videoDiscssion'])->name('add-comment')->middleware('auth');
+
+    //this route geting all courses
+    Route::get('all-courses', [HomeController::class, 'allCourses'])->name('all-courses');
 });
-
-
-
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos');
 
 Route::group(['prefix' => 'dashboard'], function () {
 
@@ -63,3 +62,6 @@ Route::group(['prefix' => 'dashboard'], function () {
     Route::get('/courses/{course}/videos', [CourseVideoController::class, 'showByCourse'])->name('course_videos.by_course');
 
 });
+
+
+require __DIR__ . '/auth.php';
