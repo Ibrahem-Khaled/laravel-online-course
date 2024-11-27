@@ -158,7 +158,7 @@
         </div>
         <div class="trainer-buttons">
             <a href="chat_link_here" class="trainer-button">دردشة</a>
-            <a href="whatsapp_link_here" class="trainer-button">واتساب</a>
+            <a href="https://wa.me/{{ $course->user->phone }}" target="_blank" class="trainer-button">واتساب</a>
         </div>
     </div>
 

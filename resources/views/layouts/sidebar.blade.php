@@ -6,7 +6,9 @@
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="{{ route('home.dashboard') }}">
             <img src="../assets/img/logo-ct-dark.png" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="me-1 font-weight-bold text-white">{{ config('app.name') }}</span>
+            <span class="me-1 font-weight-bold text-white">
+                {{-- {{ config('app.name') }} --}}
+            </span>
         </a>
     </div>
     <hr class="horizontal light mt-0">
@@ -14,49 +16,48 @@
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('home') }}">
-                    <i class="fas fa-book ms-2"></i>
                     <span class="nav-link-text me-1">المنصة التعليمية</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('home.dashboard') }}">
-                    <i class="fas fa-home ms-2"></i>
                     <span class="nav-link-text me-1">الرئيسية</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('users.index') }}">
-                    <i class="fas fa-user ms-2"></i>
                     <span class="nav-link-text me-1">إدارة المستخدمين</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('categories.index') }}">
-                    <i class="fas fa-list ms-2"></i>
                     <span class="nav-link-text me-1">إدارة التصنيفات</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('courses.index') }}">
-                    <i class="fas fa-book ms-2"></i>
                     <span class="nav-link-text me-1">إدارة الدورات</span>
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-white" href="{{ route('sections.index') }}">
+                    <span class="nav-link-text me-1">إدارة الفصول
+                        <br>(برنامج طموح)
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('contact_us.index') }}">
-                    <i class="fas fa-envelope ms-2"></i>
                     <span class="nav-link-text me-1">إدارة التواصل</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('course_ratings.index') }}">
-                    <i class="fas fa-star ms-2"></i>
                     <span class="nav-link-text me-1">إدارة التقييمات</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('course_videos.index') }}">
-                    <i class="fas fa-video ms-2"></i>
                     <span class="nav-link-text me-1">إدارة الفيديو للدورات</span>
                 </a>
             </li>

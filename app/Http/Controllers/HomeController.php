@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\CourseVideo;
+use App\Models\Section;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,7 +15,33 @@ class HomeController extends Controller
     {
         $courses = Course::all();
         $categories = Category::all();
-        return view('home', compact('courses', 'categories'));
+
+        $allStudentsCount = User::where('role', 'student')->count();
+        $coursesHours = Course::sum('duration_in_hours');
+        $teachers = User::where('role', 'teacher')->get();
+
+        return view('home', compact(
+            'courses',
+            'categories',
+            'allStudentsCount',
+            'coursesHours',
+            'teachers'
+        ));
+    }
+    public function dashboard()
+    {
+        $studentsCount = User::where('role', 'student')->count();
+        $teachersCount = User::where('role', 'teacher')->count();
+        $sectionsCount = Section::count();
+        $lessonsCount = Course::count();
+
+        $latestLessons = Course::latest()->take(5)->get();
+        $latestSections = Section::latest()->take(5)->get();
+        $notifications = [];
+        return view(
+            'dashboard.index',
+            compact('studentsCount', 'teachersCount', 'sectionsCount', 'lessonsCount', 'latestLessons', 'latestSections', 'notifications')
+        );
     }
 
     public function showVideos(Course $course, CourseVideo $video = null)

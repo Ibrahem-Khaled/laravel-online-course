@@ -16,19 +16,32 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
+    public function userInfo()
+    {
+        return $this->hasOne(UserInfo::class);
+    }
 
     public function courses()
     {
         return $this->hasMany(Course::class);
+    }
+
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class, 'section_users', 'user_id', 'section_id');
+    }
+
+    public function userRepots()
+    {
+        return $this->hasMany(UserRepots::class);
+    }
+
+    public function teacherRepots()
+    {
+        return $this->hasMany(UserRepots::class, 'teacher_id');
     }
 }

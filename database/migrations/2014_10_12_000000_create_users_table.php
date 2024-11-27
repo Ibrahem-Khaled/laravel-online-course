@@ -24,6 +24,14 @@ return new class extends Migration {
             $table->rememberToken();
             $table->timestamps();
         });
+
+        DB::table('users')->insert([
+            'name' => 'Admin',
+            'email' => 'alruwaad111@gmail.com',
+            'password' => bcrypt('12345678'),
+            'role' => 'admin',
+            'status' => 'active',
+        ]);
     }
 
     /**
