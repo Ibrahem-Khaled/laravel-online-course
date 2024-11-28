@@ -80,6 +80,70 @@
         border-radius: 15px;
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .hero-section {
+            flex-direction: column-reverse;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .hero-text {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-image {
+            max-width: 80%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-text {
+            font-size: 0.9rem;
+        }
+
+        .btn-primary,
+        .btn-outline {
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 1.5rem;
+        }
+
+        .hero-text {
+            font-size: 0.8rem;
+        }
+
+        .btn-primary,
+        .btn-outline {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .hero-image {
+            max-width: 100%;
+        }
+    }
 </style>
 
 <body>

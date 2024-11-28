@@ -54,31 +54,37 @@
     }
 </style>
 
-<section class="teacher-section">
-    <h2>تعلم على يد أفضل المعلمين</h2>
-    <div id="teacherCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            @foreach ($teachers as $teacher)
-                <!-- الشريحة الأولى -->
-                <div class="carousel-item active">
-                    <div class="teacher-card">
-                        <img src="{{ asset('storage/' . $teacher->image) }}" alt="Teacher Image">
+@if ($teachers->count() > 0)
+    <section class="teacher-section">
+        <h2>تعلم على يد أفضل المعلمين</h2>
+        <div id="teacherCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @foreach ($teachers as $teacher)
+                    <!-- الشريحة الأولى -->
+                    <div class="carousel-item active">
+                        <div class="teacher-card">
+                            <img src="{{ asset('storage/' . $teacher->image) }}" alt="Teacher Image">
+                        </div>
+                        <h4 class="teacher-name">{{ $teacher->name }}</h4>
+                        <p class="teacher-title">
+                            {{ $teacher->userInfo?->degree ?? 'لا يوجد علم في الملف الشخصي للمعلم' }}
+                        </p>
                     </div>
-                    <h4 class="teacher-name">{{ $teacher->name }}</h4>
-                    <p class="teacher-title"> {{ $teacher->userInfo?->degree ?? 'لا يوجد علم في الملف الشخصي للمعلم' }}
-                    </p>
-                </div>
-            @endforeach
+                @endforeach
 
+            </div>
+            <!-- أزرار التحكم -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#teacherCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">السابق</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#teacherCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">التالي</span>
+            </button>
         </div>
-        <!-- أزرار التحكم -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#teacherCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">السابق</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#teacherCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">التالي</span>
-        </button>
-    </div>
-</section>
+    </section>
+@else
+    <h4 class="text-center">لا يوجد معلمين</h4>
+
+@endif
