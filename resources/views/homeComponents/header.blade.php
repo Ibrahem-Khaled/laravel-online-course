@@ -1,8 +1,11 @@
 <style>
     .navbar {
-        background-color: #072D38;
+        background-color: #055160;
         direction: rtl;
-        /* يجعل كل العناصر تبدأ من اليمين */
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 999;
     }
 
     .navbar-brand {

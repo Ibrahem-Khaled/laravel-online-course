@@ -41,7 +41,7 @@ Route::group([], function () {
     Route::get('user/section', [UserSectionController::class, 'index'])->name('user-section')->middleware('auth');
 });
 
-Route::group(['prefix' => 'dashboard'], function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'isAdmin']], function () {
 
     Route::get('/', [HomeController::class, 'dashboard'])->name('home.dashboard');
 

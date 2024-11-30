@@ -13,6 +13,8 @@
             font-family: "Cairo", serif;
             background-color: #072D38;
             color: #fff;
+            padding-top: 100px;
+
         }
 
         .hero-section {

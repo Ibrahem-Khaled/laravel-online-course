@@ -12,6 +12,9 @@ class AuthController extends Controller
     // عرض صفحة تسجيل الدخول
     public function login()
     {
+        if (Auth::check()) {
+            return redirect()->route('home');
+        }
         return view('Auth.login');
     }
 
@@ -36,6 +39,9 @@ class AuthController extends Controller
     // عرض صفحة التسجيل
     public function register()
     {
+        if (Auth::check()) {
+            return redirect()->route('home');
+        }
         return view('Auth.register');
     }
 

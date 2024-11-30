@@ -77,8 +77,6 @@
     .hero-image img {
         width: 100%;
         height: auto;
-        border-radius: 15px;
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     }
 
     /* Responsive Design */
@@ -153,8 +151,10 @@
             <p class="hero-text">ابدأ رحلتك التعليمية الآن، واستمتع بمئات الدورات والبرامج التعليمية التي ستأخذك إلى
                 مستوى
                 جديد من العلم والمعرفة والإبداع.</p>
-            <a href="{{ route('login') }}" class="btn btn-primary">تسجيل دخول</a>
-            <a href="{{ route('register') }}" class="btn btn-outline">إنشاء حساب</a>
+            @if (!Auth::check())
+                <a href="{{ route('login') }}" class="btn btn-primary">تسجيل دخول</a>
+                <a href="{{ route('register') }}" class="btn btn-outline">إنشاء حساب</a>
+            @endif
         </div>
         <div class="hero-image">
             <img src="{{ asset('assets/img/hero-section-img.png') }}" alt="Learning">

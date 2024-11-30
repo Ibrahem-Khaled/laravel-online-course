@@ -16,7 +16,8 @@
             background-color: #072D38;
             color: white;
             margin: 0;
-            padding: 0;
+            padding-top: 100px;
+
         }
 
         .sort-section {
@@ -168,7 +169,8 @@
         <h5>الدورات</h5>
         <div class="dropdown" style="flex-direction: row-reverse; display: flex; align-items: center;">
             <h3 class="sort-title">ترتيب حسب</h3>
-            <button class="dropdown-toggle-sort" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="dropdown-toggle-sort" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 المضاف حديثاً
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -184,34 +186,42 @@
         <div class="row">
             @foreach ($courses as $course)
                 <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="course-card">
-                        <button class="favorite-btn">
-                            <i class="fas {{ $course?->is_favorite ? 'fa-heart' : 'fa-heart-o' }}"></i>
-                        </button>
-                        <img class="card-img-top" src="{{ asset('storage/' . $course->image) }}" alt="Course Image">
-                        <div class="card-body">
-                            <h5 class="course-card-title">{{ $course->title }}</h5>
-                            <div class="trainer-info">
-                                <p class="rating">
-                                    @for ($i = 1; $i <= $course->ratings->avg('rating'); $i++)
-                                        <i class="fas fa-star"></i>
-                                    @endfor
-                                    ({{ $course->ratings->count() }})
-                                </p>
+                    <a href="{{ route('courses.videos', $course->id) }}" class="text-decoration-none">
+                        <div class="course-card">
+                            <button class="favorite-btn">
+                                <i class="fas {{ $course?->is_favorite ? 'fa-heart' : 'fa-heart-o' }}"></i>
+                            </button>
+                            <img class="card-img-top" src="{{ asset('storage/' . $course->image) }}" alt="Course Image">
+                            <div class="card-body">
+                                <h5 class="course-card-title">{{ $course->title }}</h5>
                                 <div class="trainer-info">
-                                    <span style="font-size: 11px">{{ $course->user->name }}</span>
-                                    <img src="{{ asset('storage/' . $course->user->image) }}" alt="Trainer Image">
+                                    @if ($course->ratings->count() == 0)
+                                        <p class="rating">
+                                           لا يوجد تقييمات
+                                        </p>
+                                    @else
+                                        <p class="rating">
+                                            @for ($i = 1; $i <= $course->ratings->avg('rating'); $i++)
+                                                <i class="fas fa-star"></i>
+                                            @endfor
+                                            ({{ $course->ratings->count() }})
+                                        </p>
+                                    @endif
+                                    <div class="trainer-info">
+                                        <span style="font-size: 11px">{{ $course->user->name }}</span>
+                                        <img src="{{ asset('storage/' . $course->user->image) }}" alt="Trainer Image">
+                                    </div>
+                                </div>
+
+                                <div class="trainer-info">
+                                    <p style="color: #ed6b2f">{{ $course->user->count() ?? 0 }}
+                                        <i class="fas fa-user"></i>
+                                    </p>
+                                    <p class="price">{{ $course->price }} ريال</p>
                                 </div>
                             </div>
-
-                            <div class="trainer-info">
-                                <p style="color: #ed6b2f">{{ $course->user->count() ?? 0 }}
-                                    <i class="fas fa-user"></i>
-                                </p>
-                                <p class="price">{{ $course->price }} ريال</p>
-                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             @endforeach
         </div>

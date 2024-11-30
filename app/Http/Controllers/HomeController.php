@@ -16,16 +16,19 @@ class HomeController extends Controller
         $courses = Course::all();
         $categories = Category::all();
 
-        $allStudentsCount = User::where('role', 'student')->count();
-        $coursesHours = Course::sum('duration_in_hours');
+        $students = User::where('role', 'student')->get();
         $teachers = User::where('role', 'teacher')->get();
+
+        $allStudentsCount = $students->count();
+        $coursesHours = Course::sum('duration_in_hours');
 
         return view('home', compact(
             'courses',
             'categories',
             'allStudentsCount',
             'coursesHours',
-            'teachers'
+            'teachers',
+            'students',
         ));
     }
     public function dashboard()

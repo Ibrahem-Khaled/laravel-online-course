@@ -1,5 +1,5 @@
 <!-- Footer Section -->
-<footer style="background-color: #004c64; color: white; padding: 2rem 0; text-align: center;">
+<footer style="background-color: #055160; color: white; padding: 2rem 0; text-align: center;">
     <div class="container">
         <div class="row">
             <!-- Company Section -->
