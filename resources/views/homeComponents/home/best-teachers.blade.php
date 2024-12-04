@@ -63,7 +63,8 @@
             @foreach ($students as $teacher)
                 <div>
                     <div class="teacher-card">
-                        <img src="{{ asset('storage/' . $teacher->image) }}" alt="Teacher Image">
+                        <img src="{{ $teacher->image ? asset('storage/' . $teacher->image) : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png' }}"
+                            alt="Teacher Image">
                     </div>
                     <h4 class="teacher-name">{{ $teacher->name }}</h4>
                     {{-- <p class="teacher-title">
@@ -74,5 +75,5 @@
         </div>
     </section>
 @else
-    <h4 class="text-center">لا يوجد معلمين</h4>
+    <h4 class="text-center mt-5">لا يوجد طلاب برنامج طموح</h4>
 @endif

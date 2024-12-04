@@ -43,8 +43,8 @@
                         {{ strtoupper(substr($homework->user->name, 0, 1)) }}
                     </div>
                 @else
-                    <img src="{{ asset('storage/' . $homework->user->image) }}" alt="User Image" class="rounded-circle"
-                        style="width: 40px; height: 40px;">
+                    <img src="{{ $homework->user->image ? asset('storage/' . $homework->user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
+                        alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
                 @endif
                 <div class="ms-3" style="margin-right: 10px;">
                     <p class="m-0">{{ $homework->user->name }}</p>

@@ -10,13 +10,17 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('video_comments', function (Blueprint $table) {
+        Schema::create('in_video_usages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('course_video_id')->references('id')->on('course_videos')->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->text('body');
-            $table->string('image')->nullable();
-            $table->boolean('approved')->default(false);
+            $table->foreignId('course_video_id')->constrained()->onDelete('cascade');
+
+            $table->enum('type', ['software', 'attachment'])->default('software');
+
+            $table->string('title')->required();
+            $table->text('description')->nullable();
+            $table->text('image')->nullable();
+            $table->text('file')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('video_comments');
+        Schema::dropIfExists('in_video_usages');
     }
 };

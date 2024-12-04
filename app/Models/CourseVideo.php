@@ -21,11 +21,6 @@ class CourseVideo extends Model
         return $this->belongsTo(Course::class, 'course_id');
     }
 
-    public function comments()
-    {
-        return $this->hasMany(VideoComment::class);
-    }
-
     public function homeWorks()
     {
         return $this->hasMany(VideoHomeWork::class, 'course_videos_id');
@@ -34,5 +29,10 @@ class CourseVideo extends Model
     public function videoDiscussions()
     {
         return $this->hasMany(VideoDiscussion::class);
+    }
+
+    public function videoUsage()
+    {
+        return $this->hasMany(inVideoUsage::class);
     }
 }

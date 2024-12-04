@@ -33,7 +33,6 @@
         .course-info {
             padding: 20px;
             border-radius: 10px;
-            margin-bottom: 20px;
             position: relative;
         }
 
@@ -109,7 +108,8 @@
                     <h2 class="course-title">{{ $course->title }}</h2>
                     <div class="course-meta">
                         <div class="trainer-info">
-                            <img src="{{ asset('storage/' . $course->user->image) }}" alt="Trainer Image">
+                            <img src="{{ $course->user->image ? asset('storage/' . $course->user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
+                                alt="Trainer Image">
                             <div>
                                 <p class="m-0">{{ $course->user->name }}</p>
                                 <small>خبير ومدرب</small>
@@ -129,8 +129,8 @@
                         </span>
                         <h6>|</h6>
                         <span>({{ $course->ratings?->avg('rating') ?? 0 }}) <span style="color: gold;">⭐</span></span>
-                        <h6>|</h6>
-                        <span>السعر: ${{ $course->price }}</span>
+                        {{-- <h6>|</h6>
+                        <span>السعر: ${{ $course->price }}</span> --}}
                     </div>
                 </div>
 
@@ -168,7 +168,11 @@
                         <h6 class="text-white text-center mt-3 p-3">{{ $video->description }}</h6>
                     </div>
                     <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
-                        {{-- @include('homeComponents.video-sources') --}}
+                        @if ($video->videoUsage->where('type', 'software')->count() > 0)
+                            {{-- @include('homeComponents.video-courses.video-software') --}}
+                        @else
+                            <h6 class="text-white text-center mt-3 p-3">لا يوجد مرفقات</h6>
+                        @endif
                     </div>
                     <div class="tab-pane fade" id="homework" role="tabpanel" aria-labelledby="homework-tab">
                         @include('homeComponents.video-courses.video-homework')

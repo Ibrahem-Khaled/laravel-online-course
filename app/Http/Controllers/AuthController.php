@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate(); // لتأمين الجلسة
-            return redirect()->route('home.dashboard')->with('success', 'تم تسجيل الدخول بنجاح');
+            return redirect()->route('home')->with('success', 'تم تسجيل الدخول بنجاح');
         }
 
         return back()->withErrors([
@@ -65,7 +65,7 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user); // تسجيل دخول تلقائي بعد التسجيل
-        return redirect()->route('home.dashboard')->with('success', 'تم التسجيل بنجاح');
+        return redirect()->route('home')->with('success', 'تم التسجيل بنجاح');
     }
 
     // عرض صفحة استعادة كلمة المرور
@@ -82,5 +82,11 @@ class AuthController extends Controller
         $request->session()->regenerateToken(); // إعادة توليد التوكن
 
         return redirect()->back()->with('success', 'تم تسجيل الخروج بنجاح');
+    }
+
+    public function profile()
+    {
+        $user = auth()->user();
+        return view('Auth.profile', compact('user'));
     }
 }

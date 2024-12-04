@@ -35,12 +35,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Section::class, 'section_users', 'user_id', 'section_id');
     }
 
-    public function userRepots()
+    public function userReports()
     {
-        return $this->hasMany(UserRepots::class);
+        return $this->hasMany(UserRepots::class, 'user_id'); 
     }
 
-    public function teacherRepots()
+    public function teacherReports()
     {
         return $this->hasMany(UserRepots::class, 'teacher_id');
     }

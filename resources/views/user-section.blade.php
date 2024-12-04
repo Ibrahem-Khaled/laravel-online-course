@@ -101,12 +101,12 @@
 
     <ul class="nav nav-tabs" id="videoTabs" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="discussion-tab" data-bs-toggle="tab" data-bs-target="#discussion"
-                type="button" role="tab" aria-controls="discussion" aria-selected="false">الطلاب</button>
+            <button class="nav-link" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button"
+                role="tab" aria-controls="students" aria-selected="false">الطلاب</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="homework-tab" data-bs-toggle="tab" data-bs-target="#homework" type="button"
-                role="tab" aria-controls="homework" aria-selected="false">المعلمين</button>
+            <button class="nav-link" id="teachers-tab" data-bs-toggle="tab" data-bs-target="#teachers" type="button"
+                role="tab" aria-controls="teachers" aria-selected="false">المعلمين</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="sources-tab" data-bs-toggle="tab" data-bs-target="#sources" type="button"
@@ -128,23 +128,27 @@
         <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
             {{-- @include('homeComponents.video-sources') --}}
         </div>
-        <div class="tab-pane fade" id="homework" role="tabpanel" aria-labelledby="homework-tab">
-            {{-- @include('homeComponents.video-courses.video-homework') --}}
+        <div class="tab-pane fade" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
+            <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">
+                <h2 class="info-header">معلمين
+                    الفصل</h2>
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+                    @foreach ($section->users->where('role', 'teacher') as $user)
+                        @include('homeComponents.section.teachers')
+                    @endforeach
+                </div>
+            </section>
         </div>
-        <div class="tab-pane fade" id="discussion" role="tabpanel" aria-labelledby="discussion-tab">
-            {{-- @include('homeComponents.video-courses.video-discussion') --}}
+        <div class="tab-pane fade" id="students" role="tabpanel" aria-labelledby="students-tab">
+            <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">
+                <h2 class="info-header">طلاب</h2>
+                @include('homeComponents.section.students', [
+                    ($students = $section->users->where('role', 'student')),
+                    ($trainer = $section->users->where('role', 'teacher')->first()),
+                ])
+            </section>
         </div>
     </div>
-
-    <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">
-        <h2 class="info-header">معلمين
-            الفصل</h2>
-        <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
-            @foreach ($section->users->where('role', 'teacher') as $user)
-                @include('homeComponents.section.teachers')
-            @endforeach
-        </div>
-    </section>
 
     @include('homeComponents.footer')
 

@@ -47,6 +47,7 @@
     <label for="image">الصورة الشخصية</label>
     <input type="file" name="image" class="form-control">
     @if ($user && $user->image)
-        <img src="{{ asset('storage/' . $user->image) }}" alt="User Image" width="100" class="mt-2">
+        <img src="{{ $user->image ? asset('storage/' . $user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
+            alt="User Image" width="100" class="mt-2">
     @endif
 </div>

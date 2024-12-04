@@ -4,6 +4,39 @@
         border-radius: 10px;
         padding: 15px;
         color: #fff;
+        max-height: 60%;
+        overflow: auto;
+        scrollbar-width: thin;
+        /* لتحديد عرض شريط التمرير في فايرفوكس */
+        scrollbar-color: #035971 #01222d;
+        /* لتحديد ألوان شريط التمرير في فايرفوكس */
+    }
+
+    /* تخصيص شريط التمرير في المتصفحات التي تدعم webkit */
+    .video-list::-webkit-scrollbar {
+        width: 8px;
+        /* عرض شريط التمرير */
+    }
+
+    .video-list::-webkit-scrollbar-track {
+        background: #01222d;
+        /* لون المسار */
+        border-radius: 10px;
+        /* جعل الحواف دائرية */
+    }
+
+    .video-list::-webkit-scrollbar-thumb {
+        background-color: #2e8b57;
+        /* لون مقبض التمرير */
+        border-radius: 10px;
+        /* جعل الحواف دائرية */
+        border: 2px solid #01222d;
+        /* إضافة حد للمقبض */
+    }
+
+    .video-list::-webkit-scrollbar-thumb:hover {
+        background-color: #45a76b;
+        /* لون المقبض عند التمرير */
     }
 
     .video-list-item {
@@ -117,7 +150,7 @@
     }
 </style>
 
-<div class="col-lg-4">
+<div class="col-lg-4" style="margin-top: 12%">
     <!-- قائمة الفيديوهات مع شريط التقدم المدمج -->
     <div class="video-list">
         <div class="progress-container">
@@ -150,7 +183,8 @@
     <div class="trainer-section">
         <h5>المدربين</h5>
         <div class="trainer-info">
-            <img src="{{ asset('storage/' . $course->user->image) }}" alt="Trainer Image">
+            <img src="{{ $course->user->image ? asset('storage/' . $course->user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
+                alt="Trainer Image">
             <div>
                 <p class="m-0">{{ $course->user->name }}</p>
                 <small>خبير ومدرب معتمد من أدوي</small>
@@ -164,10 +198,14 @@
 
     <!-- قسم الملحقات / البرامج المستخدمة -->
     <div class="attachments-section">
-        <h5>البرامج المستخدمة</h5>
-        <div class="d-flex">
-            <span class="badge bg-primary me-2">An</span>
-            <span class="badge bg-danger">Xd</span>
-        </div>
+        @if ($video->videoUsage->where('type', 'software')->count() > 0)
+            <h5>البرامج المستخدمة</h5>
+            <div class="d-flex">
+                <span class="badge bg-primary me-2">An</span>
+                <span class="badge bg-danger">Xd</span>
+            </div>
+        @else
+            <h5>لا يوجد برامج مستخدمة</h5>
+        @endif
     </div>
 </div>

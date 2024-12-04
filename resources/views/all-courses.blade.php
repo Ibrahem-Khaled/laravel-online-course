@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo-ct.png') }}">
 
     <title>منصة الرواد التعليمية</title>
     <style>
@@ -197,7 +198,7 @@
                                 <div class="trainer-info">
                                     @if ($course->ratings->count() == 0)
                                         <p class="rating">
-                                           لا يوجد تقييمات
+                                            لا يوجد تقييمات
                                         </p>
                                     @else
                                         <p class="rating">
@@ -209,7 +210,8 @@
                                     @endif
                                     <div class="trainer-info">
                                         <span style="font-size: 11px">{{ $course->user->name }}</span>
-                                        <img src="{{ asset('storage/' . $course->user->image) }}" alt="Trainer Image">
+                                        <img src="{{ $course->user->image ? asset('storage/' . $course->user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
+                                            alt="Trainer Image">
                                     </div>
                                 </div>
 

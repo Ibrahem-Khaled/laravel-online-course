@@ -115,7 +115,8 @@
         }
 
         .stats {
-            grid-template-columns: 1fr; /* عمود واحد على الشاشات الصغيرة */
+            grid-template-columns: 1fr;
+            /* عمود واحد على الشاشات الصغيرة */
         }
     }
 
@@ -140,7 +141,8 @@
 
 <div class="teacher-card">
     <div class="teacher-info">
-        <img src="{{ asset('storage/' . $user->image) }}" alt="Teacher Photo">
+        <img src="{{ $user->image ? asset('storage/' . $user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
+            alt="Teacher Photo">
         <div style="text-align: right; flex: 2;">
             <h6>{{ $user->name }}</h6>
             <span style="background-color: #FDE8CE; color: #CB4F09;">

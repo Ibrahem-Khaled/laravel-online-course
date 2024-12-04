@@ -129,7 +129,7 @@
                             الحساب
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                            <li><a class="dropdown-item" href="#">الملف الشخصي</a></li>
+                            <li><a class="dropdown-item" href="{{ route('user.profile') }}">الملف الشخصي</a></li>
                             <li><a class="dropdown-item" href="#">إعدادات</a></li>
                             <li><a class="dropdown-item" href="#">المساعدة</a></li>
                             @if (Auth::user()->role == 'admin' || Auth::user()->role == 'supervisor' || Auth::user()->role == 'teacher')
