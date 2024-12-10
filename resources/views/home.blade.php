@@ -145,12 +145,12 @@
 
             <!-- Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="prev"
-                style="position: absolute; top: 10rem; transform: translateY(-50%); z-index: 2; left: -3rem;">
+                style="position: absolute; top: 6rem; transform: translateY(-50%); z-index: 2; left: -3rem;">
                 <span class="carousel-control-prev-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">السابق</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="next"
-                style="position: absolute; top: 10rem; transform: translateY(-50%); z-index: 2; right: -3rem;">
+                style="position: absolute; top: 6rem; transform: translateY(-50%); z-index: 2; right: -3rem;">
                 <span class="carousel-control-next-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">التالي</span>
             </button>
