@@ -104,7 +104,7 @@
     <section class="d-flex flex-column align-items-center justify-content-center mt-5" style="text-align: center;">
         <h4 class="mb-4" style="color: #F4813E; font-size: 24px;">الفصول الدراسية</h4>
         <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel" style="position: relative;">
-            <div class="carousel-inner">
+            <div class="carousel-inner" style="max-width: 80%; margin: auto;">
                 @foreach ($sections->chunk(3) as $chunkIndex => $chunk)
                     <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
                         <div class="row justify-content-center">
@@ -144,12 +144,12 @@
 
             <!-- Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="prev"
-                style="position: absolute; top: 20%; transform: translateY(-50%); z-index: 2; left: 2rem;">
+                style="position: absolute; top: 20%; transform: translateY(-50%); z-index: 2; ">
                 <span class="carousel-control-prev-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">السابق</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="next"
-                style="position: absolute; top: 20%; transform: translateY(-50%); z-index: 2; right: 2rem;">
+                style="position: absolute; top: 20%; transform: translateY(-50%); z-index: 2;">
                 <span class="carousel-control-next-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">التالي</span>
             </button>
