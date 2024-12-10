@@ -113,8 +113,9 @@
                                 <div class="col-md-4">
                                     <div class="card"
                                         style="background-color: transparent; border: none; height: 100%;">
-                                        <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top"
-                                            alt="{{ $item->name }}" style="height: 200px; object-fit: cover;">
+                                        <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F000%2F369%2F984%2Foriginal%2Fvector-teacher-teaching-kindergarten-students-in-class.jpg&f=1&nofb=1&ipt=0374d64e64fdcfec45e7da90aafb693b43993932cf37cca38f418cde33e1a63b&ipo=images' }}"
+                                            class="card-img-top" alt="{{ $item->name }}"
+                                            style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
                                             <h5 class="card-title" style="color: #fff; font-weight: bold;">
                                                 {{ $item->name }}
