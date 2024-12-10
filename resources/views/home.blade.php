@@ -54,9 +54,8 @@
         <div class="mt-4">
             <h4 class="mb-4">ما هو هدف المنصة التعليمية؟</h4>
             <p class="mb-4">
-                تدور مميزات المنصة التعليمية حول الارتقاء بعملية التعلم ككل وتكثير الثمار المرجوة من تجربة التعلم قدر
-                الإمكان، فتستهدف المنصة التعليمية تعزيز إمكانية الوصول للمحتوى التعليمي والحرص على شمولية التجربة
-                التعليمية، وتوفير تجربة تعليمية مخصصة، وتسهيل التعلم التعاوني، والتقييم المستمر.
+                تهدف المنصة التعليمية للإرتقاء بمستوى التعلم وخلق تجربة تعليمية رائدة كما تعزز إمكانية الوصول للمحتوى
+                التعليمي بسهولة وسلاسة
             </p>
         </div>
     </section>
@@ -104,7 +103,8 @@
 
     <section class="d-flex flex-column align-items-center justify-content-center mt-5" style="text-align: center;">
         <h4 class="mb-4" style="color: #F4813E; font-size: 24px;">الفصول الدراسية</h4>
-        <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel" style="position: relative; height: auto; width: 100%;">
+        <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel"
+            style="position: relative; height: auto; width: 100%;">
             <div class="carousel-inner" style="max-width: 80%; margin: auto;">
                 @foreach ($sections->chunk(3) as $chunkIndex => $chunk)
                     <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">

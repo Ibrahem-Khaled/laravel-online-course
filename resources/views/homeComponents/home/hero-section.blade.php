@@ -147,10 +147,10 @@
 <body>
     <section class="hero-section">
         <div class="hero-content">
-            <h1 class="hero-title">تعلم بطريقة إبداعية مع <span>Al-Ruad Academy</span></h1>
-            <p class="hero-text">ابدأ رحلتك التعليمية الآن، واستمتع بمئات الدورات والبرامج التعليمية التي ستأخذك إلى
-                مستوى
-                جديد من العلم والمعرفة والإبداع.</p>
+            <h1 class="hero-title">تعلم بطريقة إبداعية مع <span>اكاديمية السٍريع</span></h1>
+            <p class="hero-text">انطلق في مسيرتك التعليمية الآن واستمتع بمجموعة متنوعة من الدورات والبرامج التي ستقودك
+                إلى آفاق أرحب من المعرفة والتطور والإبداع .
+            </p>
             @if (!Auth::check())
                 <a href="{{ route('login') }}" class="btn btn-primary">تسجيل دخول</a>
                 <a href="{{ route('register') }}" class="btn btn-outline">إنشاء حساب</a>
