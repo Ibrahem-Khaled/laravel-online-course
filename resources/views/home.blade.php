@@ -102,7 +102,7 @@
     @include('homeComponents.home.best-teachers')
 
     <section class="d-flex flex-column align-items-center justify-content-center mt-5"
-        style="text-align: center; margin: auto;">
+        style="text-align: center;">
         <h4 class="mb-4" style="color: #F4813E; font-size: 24px;">الفصول الدراسية</h4>
         <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel" style="position: relative;">
             <div class="carousel-inner">
@@ -113,7 +113,7 @@
                                 <div class="col-md-4">
                                     <div class="card"
                                         style="background-color: transparent; border: none; height: 100%;">
-                                        <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://via.placeholder.com/400x200' }}"
+                                        <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjooinn.com%2Fimages%2Fprimary-school-classroom-5.jpg&f=1&nofb=1&ipt=d0a230bf6063cbbccf4406ca3e5e8f535a0110357aea1e44cedb46d9629552dc&ipo=images' }}"
                                             class="card-img-top" alt="{{ $item->name }}"
                                             style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
