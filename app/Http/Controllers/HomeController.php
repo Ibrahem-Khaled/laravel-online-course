@@ -15,6 +15,7 @@ class HomeController extends Controller
     {
         $courses = Course::all();
         $categories = Category::all();
+        $sections = Section::all();
 
         $students = User::where('role', 'student')->get();
         $teachers = User::where('role', 'teacher')->get();
@@ -25,6 +26,7 @@ class HomeController extends Controller
         return view('home', compact(
             'courses',
             'categories',
+            'sections',
             'allStudentsCount',
             'coursesHours',
             'teachers',
