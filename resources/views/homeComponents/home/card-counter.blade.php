@@ -1,7 +1,7 @@
 <style>
     body {
         font-family: 'Cairo', sans-serif;
-        background-color: #072D38;
+        background-color: #035971;
         color: #fff;
     }
 
