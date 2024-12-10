@@ -101,8 +101,7 @@
 
     @include('homeComponents.home.best-teachers')
 
-    <section class="d-flex flex-column align-items-center justify-content-center mt-5"
-        style="text-align: center;">
+    <section class="d-flex flex-column align-items-center justify-content-center mt-5" style="text-align: center;">
         <h4 class="mb-4" style="color: #F4813E; font-size: 24px;">الفصول الدراسية</h4>
         <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel" style="position: relative;">
             <div class="carousel-inner">
@@ -111,8 +110,7 @@
                         <div class="row justify-content-center">
                             @foreach ($chunk as $item)
                                 <div class="col-md-4">
-                                    <div class="card"
-                                        style="background-color: transparent; border: none; height: 100%;">
+                                    <div class="card" style="background-color: transparent; height: 100%;">
                                         <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjooinn.com%2Fimages%2Fprimary-school-classroom-5.jpg&f=1&nofb=1&ipt=d0a230bf6063cbbccf4406ca3e5e8f535a0110357aea1e44cedb46d9629552dc&ipo=images' }}"
                                             class="card-img-top" alt="{{ $item->name }}"
                                             style="height: 200px; object-fit: cover;">
@@ -146,12 +144,12 @@
 
             <!-- Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="prev"
-                style="position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; left: -2rem;">
+                style="position: absolute; top: 20%; transform: translateY(-50%); z-index: 2; ">
                 <span class="carousel-control-prev-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">السابق</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="next"
-                style="position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; right: -2rem;">
+                style="position: absolute; top: 20%; transform: translateY(-50%); z-index: 2; ">
                 <span class="carousel-control-next-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">التالي</span>
             </button>
