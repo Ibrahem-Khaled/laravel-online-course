@@ -20,7 +20,7 @@
             padding-top: 100px;
 
         }
-
+        
         h4 {
             color: #F4813E;
         }
@@ -67,8 +67,8 @@
             <h4 class="mb-4">من خلال الانضمام إلى منصة التعلم الإلكتروني، يمكنك الاستفادة من الكثير من الفوائد.</h4>
 
             <!-- Carousel -->
-            <div id="coursesCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
+            <div id="coursesCarousel" class="carousel slide" data-bs-ride="carousel" style="position: relative; height: auto;">
+                <div class="carousel-inner" style="max-width: 80%; margin: auto;">
                     @foreach ($courses->chunk(3) as $chunkIndex => $chunk)
                         <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
                             <div class="d-flex justify-content-center">
