@@ -63,7 +63,11 @@
             @foreach ($students as $teacher)
                 <div>
                     <div class="teacher-card">
-                        <img src="{{ $teacher->image ? asset('storage/' . $teacher->image) : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png' }}"
+                        <img src="{{ $teacher->image
+                            ? asset('storage/' . $teacher->image)
+                            : ($teacher->userInfo?->gender == 'female'
+                                ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
+                                : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
                             alt="Teacher Image">
                     </div>
                     <h4 class="teacher-name">{{ $teacher->name }}</h4>
