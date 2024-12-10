@@ -64,11 +64,11 @@ class AuthController extends Controller
             'address' => $request->address,
             'password' => Hash::make($request->password),
         ]);
-        $user->userInfo->create([
+        $user->userInfo()->create([
             'gender' => $request->gender
         ]);
 
-        Auth::login($user); // تسجيل دخول تلقائي بعد التسجيل
+        Auth::login($user);
         return redirect()->route('home')->with('success', 'تم التسجيل بنجاح');
     }
 

@@ -69,7 +69,7 @@
                                 ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
                                 : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
                             alt="Teacher Image">
-                    </div>
+                    </div> 
                     <h4 class="teacher-name">{{ $teacher->name }}</h4>
                     {{-- <p class="teacher-title">
                         {{ $teacher->userInfo?->degree ?? 'لا يوجد معلومات حالياً' }}
