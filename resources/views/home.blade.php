@@ -103,8 +103,8 @@
 
     <section class="d-flex flex-column align-items-center justify-content-center mt-5"
         style="text-align: center; margin: auto;">
-        <h4 class="mb-4">الفصول الدراسية</h4>
-        <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel">
+        <h4 class="mb-4" style="color: #F4813E; font-size: 24px;">الفصول الدراسية</h4>
+        <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel" style="position: relative;">
             <div class="carousel-inner">
                 @foreach ($sections->chunk(3) as $chunkIndex => $chunk)
                     <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
@@ -113,7 +113,7 @@
                                 <div class="col-md-4">
                                     <div class="card"
                                         style="background-color: transparent; border: none; height: 100%;">
-                                        <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F000%2F369%2F984%2Foriginal%2Fvector-teacher-teaching-kindergarten-students-in-class.jpg&f=1&nofb=1&ipt=0374d64e64fdcfec45e7da90aafb693b43993932cf37cca38f418cde33e1a63b&ipo=images' }}"
+                                        <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://via.placeholder.com/400x200' }}"
                                             class="card-img-top" alt="{{ $item->name }}"
                                             style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
@@ -145,14 +145,14 @@
             </div>
 
             <!-- Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#sectionsCarousel"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <button class="carousel-control-prev" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="prev"
+                style="position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; left: -2rem;">
+                <span class="carousel-control-prev-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">السابق</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#sectionsCarousel"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <button class="carousel-control-next" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="next"
+                style="position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; right: -2rem;">
+                <span class="carousel-control-next-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">التالي</span>
             </button>
         </div>
