@@ -54,6 +54,7 @@ class AuthController extends Controller
             'phone' => 'nullable|string|unique:users',
             'address' => 'nullable|string|max:255',
             'password' => 'required|min:6|confirmed',
+            'gender' => 'required|in:male,female',
         ]);
 
         $user = User::create([
@@ -62,6 +63,9 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'password' => Hash::make($request->password),
+        ]);
+        $user->userInfo->create([
+            'gender' => $request->gender
         ]);
 
         Auth::login($user); // تسجيل دخول تلقائي بعد التسجيل

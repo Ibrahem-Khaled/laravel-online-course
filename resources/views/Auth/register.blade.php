@@ -132,8 +132,19 @@
 
                 <!-- العنوان -->
                 <div class="mb-3">
-                    <label for="address" class="form-label">العنوان</label>
+                    <label for="address" class="form-label">المدينة</label>
                     <input type="text" name="address" class="form-control" id="address" placeholder="أدخل العنوان">
+                    @error('address')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="gender" class="form-label">الجنس</label>
+                    <select name="gender" class="form-control">
+                        <option value="male">ذكر</option>
+                        <option value="female">انثى</option>
+                    </select>
                     @error('address')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
