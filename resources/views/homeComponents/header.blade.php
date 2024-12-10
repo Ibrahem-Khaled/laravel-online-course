@@ -1,6 +1,6 @@
 <style>
     .navbar {
-        background-color: #055160;
+        background-color: #035971;
         direction: rtl;
         position: fixed;
         top: 0;
