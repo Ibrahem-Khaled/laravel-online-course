@@ -1,10 +1,4 @@
 <style>
-    body {
-        font-family: 'Cairo', sans-serif;
-        background-color: #035971;
-        color: #fff;
-    }
-
     .info-section {
         display: flex;
         justify-content: space-around;
@@ -16,7 +10,7 @@
     }
 
     .info-card {
-        background-color: #055160;
+        background-color: #035971;
         width: 200px;
         height: 200px;
         border-radius: 20px;
