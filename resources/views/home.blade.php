@@ -113,7 +113,7 @@
                                 <div class="col-md-4">
                                     <div class="card"
                                         style="background-color: transparent; border: none; height: 100%;">
-                                        <img src="https://via.placeholder.com/400" class="card-img-top"
+                                        <img src="{{ asset('storage/' . $item->image) }}" class="card-img-top"
                                             alt="{{ $item->name }}" style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
                                             <h5 class="card-title" style="color: #fff; font-weight: bold;">
