@@ -39,15 +39,14 @@
     @foreach ($video->videoDiscussions as $comment)
         <div class="p-3 mb-3" style="background-color: #004051; border-radius: 10px;">
             <div class="d-flex align-items-center mb-2">
-                @if ($comment->user->image == null)
-                    <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center"
-                        style="width: 40px; height: 40px;">
-                        {{ strtoupper(substr($comment->user->name, 0, 1)) }}
-                    </div>
-                @else
-                    <img src="{{ $comment->user->image ? asset('storage/' . $comment->user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
-                        alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
-                @endif
+
+                <img src="{{ $comment->user->image
+                    ? asset('storage/' . $comment->user->image)
+                    : ($comment->user?->userInfo?->gender == 'female'
+                        ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
+                        : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
+                    alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
+
                 <div class="ms-3" style="margin-right: 10px;">
                     <p class="m-0">{{ $comment->user->name }}</p>
                     <small class="text-white">{{ $comment->created_at->locale('ar')->diffForHumans() }}</small>

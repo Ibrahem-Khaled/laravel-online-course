@@ -16,6 +16,8 @@
             font-family: 'Cairo', sans-serif;
             background-color: #072D38;
             color: white;
+            margin: 0;
+            padding-top: 100px;
         }
 
         .register-container {
@@ -23,6 +25,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 15px;
         }
 
         .register-card {
@@ -85,16 +88,6 @@
 
 <body>
     @include('homeComponents.header')
-
-    @if ($errors->any())
-        <div class="alert alert-danger " style="max-width: 50%;margin: auto">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
     <div class="register-container">
         <div class="register-card">
             <h3 class="text-center mb-4">إنشاء حساب جديد</h3>

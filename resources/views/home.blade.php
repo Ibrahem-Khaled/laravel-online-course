@@ -60,7 +60,7 @@
         </div>
     </section>
 
-    <section class="d-flex flex-column align-items-center justify-content-center mt-5"
+    {{-- <section class="d-flex flex-column align-items-center justify-content-center mt-5"
         style="text-align: center; max-width: 80%; margin: auto;">
         <div class="mt-4">
             <h4 class="mb-4">من خلال الانضمام إلى منصة التعلم الإلكتروني، يمكنك الاستفادة من الكثير من الفوائد.</h4>
@@ -93,7 +93,7 @@
                 </button>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <section class="d-flex flex-column align-items-center justify-content-center mt-5" style="text-align: center;">
         <img src="{{ asset('assets/img/medileHero.png') }}" alt="Shape 1" class="img-fluid">

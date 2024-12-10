@@ -77,7 +77,7 @@
 
     <!-- Courses Section -->
     <div class="container my-4">
-        <div class="row">
+        <div class="row" style="direction: rtl;">
             @foreach ($courses as $course)
                 @include('homeComponents.home.course-card')
             @endforeach

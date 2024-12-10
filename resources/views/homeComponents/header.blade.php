@@ -132,7 +132,8 @@
                             <li><a class="dropdown-item" href="{{ route('user.profile') }}">الملف الشخصي</a></li>
                             <li><a class="dropdown-item" href="#">إعدادات</a></li>
                             <li><a class="dropdown-item" href="#">المساعدة</a></li>
-                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'supervisor' || Auth::user()->role == 'teacher')
+                            
+                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'supervisor')
                                 <li><a class="dropdown-item" href="{{ route('home.dashboard') }}">لوحة التحكم</a></li>
                             @endif
                             <li>

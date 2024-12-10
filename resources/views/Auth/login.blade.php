@@ -17,6 +17,8 @@
         body {
             font-family: 'Cairo', sans-serif;
             background-color: #072D38;
+            margin: 0;
+            padding-top: 100px;
         }
 
         .login-container {
