@@ -126,7 +126,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            {{auth()->user->name}}
+                            {{ Auth::user()->name }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                             <li><a class="dropdown-item" href="{{ route('user.profile') }}">الملف الشخصي</a></li>
