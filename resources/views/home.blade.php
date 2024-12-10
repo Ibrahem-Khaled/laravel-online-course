@@ -102,7 +102,7 @@
     @include('homeComponents.home.best-teachers')
 
     <section class="d-flex flex-column align-items-center justify-content-center mt-5"
-        style="text-align: center; max-width: 80%; margin: auto;">
+        style="text-align: center; margin: auto;">
         <h4 class="mb-4">الفصول الدراسية</h4>
         <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -160,11 +160,6 @@
 
     <section class="d-flex flex-column align-items-center justify-content-center mt-5"
         style="text-align: center; max-width: 60%; margin: auto;">
-        <h4 class="mb-4">درجات الطالب</h4>
-        <p class="mb-4">
-            قم بتشغيل الواجبات والاختبارات والاختبارات المباشرة بسهولة.
-            يتم إدخال نتائج الطلاب تلقائيًا في دفتر التقديرات عبر الإنترنت.
-        </p>
         <img src="{{ asset('assets/img/user-reports.png') }}" alt="Shape 1" class="img-fluid">
     </section>
     <!-- Footer -->
