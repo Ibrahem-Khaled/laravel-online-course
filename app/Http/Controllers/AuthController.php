@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -64,8 +65,12 @@ class AuthController extends Controller
             'address' => $request->address,
             'password' => Hash::make($request->password),
         ]);
-        $user->userInfo()->create([
-            'gender' => $request->gender
+
+        DB::table('user_infos')->insert([
+            'user_id' => $user->id,
+            'gender' => $request->gender,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         Auth::login($user);
