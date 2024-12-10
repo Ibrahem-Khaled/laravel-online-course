@@ -20,7 +20,7 @@
             padding-top: 100px;
 
         }
-        
+
         h4 {
             color: #F4813E;
         }
@@ -67,8 +67,9 @@
             <h4 class="mb-4">من خلال الانضمام إلى منصة التعلم الإلكتروني، يمكنك الاستفادة من الكثير من الفوائد.</h4>
 
             <!-- Carousel -->
-            <div id="coursesCarousel" class="carousel slide" data-bs-ride="carousel" style="position: relative; height: auto;">
-                <div class="carousel-inner" style="max-width: 80%; margin: auto;">
+            <div id="coursesCarousel" class="carousel slide" data-bs-ride="carousel"
+                style="position: relative; height: auto;">
+                <div class="carousel-inner">
                     @foreach ($courses->chunk(3) as $chunkIndex => $chunk)
                         <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
                             <div class="d-flex justify-content-center">
@@ -103,7 +104,7 @@
 
     <section class="d-flex flex-column align-items-center justify-content-center mt-5" style="text-align: center;">
         <h4 class="mb-4" style="color: #F4813E; font-size: 24px;">الفصول الدراسية</h4>
-        <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel" style="position: relative;">
+        <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel" style="position: relative; height: auto; width: 100%;">
             <div class="carousel-inner" style="max-width: 80%; margin: auto;">
                 @foreach ($sections->chunk(3) as $chunkIndex => $chunk)
                     <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
@@ -144,12 +145,12 @@
 
             <!-- Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="prev"
-                style="position: absolute; top: 20%; transform: translateY(-50%); z-index: 2; left: -3rem;">
+                style="position: absolute; top: 10rem; transform: translateY(-50%); z-index: 2; left: -3rem;">
                 <span class="carousel-control-prev-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">السابق</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="next"
-                style="position: absolute; top: 20%; transform: translateY(-50%); z-index: 2; right: -3rem;">
+                style="position: absolute; top: 10rem; transform: translateY(-50%); z-index: 2; right: -3rem;">
                 <span class="carousel-control-next-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">التالي</span>
             </button>
