@@ -147,7 +147,7 @@
 <body>
     <section class="hero-section">
         <div class="hero-content">
-            <h1 class="hero-title">تعلم بطريقة إبداعية مع <span>اكاديمية السٍريع</span></h1>
+            <h1 class="hero-title">تعلم بطريقة إبداعية مع <span>اكاديمية السّريع</span></h1>
             <p class="hero-text">انطلق في مسيرتك التعليمية الآن واستمتع بمجموعة متنوعة من الدورات والبرامج التي ستقودك
                 إلى آفاق أرحب من المعرفة والتطور والإبداع .
             </p>
