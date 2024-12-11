@@ -70,7 +70,7 @@ class HomeController extends Controller
 
     public function allCourses()
     {
-        $courses = Course::paginate(6);
+        $courses = Course::where('status', 'active')->paginate(6);
         return view('all-courses', compact('courses'));
     }
 }

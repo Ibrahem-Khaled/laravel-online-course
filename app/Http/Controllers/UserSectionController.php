@@ -16,9 +16,10 @@ class UserSectionController extends Controller
         if (!$user->sections()->exists()) {
             return redirect()->back()->with('error', 'لم يتم تعيينك إلى أي قسم بعد.');
         }
-        $courses = Course::all();
+        $courses = Course::where('status', 'draft')->get();
         $section = $user->sections()->first();
-        return view('user-section', compact('section', 'courses'));
+        $sectionCourses = $section->courses()->get();
+        return view('user-section', compact('section', 'courses', 'sectionCourses'));
     }
 
     public function addStudentReportsDaily(Request $request, $student_id)

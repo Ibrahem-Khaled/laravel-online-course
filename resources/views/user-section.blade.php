@@ -14,7 +14,6 @@
             background-color: #072D38;
             color: #fff;
             padding-top: 100px;
-            justify-content: space-between;
         }
 
         .hero-section {
@@ -126,7 +125,14 @@
             @include('homeComponents.section.details')
         </div>
         <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
-            {{-- @include('homeComponents.video-sources') --}}
+            <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">
+                <h2 class="info-header">المنهج والدورات</h2>
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+                    @foreach ($sectionCourses as $course)
+                        @include('homeComponents.home.course-card', ['course' => $course])
+                    @endforeach
+                </div>
+            </section>
         </div>
         <div class="tab-pane fade" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
             <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">
