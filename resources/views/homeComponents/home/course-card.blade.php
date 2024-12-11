@@ -130,7 +130,9 @@
                     @endif
                     <div class="trainer-info">
                         <span style="font-size: 11px">{{ $course->user->name }}</span>
-                        <img src="{{ $course->user->image ? asset('storage/' . $course->user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
+                        <img src="{{ $course->user->image
+                            ? asset('storage/' . $course->user->image)
+                            : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
                             alt="Trainer Image">
                     </div>
                 </div>

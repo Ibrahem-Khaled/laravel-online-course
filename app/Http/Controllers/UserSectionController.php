@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\CourseVideo;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -63,6 +64,25 @@ class UserSectionController extends Controller
         $section = Section::findOrFail($request->section_id);
         $section->courses()->attach($request->course_id);
         return redirect()->back()->with('success', 'تم اضافة الدورة بنجاح');
+    }
+
+    public function addVideoFromCourse(Request $request)
+    {
+        $validated = $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'title' => 'required|string|max:255',
+            'video' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('course_videos', 'public');
+        }
+
+        CourseVideo::create($validated);
+
+        return redirect()->back()->with('success', 'تم إضافة الفيديو بنجاح!');
     }
 
 }

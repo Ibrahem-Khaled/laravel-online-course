@@ -41,6 +41,7 @@ Route::group([], function () {
     Route::get('user/section', [UserSectionController::class, 'index'])->name('user-section')->middleware('auth');
     Route::put('update-user-reports/{student_id}', [UserSectionController::class, 'addStudentReportsDaily'])->name('update-user-reports')->middleware('auth');
     Route::post('addCourseFromSection', [UserSectionController::class, 'addCourseFromSection'])->name('addCourseFromSection')->middleware('auth');
+    Route::post('addVideoFromCourse', [UserSectionController::class, 'addVideoFromCourse'])->name('addVideoFromCourse')->middleware('auth');
 });
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'isAdmin']], function () {

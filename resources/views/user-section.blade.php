@@ -157,44 +157,108 @@
     </div>
 
     @if (Auth::user()->role == 'teacher')
-        <button type="button" class="btn btn-warning btn-floating" data-bs-toggle="modal"
-            data-bs-target="#addCourseModal"
-            style="position: fixed; bottom: 20px; right: 20px; border-radius: 50%; width: 60px; height: 60px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <button type="button" class="btn btn-floating" data-bs-toggle="modal" data-bs-target="#addCourseModal"
+            style="position: fixed; 
+        background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width: 60px; height: 60px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
             <i class="bi bi-plus" style="font-size: 24px; color: #fff;"></i>
         </button>
 
         <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addCourseModalLabel">إضافة دورة جديدة</h5>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content" style="background-color: #02475E; color: #fff;">
+                    <div class="modal-header" style="border-bottom: 1px solid #ff9c00;">
+                        <h5 class="modal-title" id="addCourseModalLabel">إدارة الفصل</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
-                    <form action="{{ route('addCourseFromSection') }}" method="POST">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="courseName" class="form-label">اختر الدورة</label>
-                                <select class="form-select" name="course_id" id="courseName">
-                                    @foreach ($courses as $course)
-                                        <option value="{{ $course->id }}">{{ $course->title }}</option>
-                                    @endforeach
-                                </select>
+                    <div class="modal-body">
+                        <!-- Tabs Navigation -->
+                        <ul class="nav nav-tabs" id="addCourseTabs" role="tablist"
+                            style="border-bottom: 1px solid #ff9c00;">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="add-course-tab" data-bs-toggle="tab"
+                                    data-bs-target="#add-course" type="button" role="tab"
+                                    aria-controls="add-course" aria-selected="true"
+                                    style="color: #fff; background-color: transparent;">إضافة دورة</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="upload-video-tab" data-bs-toggle="tab"
+                                    data-bs-target="#upload-video" type="button" role="tab"
+                                    aria-controls="upload-video" aria-selected="false"
+                                    style="color: #fff; background-color: transparent;">رفع
+                                    فيديوهات</button>
+                            </li>
+                        </ul>
+
+                        <!-- Tabs Content -->
+                        <div class="tab-content" id="addCourseTabsContent">
+                            <!-- Add Course Tab -->
+                            <div class="tab-pane fade show active" id="add-course" role="tabpanel"
+                                aria-labelledby="add-course-tab">
+                                <form action="{{ route('addCourseFromSection') }}" method="POST" class="mt-3">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="courseName" class="form-label">اختر الدورة</label>
+                                        <select class="form-select" name="course_id" id="courseName">
+                                            @foreach ($courses as $course)
+                                                <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <input type="hidden" name="section_id" value="{{ $section->id }}">
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary">إضافة</button>
+                                    </div>
+                                </form>
                             </div>
-                            <input type="hidden" name="section_id" value="{{ $section->id }}">
+
+                            <!-- Upload Video Tab -->
+                            <div class="tab-pane fade" id="upload-video" role="tabpanel"
+                                aria-labelledby="upload-video-tab">
+                                <form action="#" method="POST" enctype="multipart/form-data" class="mt-3">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="courseSelect" class="form-label">اختر الدورة</label>
+                                        <select class="form-select" name="course_id" id="courseSelect">
+                                            @foreach ($courses as $course)
+                                                <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="videoTitle" class="form-label">عنوان الفيديو</label>
+                                        <input type="text" class="form-control" id="videoTitle" name="title"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="videoCode" class="form-label">كود الفيديو</label>
+                                        <input type="text" class="form-control" id="videoTitle" name="video"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="videoDescription" class="form-label">وصف الفيديو</label>
+                                        <input type="text" class="form-control" id="videoTitle"
+                                            name="description" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="videoImage" class="form-label">صورة الفيديو</label>
+                                        <input type="file" class="form-control" id="videoFile" name="image">
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary">رفع الفيديو</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                            <button type="submit" class="btn btn-primary">إضافة</button>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid #ff9c00;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                    </div>
                 </div>
             </div>
         </div>
     @endif
-
 
     @include('homeComponents.footer')
 
