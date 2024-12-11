@@ -14,4 +14,9 @@ class Section extends Model
     {
         return $this->belongsToMany(User::class, 'section_users', 'section_id', 'user_id');
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'section_courses', 'section_id', 'course_id');
+    }
 }

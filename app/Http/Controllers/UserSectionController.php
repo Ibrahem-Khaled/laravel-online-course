@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,8 +16,9 @@ class UserSectionController extends Controller
         if (!$user->sections()->exists()) {
             return redirect()->back()->with('error', 'لم يتم تعيينك إلى أي قسم بعد.');
         }
+        $courses = Course::all();
         $section = $user->sections()->first();
-        return view('user-section', compact('section'));
+        return view('user-section', compact('section', 'courses'));
     }
 
     public function addStudentReportsDaily(Request $request, $student_id)
@@ -52,6 +55,13 @@ class UserSectionController extends Controller
         }
 
         return redirect()->back()->with('success', 'تم حفظ التقييم بنجاح');
+    }
+
+    public function addCourseFromSection(Request $request)
+    {
+        $section = Section::findOrFail($request->section_id);
+        $section->courses()->attach($request->course_id);
+        return redirect()->back()->with('success', 'تم اضافة الدورة بنجاح');
     }
 
 }

@@ -18,6 +18,7 @@
             color: white;
             margin: 0;
             padding-top: 100px;
+            justify-content: space-between;
 
         }
 

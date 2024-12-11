@@ -14,7 +14,7 @@
             background-color: #072D38;
             color: #fff;
             padding-top: 100px;
-
+            justify-content: space-between;
         }
 
         .hero-section {
@@ -149,6 +149,46 @@
             </section>
         </div>
     </div>
+
+    @if (Auth::user()->role == 'teacher')
+        <button type="button" class="btn btn-warning btn-floating" data-bs-toggle="modal"
+            data-bs-target="#addCourseModal"
+            style="position: fixed; bottom: 20px; right: 20px; border-radius: 50%; width: 60px; height: 60px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <i class="bi bi-plus" style="font-size: 24px; color: #fff;"></i>
+        </button>
+
+        <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCourseModalLabel">إضافة دورة جديدة</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('addCourseFromSection') }}" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="courseName" class="form-label">اختر الدورة</label>
+                                <select class="form-select" name="course_id" id="courseName">
+                                    @foreach ($courses as $course)
+                                        <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <input type="hidden" name="section_id" value="{{ $section->id }}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="submit" class="btn btn-primary">إضافة</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
+
 
     @include('homeComponents.footer')
 

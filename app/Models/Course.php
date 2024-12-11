@@ -46,4 +46,9 @@ class Course extends Model
     {
         return $this->hasMany(CourseRating::class);
     }
+
+    public function sections()
+    {
+        return $this->belongsToMany(Section::class, 'section_courses', 'course_id', 'section_id');
+    }
 }
