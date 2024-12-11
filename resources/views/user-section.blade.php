@@ -216,7 +216,8 @@
                             <!-- Upload Video Tab -->
                             <div class="tab-pane fade" id="upload-video" role="tabpanel"
                                 aria-labelledby="upload-video-tab">
-                                <form action="#" method="POST" enctype="multipart/form-data" class="mt-3">
+                                <form action="{{ route('addVideoFromCourse') }}" method="POST"
+                                    enctype="multipart/form-data" class="mt-3">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="courseSelect" class="form-label">اختر الدورة</label>
@@ -233,8 +234,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="videoCode" class="form-label">كود الفيديو</label>
-                                        <input type="text" class="form-control" id="videoTitle" name="video"
-                                            required>
+                                        <textarea type="text" class="form-control" id="videoTitle" name="video" required></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="videoDescription" class="form-label">وصف الفيديو</label>
