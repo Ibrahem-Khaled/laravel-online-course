@@ -105,7 +105,7 @@
                         href="{{ route('all-courses') }}">الدورات</a>
                 </li>
                 <li class="nav-item dropdown">
-                    @if (Auth::user()->sections->count() > 1)
+                    @if (Auth::check() && Auth::user()->sections->count() > 1)
                         <a class="nav-link dropdown-toggle" href="#" id="userSections" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             برنامج طموح
