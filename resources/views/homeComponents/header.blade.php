@@ -83,7 +83,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
         <!-- اللوجو -->
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{{ route('home') }}">
             <img src="{{ asset('assets/img/logo-ct.png') }}" alt="Logo">
         </a>
 
@@ -104,10 +104,29 @@
                     <a class="nav-link {{ Route::currentRouteName() == 'all-courses' ? 'active' : '' }}"
                         href="{{ route('all-courses') }}">الدورات</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ Route::currentRouteName() == 'user-section' ? 'active' : '' }}"
-                        href="{{ route('user-section') }}">برنامج طموح</a>
+                <li class="nav-item dropdown">
+                    @if (Auth::user()->sections->count() > 1)
+                        <a class="nav-link dropdown-toggle" href="#" id="userSections" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            برنامج طموح
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userSections">
+                            @foreach (Auth::user()->sections as $section)
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('user-section', ['section_id' => $section->id]) }}">
+                                        {{ $section->name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <a class="nav-link {{ Route::currentRouteName() == 'user-section' ? 'active' : '' }}"
+                            href="{{ route('user-section') }}">برنامج طموح</a>
+                    @endif
                 </li>
+
+
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="programDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -132,7 +151,7 @@
                             <li><a class="dropdown-item" href="{{ route('user.profile') }}">الملف الشخصي</a></li>
                             <li><a class="dropdown-item" href="#">إعدادات</a></li>
                             <li><a class="dropdown-item" href="#">المساعدة</a></li>
-                            
+
                             @if (Auth::user()->role == 'admin' || Auth::user()->role == 'supervisor')
                                 <li><a class="dropdown-item" href="{{ route('home.dashboard') }}">لوحة التحكم</a></li>
                             @endif

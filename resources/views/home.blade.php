@@ -10,6 +10,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logo-ct.png') }}">
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
     <title>منصة الرواد التعليمية</title>
     <style>
         body {
@@ -99,7 +103,7 @@
         <img src="{{ asset('assets/img/medileHero.png') }}" alt="Shape 1" class="img-fluid">
     </section>
 
-    @include('homeComponents.home.best-teachers')
+    @include('homeComponents.home.best-students')
 
     <section class="d-flex flex-column align-items-center justify-content-center mt-5" style="text-align: center;">
         <h4 class="mb-4" style="color: #F4813E; font-size: 24px;">الفصول الدراسية</h4>

@@ -17,10 +17,12 @@ class HomeController extends Controller
         $categories = Category::all();
         $sections = Section::all();
 
-        $students = User::where('role', 'student')->get();
+        $students = User::where('role', 'student')->whereHas('sections')->get();
+
         $teachers = User::where('role', 'teacher')->get();
 
-        $allStudentsCount = $students->count();
+        $allStudentsCount = User::where('role', 'student')->count();
+
         $coursesHours = Course::sum('duration_in_hours');
 
         return view('home', compact(
@@ -33,6 +35,7 @@ class HomeController extends Controller
             'students',
         ));
     }
+
     public function dashboard()
     {
         $studentsCount = User::where('role', 'student')->count();
@@ -51,6 +54,12 @@ class HomeController extends Controller
 
     public function showVideos(Course $course, CourseVideo $video = null)
     {
+
+        // التحقق إذا كان الكورس يحتوي على فيديوهات
+        if ($course->videos->isEmpty()) {
+            // إعادة المستخدم للخلف مع رسالة تنبيه
+            return redirect()->back()->with('warning', 'قريباً سيتم إضافة فيديوهات.');
+        }
         // إذا لم يتم تحديد فيديو معين، نعرض أول فيديو
         $video = $video ?? $course->videos->first();
 

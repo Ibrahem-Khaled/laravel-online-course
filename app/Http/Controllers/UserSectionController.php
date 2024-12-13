@@ -14,14 +14,33 @@ class UserSectionController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
+
+        // التحقق إذا كان المستخدم ينتمي إلى أي قسم
         if (!$user->sections()->exists()) {
             return redirect()->back()->with('error', 'لم يتم تعيينك إلى أي قسم بعد.');
         }
+
         $courses = Course::where('status', 'draft')->get();
-        $section = $user->sections()->first();
+
+        // التحقق من القسم المُرسل عبر الطلب
+        if ($request->has('section_id')) {
+            $section = $user->sections()->where('section_id', $request->query('section_id'))->first();
+
+            // إذا كان القسم غير موجود ضمن أقسام المستخدم
+            if (!$section) {
+                return redirect()->back()->with('error', 'غير مصرح لك بالدخول إلى هذا الفصل.');
+            }
+        } else {
+            // إذا لم يُرسل section_id وكان المستخدم لديه قسم واحد
+            $section = $user->sections()->first();
+        }
+
+        // جلب الكورسات الخاصة بالقسم
         $sectionCourses = $section->courses()->get();
+
         return view('user-section', compact('section', 'courses', 'sectionCourses'));
     }
+
 
     public function addStudentReportsDaily(Request $request, $student_id)
     {
