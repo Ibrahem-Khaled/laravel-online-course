@@ -50,7 +50,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'isAdmin']], fun
 
     //this user controller for dashboard
     Route::resource('users', UserController::class);
-
+    Route::get('show-all-user-reports/{id}', [UserController::class, 'showAllUserReports'])->name('show.all.user.reports');
+    Route::post('/user-reports', [UserController::class, 'storeReport'])->name('userReports.store');
+    Route::delete('/user-reports/{id}', [UserController::class, 'destroyReport'])->name('userReports.destroy');
     //this category controller for dashboard
     Route::resource('categories', CategoryController::class);
 

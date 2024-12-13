@@ -4,9 +4,9 @@ namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserRepots as UserReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -105,5 +105,48 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->back()->with('success', 'تم حذف المستخدم بنجاح.');
+    }
+
+    public function showAllUserReports($id)
+    {
+        $user = User::with('userReports')->findOrFail($id);
+        $teachers = User::where('role', 'teacher')->get();
+        return view('dashboard.users.reports', compact('user', 'teachers'));
+    }
+
+    public function storeReport(Request $request)
+    {
+        $request->validate([
+            'teacher_id' => 'required|exists:users,id',
+            'attendance' => 'required|integer|min:0|max:10',
+            'reactivity' => 'required|integer|min:0|max:10',
+            'homework' => 'required|integer|min:0|max:10',
+            'completion' => 'required|integer|min:0|max:10',
+            'creativity' => 'required|integer|min:0|max:10',
+            'ethics' => 'required|integer|min:0|max:10',
+        ]);
+
+        UserReport::create([
+            'user_id' => $request->user_id,
+            'teacher_id' => $request->teacher_id,
+            'attendance' => $request->attendance,
+            'reactivity' => $request->reactivity,
+            'homework' => $request->homework,
+            'completion' => $request->completion,
+            'creativity' => $request->creativity,
+            'ethics' => $request->ethics,
+            'created_at' => $request->created_at,
+        ]);
+
+        return redirect()->back()->with('success', 'تم إضافة التقييم بنجاح');
+    }
+
+    // حذف التقييم
+    public function destroyReport($id)
+    {
+        $report = UserReport::findOrFail($id);
+        $report->delete();
+
+        return redirect()->back()->with('success', 'تم حذف التقييم بنجاح');
     }
 }
