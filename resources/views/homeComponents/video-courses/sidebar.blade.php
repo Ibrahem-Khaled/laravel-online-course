@@ -63,13 +63,9 @@
         color: #fff;
     }
 
-    .video-icon {
-        margin-left: 10px;
-    }
-
     .video-status-icon {
         font-size: 1.5rem;
-        margin-right: 10px;
+        margin: 0 10px 0 10px;
     }
 
     .video-list-item img {
@@ -174,7 +170,7 @@
                     @endif
                     <span>{{ $index + 1 }}. {{ $otherVideo->title }}</span>
                 </div>
-                <p class="text-muted m-0">{{ Str::limit($otherVideo->description, 30) }}</p>
+                {{-- <p class="text-muted m-0">{{ Str::limit($otherVideo->description, 30) }}</p> --}}
             </a>
         @endforeach
     </div>

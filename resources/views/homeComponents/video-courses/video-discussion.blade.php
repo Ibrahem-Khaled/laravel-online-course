@@ -12,7 +12,7 @@
                     </ul>
                 </div>
             @endif
-
+ 
             <!-- عرض صورة المستخدم -->
             {{-- <div style="margin-right: 15px;">
                 <img src="{{ asset('storage/' . Auth::user()->image ?? 'default-avatar.png') }}" alt="User Image"
@@ -22,10 +22,9 @@
                 style="flex-grow: 1; display: flex; align-items: center;">
                 @csrf
                 <input type="hidden" name="video_id" value="{{ $video->id }}">
-                <textarea id="commentText" name="body" class="form-control" rows="1" placeholder="اكتب تعليقك هنا..."
-                    style="flex-grow: 1; border-width: 0; padding: 10px; background-color: #072D38; color: #fff;"></textarea>
+                <textarea id="commentText" name="body" class="form-control" rows="1" placeholder="اكتب تعليقك هنا..."></textarea>
                 <button type="submit" class="btn btn-primary"
-                    style="background-color: #ed6b2f; border: none; border-radius: 20px; padding: 10px 20px;">إرسال</button>
+                    style="background-color: #ed6b2f; border: none; padding: 10px 20px;">إرسال</button>
             </form>
         @else
             <p class="text-white">يرجى تسجيل الدخول لكتابة تعليق.</p>

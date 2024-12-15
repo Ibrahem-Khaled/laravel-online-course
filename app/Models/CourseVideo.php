@@ -14,6 +14,7 @@ class CourseVideo extends Model
         'video',
         'description',
         'image',
+        'question',
     ];
 
     public function course()

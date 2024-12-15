@@ -242,6 +242,10 @@
                                             name="description" required>
                                     </div>
                                     <div class="mb-3">
+                                        <label for="question" class="form-label">سوال الواجب</label>
+                                        <input type="text" class="form-control" id="question" name="question">
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="videoImage" class="form-label">صورة الفيديو</label>
                                         <input type="file" class="form-control" id="videoFile" name="image">
                                     </div>

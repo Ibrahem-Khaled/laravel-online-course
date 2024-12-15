@@ -25,6 +25,7 @@ class CourseVideoController extends Controller
             'video' => 'required|string',
             'description' => 'required|string',
             'image' => 'nullable|image|max:2048',
+            'question' => 'nullable|string',
         ]);
 
         if ($request->hasFile('image')) {
@@ -46,6 +47,7 @@ class CourseVideoController extends Controller
             'video' => 'required|string',
             'description' => 'required|string',
             'image' => 'nullable|image|max:2048',
+            'question' => 'nullable|string',
         ]);
 
         if ($request->hasFile('image')) {

@@ -1,10 +1,20 @@
 <div class="homework-section mt-4">
     <!-- نموذج رفع الواجب -->
     @if (Auth::check())
-
+        <div class="mb-4 p-4 shadow-sm" style="background-color: #004051; border-radius: 10px;">
+            <h5 class="mb-3 text-white">سؤال الواجب</h5>
+            @if ($video->question)
+                <div class="alert alert-info" style="font-size: 0.95rem;">
+                    {{ $video->question }}
+                </div>
+            @else
+                <div class="alert alert-info" style="font-size: 0.95rem;">
+                    لم يتم تحديد سؤال لهذا الواجب بعد. يرجى مراجعة المدرس لاحقاً.
+                </div>
+            @endif
+        </div>
         <div class="mb-4 p-3" style="background-color: #035971; border-radius: 10px;">
             <h5 class="mb-3">رفع الواجب</h5>
-
             <!-- عرض الأخطاء العامة -->
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -27,7 +37,8 @@
                     <input type="file" id="homeworkFile" name="file" class="form-control">
                 </div>
                 <input type="hidden" name="course_videos_id" value="{{ $video->id }}">
-                <button type="submit" class="btn btn-primary">إرسال</button>
+                <button type="submit" class="btn btn-primary w-100"
+                    style="background-color: #ed6b2f; border: none; padding: 10px 20px;">إرسال</button>
             </form>
         </div>
     @endif
@@ -43,7 +54,6 @@
                     : ($homework->user?->userInfo?->gender == 'female'
                         ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
                         : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
-
                     alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
 
                 <div class="ms-3" style="margin-right: 10px;">

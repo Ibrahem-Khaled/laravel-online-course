@@ -77,9 +77,13 @@ class HomeController extends Controller
         return view('video-courses', compact('course', 'video', 'progress', 'currentVideoIndex', 'totalVideos'));
     }
 
-    public function allCourses()
+    public function allCourses($category_id = null)
     {
-        $courses = Course::where('status', 'active')->paginate(6);
+        if ($category_id) {
+            $courses = Course::where('status', 'active')->where('category_id', $category_id)->paginate(6);
+        } else {
+            $courses = Course::where('status', 'active')->paginate(6);
+        }
         return view('all-courses', compact('courses'));
     }
 }

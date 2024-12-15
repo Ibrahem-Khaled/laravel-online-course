@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..800&display=swap" rel="stylesheet">
     <title>{{ $course->title }} - تفاصيل الدورة</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         body {
             font-family: 'Cairo', sans-serif;
@@ -17,6 +18,26 @@
             margin: 0;
             padding-top: 100px;
 
+        }
+
+        .form-control {
+            flex-grow: 1;
+            border-width: 0;
+            padding: 10px;
+            background-color: #072D38;
+            color: #fff;
+        }
+
+        .form-control::placeholder {
+            color: #fff;
+            opacity: .5;
+        }
+
+        .form-control:focus {
+            background-color: #035971;
+            color: #fff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
 
         .main-content {

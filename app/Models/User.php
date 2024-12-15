@@ -35,6 +35,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Section::class, 'section_users', 'user_id', 'section_id');
     }
 
+    public function videoDiscussions()
+    {
+        return $this->hasMany(VideoDiscussion::class);
+    }
     public function userReports()
     {
         return $this->hasMany(UserRepots::class, 'user_id'); 

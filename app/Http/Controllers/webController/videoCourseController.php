@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class videoCourseController extends Controller
 {
-    public function addHomewor(Request $request)
+    public function addHomework(Request $request)
     {
         $request->validate([
             'file' => 'nullable|file',

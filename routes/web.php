@@ -31,11 +31,11 @@ Route::group([], function () {
     //this routes for video-courses with home works and comments and rating
     Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos');
 
-    Route::post('add-homework', [videoCourseController::class, 'addHomewor'])->name('add-homework')->middleware('auth');
+    Route::post('add-homework', [videoCourseController::class, 'addHomework'])->name('add-homework')->middleware('auth');
     Route::post('add-comment', [videoCourseController::class, 'videoDiscssion'])->name('add-comment')->middleware('auth');
 
     //this route geting all courses
-    Route::get('all-courses', [HomeController::class, 'allCourses'])->name('all-courses');
+    Route::get('all-courses/{category_id?}', [HomeController::class, 'allCourses'])->name('all-courses');
 
     //this route geting sections
     Route::get('user/section', [UserSectionController::class, 'index'])->name('user-section')->middleware('auth');

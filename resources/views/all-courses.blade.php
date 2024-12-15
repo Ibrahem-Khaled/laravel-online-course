@@ -79,16 +79,27 @@
     <!-- Courses Section -->
     <div class="container my-4">
         <div class="row" style="direction: rtl;">
-            @foreach ($courses as $course)
-                @include('homeComponents.home.course-card')
-            @endforeach
+            @if ($courses->count() > 0)
+                @foreach ($courses as $course)
+                    @include('homeComponents.home.course-card')
+                @endforeach
+            @else
+                <div class="text-center mt-5">
+                    <h3 style="color: #fed8b1;">لا توجد دورات متاحة حالياً</h3>
+                    <p style="color: #ffffff;">يمكنك التحقق لاحقاً أو التواصل معنا للحصول على المزيد من التفاصيل.</p>
+                    <button class="btn btn-primary mt-3" onclick="window.location.href='#'">
+                        تواصل معنا
+                    </button>
+                </div>
+            @endif
         </div>
 
         <!-- Pagination -->
-        <div class="pagination">
-            {{ $courses->links() }}
-        </div>
-
+        @if ($courses->count() > 0)
+            <div class="pagination">
+                {{ $courses->links() }}
+            </div>
+        @endif
     </div>
 
     <!-- Footer -->

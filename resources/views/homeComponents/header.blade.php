@@ -113,7 +113,8 @@
                         <ul class="dropdown-menu" aria-labelledby="userSections">
                             @foreach (Auth::user()->sections as $section)
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('user-section', ['section_id' => $section->id]) }}">
+                                    <a class="dropdown-item"
+                                        href="{{ route('user-section', ['section_id' => $section->id]) }}">
                                         {{ $section->name }}
                                     </a>
                                 </li>
@@ -125,8 +126,6 @@
                     @endif
                 </li>
 
-
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="programDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -137,7 +136,9 @@
                             $categories = App\Models\Category::all();
                         @endphp
                         @foreach ($categories as $category)
-                            <li><a class="dropdown-item" href="#">{{ $category->name }}</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('all-courses', ['category_id' => $category->id]) }}">{{ $category->name }}</a>
+                            </li>
                         @endforeach
                     </ul>
                 </li>

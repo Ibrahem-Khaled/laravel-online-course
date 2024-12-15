@@ -16,11 +16,12 @@ return new class extends Migration {
             $table->string('title');
             $table->text('video');
             $table->text('description');
+            $table->text('question')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
         });
     }
- 
+
     /**
      * Reverse the migrations.
      */
