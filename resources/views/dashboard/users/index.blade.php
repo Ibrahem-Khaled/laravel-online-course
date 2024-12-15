@@ -12,74 +12,57 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>الاسم</th>
-                    <th>البريد الإلكتروني</th>
-                    <th>الهاتف</th>
-                    <th>الدور</th>
-                    <th>الحالة</th>
-                    <th>الإجراءات</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($users as $user)
-                    <tr>
-                        <td>
-                            <a href="{{ route('show.all.user.reports', $user->id) }}">
-                                {{ $user->name }}
-                            </a>
-                        </td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->phone }}</td>
-                        <td>{{ $user->role }}</td>
-                        <td>{{ $user->status == 'active' ? 'نشط' : 'غير نشط' }}</td>
-                        <td>
-                            <!-- زر لتعديل المستخدم -->
-                            <button class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#editUserModal{{ $user->id }}">تعديل</button>
+        <!-- التبويبات -->
+        <ul class="nav nav-tabs mb-4" id="userRolesTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tab-teachers" data-bs-toggle="tab" data-bs-target="#teachers"
+                    type="button" role="tab" aria-controls="teachers" aria-selected="true">المدرسين</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab-students" data-bs-toggle="tab" data-bs-target="#students" type="button"
+                    role="tab" aria-controls="students" aria-selected="false">الطلاب</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab-supervisors" data-bs-toggle="tab" data-bs-target="#supervisors"
+                    type="button" role="tab" aria-controls="supervisors" aria-selected="false">المشرفين</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab-admins" data-bs-toggle="tab" data-bs-target="#admins" type="button"
+                    role="tab" aria-controls="admins" aria-selected="false">المديرين</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="student-sections" data-bs-toggle="tab" data-bs-target="#studen-section"
+                    type="button" role="tab" aria-controls="studen-section" aria-selected="false">طلاب طموح</button>
+            </li>
+        </ul>
 
-                            <!-- زر لحذف المستخدم -->
-                            <form action="{{ route('users.destroy', $user->id) }}" method="POST"
-                                style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">حذف</button>
-                            </form>
-                        </td>
-                    </tr>
+        <!-- محتويات التبويبات -->
+        <div class="tab-content" id="userRolesTabContent">
+            <!-- تبويب المدرسين -->
+            <div class="tab-pane fade show active" id="teachers" role="tabpanel" aria-labelledby="tab-teachers">
+                @include('dashboard.users.table', ['users' => $users->where('role', 'teacher')])
+            </div>
 
-                    <!-- مودال لتعديل المستخدم -->
-                    <div class="modal fade" id="editUserModal{{ $user->id }}" tabindex="-1"
-                        aria-labelledby="editUserModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <form action="{{ route('users.update', $user->id) }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">تعديل المستخدم</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- الحقول المعتادة هنا -->
-                                        @include('dashboard.users.form', ['user' => $user])
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">إلغاء</button>
-                                        <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </tbody>
-        </table>
+            <!-- تبويب الطلاب -->
+            <div class="tab-pane fade" id="students" role="tabpanel" aria-labelledby="tab-students">
+                @include('dashboard.users.table', ['users' => $users->where('role', 'student')])
+            </div>
+
+            <!-- تبويب المشرفين -->
+            <div class="tab-pane fade" id="supervisors" role="tabpanel" aria-labelledby="tab-supervisors">
+                @include('dashboard.users.table', ['users' => $users->where('role', 'supervisor')])
+            </div>
+
+            <!-- تبويب المديرين -->
+            <div class="tab-pane fade" id="admins" role="tabpanel" aria-labelledby="tab-admins">
+                @include('dashboard.users.table', ['users' => $users->where('role', 'admin')])
+            </div>
+            <div class="tab-pane fade" id="studen-section" role="tabpanel" aria-labelledby="student-sections">
+                @include('dashboard.users.table', [
+                    'users' => $studentsWithSections
+                ])
+            </div>
+        </div>
 
         <!-- مودال لإضافة مستخدم جديد -->
         <div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel"
@@ -93,7 +76,6 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <!-- الحقول المعتادة هنا -->
                             @include('dashboard.users.form', ['user' => null])
                         </div>
                         <div class="modal-footer">

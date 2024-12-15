@@ -14,7 +14,9 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('dashboard.users.index', compact('users'));
+        $studentsWithSections = User::where('role', 'student')->whereHas('sections')->get();
+
+        return view('dashboard.users.index', compact('users', 'studentsWithSections'));
     }
 
     public function store(Request $request)
