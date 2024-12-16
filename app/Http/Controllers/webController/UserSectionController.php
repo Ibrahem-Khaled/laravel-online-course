@@ -37,7 +37,7 @@ class UserSectionController extends Controller
         }
 
         // جلب الكورسات الخاصة بالقسم
-        $sectionCourses = $section->courses()->get();
+        $sectionCourses = $courses;
 
         return view('user-section', compact('section', 'courses', 'sectionCourses'));
     }
