@@ -19,7 +19,7 @@ return new class extends Migration {
 
             $table->string('title')->required();
             $table->text('description')->nullable();
-            $table->text('image')->nullable();
+            $table->text('image')->nullable(); 
             $table->text('file')->nullable();
             $table->timestamps();
         });

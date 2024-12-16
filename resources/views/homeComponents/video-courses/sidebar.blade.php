@@ -193,15 +193,31 @@
     </div>
 
     <!-- قسم الملحقات / البرامج المستخدمة -->
-    <div class="attachments-section">
+    <div class="attachments-section" style="margin: 20px 0;">
         @if ($video->videoUsage->where('type', 'software')->count() > 0)
-            <h5>البرامج المستخدمة</h5>
-            <div class="d-flex">
-                <span class="badge bg-primary me-2">An</span>
-                <span class="badge bg-danger">Xd</span>
+            <h5 class="text-white" style=" font-weight: bold; margin-bottom: 15px;">البرامج المستخدمة</h5>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                @foreach ($video->videoUsage->where('type', 'software') as $item)
+                    <div class="col">
+                        <div class="card text-center"
+                            style="border: none; background-color: transparent; box-shadow: none;">
+                            <a href="{{ $item->url }}" target="_blank">
+                                <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F2.bp.blogspot.com%2F-dJ9XpH5XOm8%2FU8ZFngrXs2I%2FAAAAAAAAAWw%2FHbIA6HLu7QQ%2Fs1600%2Fred%2Bcircle%2Bexited%2Bicon%2Bfree%2Bicon%2Bexit%2Bbutton.png&f=1&nofb=1&ipt=e2b3f2629cfc19afe7bb74591e0bde4a8bc36c2c81989bc737afcad55c850e46&ipo=images' }}"
+                                    alt="{{ $item->title }}" class="card-img-top img-fluid"
+                                    style="border-radius: 12px; max-height: 150px; object-fit: cover;">
+                            </a>
+                            <div class="card-body" style="padding: 10px 0;">
+                                <h6 class="card-title text-white" style="font-weight: bold; font-size: 14px;">
+                                    {{ $item->title }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         @else
-            <h5>لا يوجد برامج مستخدمة</h5>
+            <h5 style="color: #666; text-align: center;">لا يوجد برامج مستخدمة</h5>
         @endif
     </div>
+
+
 </div>

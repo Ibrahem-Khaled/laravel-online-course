@@ -15,7 +15,7 @@ class inVideoUsage extends Model
         'description',
         'image',
         'file',
-    ];
+    ]; 
 
     public function user()
     {

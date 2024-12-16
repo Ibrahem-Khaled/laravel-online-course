@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\webController;
 
 use App\Http\Controllers\Controller;
+use App\Models\inVideoUsage;
 use App\Models\VideoHomeWork;
 use App\Models\VideoDiscussion;
 use Illuminate\Http\Request;
@@ -47,6 +48,35 @@ class videoCourseController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'تم اضافة التعليق بنجاح');
+    }
+
+    public function addVideoUsage(Request $request)
+    {
+        $request->validate([
+            'course_video_id' => 'required|exists:course_videos,id',
+            'type' => 'required|in:software,attachment',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'file' => 'nullable|mimes:pdf,doc,docx,zip|max:5120',
+        ]);
+
+        // رفع الملفات (إن وجد)
+        $imagePath = $request->file('image') ? $request->file('image')->store('images', 'public') : null;
+        $filePath = $request->file('file') ? $request->file('file')->store('files', 'public') : null;
+
+        // حفظ البيانات
+        inVideoUsage::create([
+            'user_id' => auth()->user()->id,
+            'course_video_id' => $request->course_video_id,
+            'type' => $request->type,
+            'title' => $request->title,
+            'description' => $request->description,
+            'image' => $imagePath,
+            'file' => $filePath,
+        ]);
+
+        return redirect()->back()->with('success', 'تمت الإضافة بنجاح!');
     }
 
 

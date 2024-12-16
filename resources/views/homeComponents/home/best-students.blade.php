@@ -2,10 +2,10 @@
     .teacher-section {
         text-align: center;
         padding: 50px 0;
-        margin: 50px 0;
         position: relative;
-        width: 100%;
+        width: 90%;
         margin: auto;
+        overflow: hidden;
     }
 
     .teacher-section h2 {
@@ -139,6 +139,10 @@
                 el: '.swiper-pagination',
                 clickable: true,
             },
+            autoplay: {
+                delay: 3000, // المدة بين كل تقليب (بالميلي ثانية)
+                disableOnInteraction: false, // استمرار التشغيل التلقائي حتى بعد التفاعل
+            }
         });
     });
 </script>

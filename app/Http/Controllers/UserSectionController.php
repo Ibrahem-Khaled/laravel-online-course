@@ -78,13 +78,6 @@ class UserSectionController extends Controller
         return redirect()->back()->with('success', 'تم حفظ التقييم بنجاح');
     }
 
-    public function addCourseFromSection(Request $request)
-    {
-        $section = Section::findOrFail($request->section_id);
-        $section->courses()->attach($request->course_id);
-        return redirect()->back()->with('success', 'تم اضافة الدورة بنجاح');
-    }
-
     public function addVideoFromCourse(Request $request)
     {
         $validated = $request->validate([
@@ -103,6 +96,32 @@ class UserSectionController extends Controller
         CourseVideo::create($validated);
 
         return redirect()->back()->with('success', 'تم إضافة الفيديو بنجاح!');
+    }
+
+    public function editVideoFromCourse(Request $request)
+    {
+        $validated = $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'title' => 'required|string|max:255',
+            'video' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'nullable|image|max:2048',
+            'question' => 'nullable|string',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('course_videos', 'public');
+        }
+
+        CourseVideo::create($validated);
+
+        return redirect()->back()->with('success', 'تم إضافة الفيديو بنجاح!');
+    }
+
+    public function getVideo($id)
+    {
+        $video = CourseVideo::findOrFail($id);
+        return response()->json($video);
     }
 
 }
