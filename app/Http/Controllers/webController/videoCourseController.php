@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\webController;
 
 use App\Http\Controllers\Controller;
+use App\Models\CourseVideo;
 use App\Models\inVideoUsage;
 use App\Models\VideoHomeWork;
 use App\Models\VideoDiscussion;
@@ -77,6 +78,19 @@ class videoCourseController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'تمت الإضافة بنجاح!');
+    }
+
+    public function updateQuestion(Request $request, $id)
+    {
+        $request->validate([
+            'question' => 'required|string|max:255',
+        ]);
+
+        $video = CourseVideo::findOrFail($id);
+        $video->question = $request->question;
+        $video->save();
+
+        return redirect()->back()->with('success', 'تم تحديث سؤال الواجب بنجاح.');
     }
 
 

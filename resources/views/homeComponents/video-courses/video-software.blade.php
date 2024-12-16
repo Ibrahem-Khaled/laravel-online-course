@@ -23,7 +23,7 @@
                     <!-- الملف -->
                     @if ($item->file)
                         <a href="{{ asset('storage/' . $item->file) }}" target="_blank" class="btn btn-sm btn-light"
-                            style="border-radius: 8px;">
+                            style="border-radius: 8px; margin-bottom: 10px;">
                             <i class="bi bi-file-earmark"></i> تحميل الملف
                         </a>
                     @endif

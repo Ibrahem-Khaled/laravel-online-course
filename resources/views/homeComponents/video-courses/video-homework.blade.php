@@ -3,6 +3,7 @@
     @if (Auth::check())
         <div class="mb-4 p-4 shadow-sm" style="background-color: #004051; border-radius: 10px;">
             <h5 class="mb-3 text-white">سؤال الواجب</h5>
+
             @if ($video->question)
                 <div class="alert alert-info" style="font-size: 0.95rem;">
                     {{ $video->question }}
@@ -12,7 +13,44 @@
                     لم يتم تحديد سؤال لهذا الواجب بعد. يرجى مراجعة المدرس لاحقاً.
                 </div>
             @endif
+
+            <!-- عرض إمكانية التعديل فقط للأستاذ أو المشرف أو الأدمن -->
+            @if (Auth::user()->role == 'teacher' || Auth::user()->role == 'supervisor' || Auth::user()->role == 'admin')
+                <button type="button" class="btn btn-warning btn-sm mt-3" data-bs-toggle="modal"
+                    data-bs-target="#editQuestionModal">
+                    تعديل سؤال الواجب
+                </button>
+
+                <!-- Modal لتعديل سؤال الواجب -->
+                <div class="modal fade" id="editQuestionModal" tabindex="-1" aria-labelledby="editQuestionModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color: #02475E; color: #fff;">
+                                <h5 class="modal-title" id="editQuestionModalLabel">تعديل سؤال الواجب</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="background-color: #02475E; color: #fff;">
+                                <form action="{{ route('updateQuestion', $video->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-3">
+                                        <label for="question" class="form-label">السؤال الجديد</label>
+                                        <textarea class="form-control" id="question" name="question" rows="4" required>{{ $video->question }}</textarea>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary w-100"
+                                            style="background-color: #ff9c00; border: none;">تحديث السؤال</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
+
         <div class="mb-4 p-3" style="background-color: #035971; border-radius: 10px;">
             <h5 class="mb-3">رفع الواجب</h5>
             <!-- عرض الأخطاء العامة -->
