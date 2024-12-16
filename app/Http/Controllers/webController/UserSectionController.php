@@ -4,8 +4,10 @@ namespace App\Http\Controllers\webController;
 
 use App\Http\Controllers\Controller;
 
+use App\Models\Category;
 use App\Models\Course;
 use App\Models\CourseVideo;
+use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,11 +39,11 @@ class UserSectionController extends Controller
         }
 
         // جلب الكورسات الخاصة بالقسم
-        $sectionCourses = $courses;
+        $sectionCourses = $section->courses()->get();
+        $categories = Category::all();
 
-        return view('user-section', compact('section', 'courses', 'sectionCourses'));
+        return view('user-section', compact('section', 'courses', 'sectionCourses', 'categories'));
     }
-
 
     public function addStudentReportsDaily(Request $request, $student_id)
     {
@@ -81,8 +83,15 @@ class UserSectionController extends Controller
 
     public function addVideoFromCourse(Request $request)
     {
+        $section = Section::findOrFail($request->section_id);
+
         $validated = $request->validate([
-            'course_id' => 'required|exists:courses,id',
+            'course_option' => 'required|in:existing,new',
+            'category_id' => 'required|exists:categories,id',
+            'course_id' => 'required_if:course_option,existing|exists:courses,id',
+            'new_course_title' => 'required_if:course_option,new|string|max:255',
+            'new_course_description' => 'required_if:course_option,new|string',
+            'new_course_image' => 'nullable|image|max:2048',
             'title' => 'required|string|max:255',
             'video' => 'required|string',
             'description' => 'required|string',
@@ -90,10 +99,23 @@ class UserSectionController extends Controller
             'question' => 'nullable|string',
         ]);
 
+        if ($request->course_option === 'new') {
+            $newCourseData = [
+                'title' => $validated['new_course_title'],
+                'description' => $validated['new_course_description'],
+                'category_id' => $validated['category_id'],
+                'image' => $request->hasFile('new_course_image') ? $request->file('new_course_image')->store('courses', 'public') : null,
+                'user_id' => Auth::user()->id,
+                'status' => 'draft',
+            ];
+            $course = Course::create($newCourseData);
+            $validated['course_id'] = $course->id;
+        }
+
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('course_videos', 'public');
         }
-
+        $section->courses()->attach($validated['course_id']);
         CourseVideo::create($validated);
 
         return redirect()->back()->with('success', 'تم إضافة الفيديو بنجاح!');
