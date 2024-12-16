@@ -69,7 +69,6 @@ background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width:
                                 enctype="multipart/form-data" class="mt-3">
                                 @csrf
                                 <input type="hidden" name="section_id" value="{{ $section->id }}">
-
                                 <!-- اختيار أو إنشاء دورة -->
                                 <div class="mb-3">
                                     <label for="courseOption" class="form-label">إجراء الدورة</label>
@@ -102,11 +101,11 @@ background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width:
                                     <div class="mb-3">
                                         <label for="newCourseTitle" class="form-label">عنوان الدورة</label>
                                         <input type="text" class="form-control" id="newCourseTitle"
-                                            name="new_course_title" required>
+                                            name="new_course_title">
                                     </div>
                                     <div class="mb-3">
                                         <label for="newCourseDescription" class="form-label">وصف الدورة</label>
-                                        <textarea class="form-control" id="newCourseDescription" name="new_course_description" required></textarea>
+                                        <textarea class="form-control" id="newCourseDescription" name="new_course_description"></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="newCourseImage" class="form-label">صورة الدورة</label>
@@ -116,33 +115,32 @@ background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width:
                                 </div>
 
                                 <!-- باقي الحقول الخاصة بالفيديو -->
-                                <div id="videoFields" style="display: none;">
-                                    <div class="mb-3">
-                                        <label for="videoTitle" class="form-label">عنوان الفيديو</label>
-                                        <input type="text" class="form-control" id="videoTitle" name="title">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="videoCode" class="form-label">كود الفيديو</label>
-                                        <textarea class="form-control" id="videoCode" name="video"></textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="videoDescription" class="form-label">وصف الفيديو</label>
-                                        <input type="text" class="form-control" id="videoDescription"
-                                            name="description">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="question" class="form-label">سؤال الواجب</label>
-                                        <input type="text" class="form-control" id="question" name="question">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="videoImage" class="form-label">صورة الفيديو</label>
-                                        <input type="file" class="form-control" id="videoImage" name="image">
-                                    </div>
+                                <div class="mb-3">
+                                    <label for="videoTitle" class="form-label">عنوان الفيديو</label>
+                                    <input type="text" class="form-control" id="videoTitle" name="title"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="videoCode" class="form-label">كود الفيديو</label>
+                                    <textarea class="form-control" id="videoCode" name="video" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="videoDescription" class="form-label">وصف الفيديو</label>
+                                    <input type="text" class="form-control" id="videoDescription"
+                                        name="description" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="question" class="form-label">سؤال الواجب</label>
+                                    <input type="text" class="form-control" id="question" name="question">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="videoImage" class="form-label">صورة الفيديو</label>
+                                    <input type="file" class="form-control" id="videoImage" name="image">
                                 </div>
 
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-warning w-100"
-                                        style="background-color: #ff9c00; color: #fff;">إرسال</button>
+                                        style="background-color: #ff9c00; color: #fff;">رفع الفيديو</button>
                                 </div>
                             </form>
                         </div>
@@ -229,36 +227,19 @@ background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width:
     });
 </script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const courseOption = document.getElementById("courseOption");
         const existingCourseDiv = document.getElementById("existingCourseDiv");
         const newCourseDiv = document.getElementById("newCourseDiv");
-        const videoFields = document.getElementById("videoFields");
 
-        courseOption.addEventListener("change", function () {
+        courseOption.addEventListener("change", function() {
             if (this.value === "new") {
-                // إذا اختار إنشاء دورة جديدة
                 existingCourseDiv.style.display = "none";
                 newCourseDiv.style.display = "block";
-                videoFields.style.display = "block"; // عرض حقل الفيديو في حالة إنشاء دورة جديدة
-            } else if (this.value === "existing") {
-                // إذا اختار دورة موجودة
+            } else {
                 existingCourseDiv.style.display = "block";
                 newCourseDiv.style.display = "none";
-                videoFields.style.display = "block"; // عرض حقل الفيديو في حالة اختيار دورة موجودة
             }
         });
-
-        // في حالة تحميل الصفحة مباشرة
-        if (courseOption.value === "new") {
-            existingCourseDiv.style.display = "none";
-            newCourseDiv.style.display = "block";
-            videoFields.style.display = "block";
-        } else if (courseOption.value === "existing") {
-            existingCourseDiv.style.display = "block";
-            newCourseDiv.style.display = "none";
-            videoFields.style.display = "block";
-        }
     });
 </script>
-
