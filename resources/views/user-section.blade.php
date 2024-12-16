@@ -127,7 +127,7 @@
         <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
             <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">
                 <h2 class="info-header">المنهج والدورات</h2>
-                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; direction: rtl">
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-around; direction: rtl; width: 90%; margin:auto;">
                     @foreach ($sectionCourses as $course)
                         @include('homeComponents.home.course-card', ['course' => $course])
                     @endforeach
@@ -157,7 +157,7 @@
     </div>
 
     @include('homeComponents.video-courses.float_button_add')
-   
+
     @include('homeComponents.footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
