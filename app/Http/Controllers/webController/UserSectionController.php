@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\webController;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Course;
 use App\Models\CourseVideo;
-use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

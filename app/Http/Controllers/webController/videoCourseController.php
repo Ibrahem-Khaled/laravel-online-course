@@ -58,7 +58,7 @@ class videoCourseController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'file' => 'nullable|mimes:pdf,doc,docx,zip|max:5120',
+            'file' => 'nullable|mimes:pdf,doc,docx,zip,txt|max:5120',
         ]);
 
         // رفع الملفات (إن وجد)

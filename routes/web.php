@@ -8,7 +8,7 @@ use App\Http\Controllers\dashboard\CourseVideoController;
 use App\Http\Controllers\dashboard\SectionsController;
 use App\Http\Controllers\dashboard\UserController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserSectionController;
+use App\Http\Controllers\webController\UserSectionController;
 use App\Http\Controllers\webController\videoCourseController;
 use Illuminate\Support\Facades\Route;
 

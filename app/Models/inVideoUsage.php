@@ -12,6 +12,7 @@ class inVideoUsage extends Model
         'user_id',
         'course_video_id',
         'title',
+        'type',
         'description',
         'image',
         'file',

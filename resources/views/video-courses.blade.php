@@ -189,11 +189,7 @@
                         <h6 class="text-white text-center mt-3 p-3">{{ $video->description }}</h6>
                     </div>
                     <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
-                        @if ($video->videoUsage->where('type', 'software')->count() > 0)
-                            {{-- @include('homeComponents.video-courses.video-software') --}}
-                        @else
-                            <h6 class="text-white text-center mt-3 p-3">لا يوجد مرفقات</h6>
-                        @endif
+                        @include('homeComponents.video-courses.video-software')
                     </div>
                     <div class="tab-pane fade" id="homework" role="tabpanel" aria-labelledby="homework-tab">
                         @include('homeComponents.video-courses.video-homework')
