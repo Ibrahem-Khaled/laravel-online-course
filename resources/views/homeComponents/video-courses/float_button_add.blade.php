@@ -229,22 +229,36 @@ background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width:
     });
 </script>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const courseOption = document.getElementById("courseOption");
         const existingCourseDiv = document.getElementById("existingCourseDiv");
         const newCourseDiv = document.getElementById("newCourseDiv");
         const videoFields = document.getElementById("videoFields");
 
-        courseOption.addEventListener("change", function() {
+        courseOption.addEventListener("change", function () {
             if (this.value === "new") {
+                // إذا اختار إنشاء دورة جديدة
                 existingCourseDiv.style.display = "none";
                 newCourseDiv.style.display = "block";
-                videoFields.style.display = "none"; // الفيديو يصبح اختياريًا
-            } else {
+                videoFields.style.display = "block"; // عرض حقل الفيديو في حالة إنشاء دورة جديدة
+            } else if (this.value === "existing") {
+                // إذا اختار دورة موجودة
                 existingCourseDiv.style.display = "block";
                 newCourseDiv.style.display = "none";
-                videoFields.style.display = "block";
+                videoFields.style.display = "block"; // عرض حقل الفيديو في حالة اختيار دورة موجودة
             }
         });
+
+        // في حالة تحميل الصفحة مباشرة
+        if (courseOption.value === "new") {
+            existingCourseDiv.style.display = "none";
+            newCourseDiv.style.display = "block";
+            videoFields.style.display = "block";
+        } else if (courseOption.value === "existing") {
+            existingCourseDiv.style.display = "block";
+            newCourseDiv.style.display = "none";
+            videoFields.style.display = "block";
+        }
     });
 </script>
+
