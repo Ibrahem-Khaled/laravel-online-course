@@ -16,9 +16,13 @@
 
             <!-- عرض إمكانية التعديل فقط للأستاذ أو المشرف أو الأدمن -->
             @if (Auth::user()->role == 'teacher' || Auth::user()->role == 'supervisor' || Auth::user()->role == 'admin')
-                <button type="button" class="btn btn-warning btn-sm mt-3" data-bs-toggle="modal"
+                <button type="button" class="btn btn-sm mt-3" style="background-color: #ff9c00; color: #fff;" data-bs-toggle="modal"
                     data-bs-target="#editQuestionModal">
-                    تعديل سؤال الواجب
+                    @if ($video->question)
+                        تعديل السؤال الواجب
+                    @else
+                        اضافة سؤال الواجب
+                    @endif
                 </button>
 
                 <!-- Modal لتعديل سؤال الواجب -->
