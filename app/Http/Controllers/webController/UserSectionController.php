@@ -87,14 +87,14 @@ class UserSectionController extends Controller
 
         $validated = $request->validate([
             'course_option' => 'required|in:existing,new',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required_if:course_option,new|exists:categories,id',
             'course_id' => 'required_if:course_option,existing|exists:courses,id',
             'new_course_title' => 'required_if:course_option,new|string|max:255',
             'new_course_description' => 'required_if:course_option,new|string',
             'new_course_image' => 'nullable|image|max:2048',
-            'title' => 'required|string|max:255',
-            'video' => 'required|string',
-            'description' => 'required|string',
+            'title' => 'nullable|string|max:255',
+            'video' => 'nullable|string',
+            'description' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'question' => 'nullable|string',
         ]);
@@ -110,15 +110,20 @@ class UserSectionController extends Controller
             ];
             $course = Course::create($newCourseData);
             $validated['course_id'] = $course->id;
+
+            // ربط الدورة بالقسم
+            $section->courses()->attach($validated['course_id']);
         }
 
-        if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('course_videos', 'public');
+        // إذا تم إدخال بيانات الفيديو، يتم إضافته
+        if ($request->filled('title') || $request->filled('video')) {
+            if ($request->hasFile('image')) {
+                $validated['image'] = $request->file('image')->store('course_videos', 'public');
+            }
+            CourseVideo::create($validated);
         }
-        $section->courses()->attach($validated['course_id']);
-        CourseVideo::create($validated);
 
-        return redirect()->back()->with('success', 'تم إضافة الفيديو بنجاح!');
+        return redirect()->back()->with('success', 'تمت العملية بنجاح!');
     }
 
     public function editVideoFromCourse(Request $request)
