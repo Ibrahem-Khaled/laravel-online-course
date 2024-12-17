@@ -87,10 +87,10 @@ class UserSectionController extends Controller
 
         $validated = $request->validate([
             'course_option' => 'required|in:existing,new',
-            'category_id' => 'required|exists:categories,id',
+            // 'category_id' => 'required_if:course_option,new|exists:categories,id',
             'course_id' => 'required_if:course_option,existing|exists:courses,id',
-            'new_course_title' => 'required_if:course_option,new|string|max:255',
-            'new_course_description' => 'required_if:course_option,new|string',
+            // 'new_course_title' => 'sometimes|required_if:course_option,new|string|max:255',
+            // 'new_course_description' => 'sometimes|required_if:course_option,new|string',
             'new_course_image' => 'nullable|image|max:2048',
             'title' => 'required|string|max:255',
             'video' => 'required|string',
@@ -98,6 +98,7 @@ class UserSectionController extends Controller
             'image' => 'nullable|image|max:2048',
             'question' => 'nullable|string',
         ]);
+
 
         if ($request->course_option === 'new') {
             $newCourseData = [

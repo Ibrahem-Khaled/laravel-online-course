@@ -98,6 +98,16 @@
         </div>
     </section>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <ul class="nav nav-tabs" id="videoTabs" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button"
@@ -127,7 +137,8 @@
         <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
             <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">
                 <h2 class="info-header">المنهج والدورات</h2>
-                <div style="display: flex; flex-wrap: wrap; justify-content: space-around; direction: rtl; width: 90%; margin:auto;">
+                <div
+                    style="display: flex; flex-wrap: wrap; justify-content: space-around; direction: rtl; width: 90%; margin:auto;">
                     @foreach ($sectionCourses as $course)
                         @include('homeComponents.home.course-card', ['course' => $course])
                     @endforeach
