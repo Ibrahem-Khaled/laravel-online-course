@@ -155,6 +155,7 @@ background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width:
                                 enctype="multipart/form-data" class="mt-3">
                                 @method('PUT')
                                 @csrf
+                                <input type="hidden" id="course_id" name="course_id">
                                 <div class="mb-3">
                                     <label for="editCourseSelect" class="form-label">اختر الفيديو للتحرير</label>
                                     <select class="form-select" name="video_id" id="editCourseSelect">
@@ -203,6 +204,7 @@ background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width:
 @endif
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        const courseId = document.getElementById('course_id');
         const videoSelect = document.getElementById('editCourseSelect');
         const videoTitle = document.getElementById('editVideoTitle');
         const videoCode = document.getElementById('editVideoCode');
@@ -216,6 +218,7 @@ background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width:
                 fetch(`/video/${videoId}`)
                     .then(response => response.json())
                     .then(data => {
+                        courseId.value = data.course_id;
                         videoTitle.value = data.title;
                         videoCode.value = data.video;
                         videoDescription.value = data.description;
