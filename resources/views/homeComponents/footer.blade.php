@@ -1,3 +1,15 @@
+<style>
+    html,
+    body {
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    footer {
+        flex-shrink: 0;
+    }
+</style>
 <!-- Footer Section -->
 <footer style="background-color: #035971; color: white; padding: 1.5rem 0; text-align: center;">
     <div class="container">

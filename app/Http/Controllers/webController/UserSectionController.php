@@ -87,10 +87,10 @@ class UserSectionController extends Controller
 
         $validated = $request->validate([
             'course_option' => 'required|in:existing,new',
-            // 'category_id' => 'required_if:course_option,new|exists:categories,id',
+            'category_id' => 'required_if:course_option,new|exists:categories,id',
             'course_id' => 'required_if:course_option,existing|exists:courses,id',
-            // 'new_course_title' => 'sometimes|required_if:course_option,new|string|max:255',
-            // 'new_course_description' => 'sometimes|required_if:course_option,new|string',
+            'new_course_title' => 'exclude_unless:course_option,new|string|max:255',
+            'new_course_description' => 'exclude_unless:course_option,new|string',
             'new_course_image' => 'nullable|image|max:2048',
             'title' => 'required|string|max:255',
             'video' => 'required|string',
@@ -116,7 +116,7 @@ class UserSectionController extends Controller
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('course_videos', 'public');
         }
-        if (!$section->courses()->where('id', $validated['course_id'])->exists()) {
+        if (!$section->courses()->where('courses.id', $validated['course_id'])->exists()) {
             $section->courses()->attach($validated['course_id']);
         }
         CourseVideo::create($validated);
