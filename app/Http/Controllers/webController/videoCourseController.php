@@ -51,6 +51,18 @@ class videoCourseController extends Controller
         return redirect()->back()->with('success', 'تم اضافة التعليق بنجاح');
     }
 
+    public function homeworkReply(Request $request, $id)
+    {
+        $homework = VideoHomeWork::findOrFail($id);
+
+        $homework->update([
+            'reply' => $request->reply,
+            'rating' => $request->rating,
+        ]);
+
+        return redirect()->back()->with('success', 'تم إضافة الرد والتقييم بنجاح!');
+    }
+
     public function addVideoUsage(Request $request)
     {
         $request->validate([

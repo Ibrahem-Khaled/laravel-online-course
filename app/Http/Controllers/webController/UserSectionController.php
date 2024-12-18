@@ -116,7 +116,9 @@ class UserSectionController extends Controller
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('course_videos', 'public');
         }
-        $section->courses()->attach($validated['course_id']);
+        if (!$section->courses()->where('id', $validated['course_id'])->exists()) {
+            $section->courses()->attach($validated['course_id']);
+        }
         CourseVideo::create($validated);
 
         return redirect()->back()->with('success', 'تم إضافة الفيديو بنجاح!');

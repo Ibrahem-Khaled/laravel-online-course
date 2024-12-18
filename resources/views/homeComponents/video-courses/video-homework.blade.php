@@ -15,9 +15,12 @@
             @endif
 
             <!-- عرض إمكانية التعديل فقط للأستاذ أو المشرف أو الأدمن -->
-            @if (Auth::user()->role == 'teacher' || Auth::user()->role == 'supervisor' || Auth::user()->role == 'admin')
-                <button type="button" class="btn btn-sm mt-3" style="background-color: #ff9c00; color: #fff;" data-bs-toggle="modal"
-                    data-bs-target="#editQuestionModal">
+            @if (
+                (Auth::check() && Auth::user()->role == 'teacher') ||
+                    Auth::user()->role == 'supervisor' ||
+                    Auth::user()->role == 'admin')
+                <button type="button" class="btn btn-sm mt-3" style="background-color: #ff9c00; color: #fff;"
+                    data-bs-toggle="modal" data-bs-target="#editQuestionModal">
                     @if ($video->question)
                         تعديل السؤال الواجب
                     @else
@@ -89,20 +92,21 @@
     <h5 class="mt-4 mb-3">واجبات الطلاب ({{ $video->homeWorks->count() }})</h5>
     @foreach ($video->homeWorks as $homework)
         <div class="p-3 mb-3" style="background-color: #004051; border-radius: 10px;">
+            <!-- معلومات الطالب -->
             <div class="d-flex align-items-center mb-2">
-
                 <img src="{{ $homework->user->image
                     ? asset('storage/' . $homework->user->image)
                     : ($homework->user?->userInfo?->gender == 'female'
                         ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
                         : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
                     alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
-
                 <div class="ms-3" style="margin-right: 10px;">
-                    <p class="m-0">{{ $homework->user->name }}</p>
+                    <p class="m-0 text-white">{{ $homework->user->name }}</p>
                     <small class="text-white">{{ $homework->created_at->locale('ar')->diffForHumans() }}</small>
                 </div>
             </div>
+
+            <!-- محتوى الواجب -->
             <div class="p-2 rounded text-white" style="background-color: #035971;">
                 <p class="mb-1">{{ $homework->text ?? 'لا يوجد نص مكتوب' }}</p>
                 @if ($homework->file)
@@ -111,6 +115,47 @@
                     </a>
                 @endif
             </div>
+
+            <!-- رد الأستاذ أو تقييمه -->
+            @if ($homework->reply || $homework->rating)
+                <div class="mt-3 p-2 rounded" style="background-color: #022c34; border: 1px solid #035971;">
+                    <h6 class="text-warning mb-2">رد الأستاذ:</h6>
+                    <p class="text-white mb-1">
+                        {{ $homework->reply ?? 'لم يتم إضافة رد بعد.' }}
+                    </p>
+                    @if ($homework->rating)
+                        <p class="text-info mb-0">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            تقييم: {{ $homework->rating }}/5
+                        </p>
+                    @endif
+                </div>
+            @endif
+
+            <!-- نموذج تقييم ورد الأستاذ -->
+            @if (
+                (Auth::check() && Auth::user()->role == 'teacher') ||
+                    Auth::user()->role == 'supervisor' ||
+                    Auth::user()->role == 'admin')
+                <form action="{{ route('homework.reply', $homework->id) }}" method="POST" class="mt-3">
+                    @csrf
+                    <div class="form-group mb-2">
+                        <label for="reply_{{ $homework->id }}" class="text-white">رد الأستاذ:</label>
+                        <textarea name="reply" id="reply_{{ $homework->id }}" class="form-control" rows="2" style="resize: none;"></textarea>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="rating_{{ $homework->id }}" class="text-white">تقييم:</label>
+                        <select name="rating" id="rating_{{ $homework->id }}" class="form-control">
+                            <option value="" disabled selected>اختر التقييم</option>
+                            @for ($i = 1; $i <= 5; $i++)
+                                <option value="{{ $i }}">{{ $i }}/5</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-success">إرسال</button>
+                </form>
+            @endif
         </div>
     @endforeach
+
 </div>

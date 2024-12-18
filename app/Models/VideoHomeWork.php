@@ -13,6 +13,8 @@ class VideoHomeWork extends Model
         'user_id',
         'file',
         'text',
+        'reply',
+        'rating',
     ];
 
     public function user()

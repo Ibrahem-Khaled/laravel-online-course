@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->text('file')->nullable();
             $table->string('text')->required();
+            $table->integer('rating')->nullable();
+            $table->string('reply')->nullable();
             $table->timestamps();
         });
     }
