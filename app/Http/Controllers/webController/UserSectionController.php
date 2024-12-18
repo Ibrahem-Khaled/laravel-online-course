@@ -127,7 +127,6 @@ class UserSectionController extends Controller
     public function editVideoFromCourse(Request $request)
     {
         $validated = $request->validate([
-            'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
             'video' => 'required|string',
             'description' => 'required|string',
