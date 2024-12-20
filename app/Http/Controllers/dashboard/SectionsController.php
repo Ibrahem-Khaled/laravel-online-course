@@ -19,31 +19,71 @@ class SectionsController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:sections|max:255',
-            'description' => 'nullable',
+            'description' => 'nullable|string|max:500',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'meeting_link' => 'nullable|url',
         ]);
 
-        Section::create($request->all());
-        return redirect()->route('sections.index')->with('success', 'Section created successfully.');
+        $data = $request->all();
+
+        // معالجة رفع الصورة
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('sections/images', 'public');
+            $data['image'] = $imagePath;
+        }
+
+        Section::create($data);
+
+        return redirect()->route('sections.index')->with('success', 'تم إنشاء القسم بنجاح.');
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required|unique:sections,name,' . $id . '|max:255',
-            'description' => 'nullable',
+            'description' => 'nullable|string|max:500',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'meeting_link' => 'nullable|url',
         ]);
 
         $section = Section::findOrFail($id);
-        $section->update($request->all());
-        return redirect()->route('sections.index')->with('success', 'Section updated successfully.');
+
+        // تحديث البيانات
+        $section->name = $request->input('name');
+        $section->description = $request->input('description');
+        $section->meeting_link = $request->input('meeting_link');
+
+        // معالجة رفع الصورة
+        if ($request->hasFile('image')) {
+            // حذف الصورة القديمة إذا وجدت
+            if ($section->image && \Storage::exists($section->image)) {
+                \Storage::delete($section->image);
+            }
+
+            // رفع الصورة الجديدة وتحديث المسار
+            $imagePath = $request->file('image')->store('sections/images', 'public');
+            $section->image = $imagePath;
+        }
+
+        $section->save();
+
+        return redirect()->route('sections.index')->with('success', 'تم تحديث القسم بنجاح.');
     }
 
     public function destroy($id)
     {
         $section = Section::findOrFail($id);
+
+        // حذف الصورة إذا وجدت
+        if ($section->image && \Storage::exists($section->image)) {
+            \Storage::delete($section->image);
+        }
+
         $section->delete();
-        return redirect()->route('sections.index')->with('success', 'Section deleted successfully.');
+
+        return redirect()->route('sections.index')->with('success', 'تم حذف القسم بنجاح.');
     }
+
 
     public function showUsers($id)
     {

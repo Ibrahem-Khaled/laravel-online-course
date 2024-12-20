@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->string('image')->nullable();
             $table->text('description')->nullable();
+            $table->text('meeting_link')->nullable();
             $table->timestamps();
         });
     }

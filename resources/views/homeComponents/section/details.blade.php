@@ -52,7 +52,7 @@
                 <div class="info-card">
                     <i class="bi bi-people"></i>
                     <h5>اسم الفصل</h5>
-                    <p>{{$section->name}}</p>
+                    <p>{{ $section->name }}</p>
                 </div>
             </div>
             <!-- بطاقة المعلومات الثانية -->
@@ -71,6 +71,18 @@
                     <p>4.8 (588 تقييم)</p>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+<section class="info-section">
+    <h2 class="info-header">
+        الرابط الثابت
+    </h2>
+    <div class="container">
+        <div class="row justify-content-center">
+            <a href="{{ $section?->meeting_link }}" target="_blank" class="btn "
+                style="background: #ff9c00; color: #fff;">رابط
+                المحاضرة اليومي</a>
         </div>
     </div>
 </section>

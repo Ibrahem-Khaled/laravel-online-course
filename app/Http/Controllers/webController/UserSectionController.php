@@ -41,8 +41,8 @@ class UserSectionController extends Controller
         // جلب الكورسات الخاصة بالقسم
         $sectionCourses = $section->courses()->get();
         $categories = Category::all();
-
-        return view('user-section', compact('section', 'courses', 'sectionCourses', 'categories'));
+        $sectionStudents = $section->users()->where('role', 'student')->get();
+        return view('user-section', compact('section', 'courses', 'sectionCourses', 'categories', 'sectionStudents'));
     }
 
     public function addStudentReportsDaily(Request $request, $student_id)
@@ -126,6 +126,8 @@ class UserSectionController extends Controller
 
     public function editVideoFromCourse(Request $request)
     {
+        $video = CourseVideo::findOrFail($request->video_id);
+        
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
@@ -139,9 +141,9 @@ class UserSectionController extends Controller
             $validated['image'] = $request->file('image')->store('course_videos', 'public');
         }
 
-        CourseVideo::create($validated);
+        $video->update($validated);
 
-        return redirect()->back()->with('success', 'تم إضافة الفيديو بنجاح!');
+        return redirect()->back()->with('success', 'تم تعديل الفيديو بنجاح!');
     }
 
     public function getVideo($id)

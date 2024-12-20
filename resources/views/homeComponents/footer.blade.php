@@ -2,8 +2,6 @@
     html,
     body {
         height: 100vh;
-        display: flex;
-        flex-direction: column;
     }
     footer {
         flex-shrink: 0;

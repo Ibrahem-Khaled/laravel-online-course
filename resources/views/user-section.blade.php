@@ -133,6 +133,9 @@
     <div class="tab-content" id="videoTabsContent">
         <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
             @include('homeComponents.section.details')
+
+            @include('homeComponents.home.best-students', ['students' => $sectionStudents])
+
         </div>
         <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
             <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">

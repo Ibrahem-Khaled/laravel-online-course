@@ -1,5 +1,5 @@
 <style>
-    .teacher-section {
+    .student-section {
         text-align: center;
         padding: 50px 0;
         position: relative;
@@ -8,14 +8,14 @@
         overflow: hidden;
     }
 
-    .teacher-section h2 {
+    .student-section h2 {
         font-size: 2.5rem;
         font-weight: bold;
         margin-bottom: 30px;
         color: #fff;
     }
 
-    .teacher-card {
+    .student-card {
         background-color: #055160;
         border-radius: 50%;
         text-align: center;
@@ -27,21 +27,21 @@
         overflow: hidden;
     }
 
-    .teacher-card img {
+    .student-card img {
         width: 100%;
         height: auto;
         border-radius: 50%;
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
     }
 
-    .teacher-name {
+    .student-name {
         font-size: 1.2rem;
         font-weight: bold;
         margin-top: 15px;
         color: #fff;
     }
 
-    .teacher-title {
+    .student-title {
         font-size: 0.9rem;
         background-color: #035971;
         color: #ffffff;
@@ -51,7 +51,7 @@
         margin-top: 5px;
     }
 
-    .teacher-row {
+    .student-row {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
@@ -93,23 +93,25 @@
         /* قربه من الحافة اليسرى */
     }
 </style>
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
 
 @if ($students->count() > 0)
-    <section class="teacher-section">
+    <section class="student-section">
         <h2>طلاب برنامج طموح</h2>
         <div class="swiper-container">
             <div class="swiper-wrapper">
-                @foreach ($students as $teacher)
+                @foreach ($students as $student)
                     <div class="swiper-slide">
-                        <div class="teacher-card">
-                            <img src="{{ $teacher->image
-                                ? asset('storage/' . $teacher->image)
-                                : ($teacher->userInfo?->gender == 'female'
+                        <div class="student-card">
+                            <img src="{{ $student->image
+                                ? asset('storage/' . $student->image)
+                                : ($student->userInfo?->gender == 'female'
                                     ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
                                     : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
-                                alt="Teacher Image">
+                                alt="Student Image">
                         </div>
-                        <h4 class="teacher-name">{{ $teacher->name }}</h4>
+                        <h4 class="student-name">{{ $student->name }}</h4>
                     </div>
                 @endforeach
             </div>
@@ -146,3 +148,4 @@
         });
     });
 </script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>

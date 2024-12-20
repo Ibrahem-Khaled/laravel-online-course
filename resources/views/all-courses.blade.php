@@ -87,7 +87,7 @@
                 <div class="text-center mt-5">
                     <h3 style="color: #fed8b1;">لا توجد دورات متاحة حالياً</h3>
                     <p style="color: #ffffff;">يمكنك التحقق لاحقاً أو التواصل معنا للحصول على المزيد من التفاصيل.</p>
-                    <button class="btn btn-primary mt-3" onclick="window.location.href='#'">
+                    <button class="btn mt-3 w-50" style="background-color: #ff9c00; color: #ffffff;" onclick="window.location.href='#'">
                         تواصل معنا
                     </button>
                 </div>

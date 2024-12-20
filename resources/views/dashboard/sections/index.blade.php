@@ -13,6 +13,8 @@
                     <th>الرقم</th>
                     <th>الاسم</th>
                     <th>الوصف</th>
+                    <th>رابط الاجتماع</th>
+                    <th>الصورة</th>
                     <th>الإجراءات</th>
                 </tr>
             </thead>
@@ -25,6 +27,14 @@
                                 {{ $section->name }}</a>
                         </td>
                         <td>{{ $section->description }}</td>
+                        <td>{{ $section->meeting_link }}</td>
+                        <td>
+                            @if($section->image)
+                                <img src="{{ asset('storage/' . $section->image) }}" alt="صورة القسم" style="width: 50px; height: 50px;">
+                            @else
+                                لا توجد صورة
+                            @endif
+                        </td>
                         <td>
                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                 data-bs-target="#editSectionModal{{ $section->id }}">تعديل</button>
@@ -39,7 +49,7 @@
                     <div class="modal fade" id="editSectionModal{{ $section->id }}" tabindex="-1"
                         aria-labelledby="editSectionModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                            <form action="{{ route('sections.update', $section->id) }}" method="POST">
+                            <form action="{{ route('sections.update', $section->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="modal-content">
@@ -57,6 +67,15 @@
                                         <div class="mb-3">
                                             <label for="description" class="form-label">الوصف</label>
                                             <textarea class="form-control" name="description" rows="3">{{ $section->description }}</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="meeting_link" class="form-label">رابط الاجتماع</label>
+                                            <input type="url" class="form-control" name="meeting_link"
+                                                value="{{ $section->meeting_link }}">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="image" class="form-label">الصورة</label>
+                                            <input type="file" class="form-control" name="image">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -77,7 +96,7 @@
     <div class="modal fade" id="createSectionModal" tabindex="-1" aria-labelledby="createSectionModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{ route('sections.store') }}" method="POST">
+            <form action="{{ route('sections.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -92,6 +111,14 @@
                         <div class="mb-3">
                             <label for="description" class="form-label">الوصف</label>
                             <textarea class="form-control" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="meeting_link" class="form-label">رابط الاجتماع</label>
+                            <input type="url" class="form-control" name="meeting_link">
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">الصورة</label>
+                            <input type="file" class="form-control" name="image">
                         </div>
                     </div>
                     <div class="modal-footer">
