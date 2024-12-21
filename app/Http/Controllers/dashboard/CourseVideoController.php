@@ -42,7 +42,6 @@ class CourseVideoController extends Controller
         $video = CourseVideo::findOrFail($id);
 
         $validated = $request->validate([
-            'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
             'video' => 'required|string',
             'description' => 'required|string',

@@ -11,9 +11,19 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        $query = User::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%$search%")
+                    ->orWhere('email', 'LIKE', "%$search%");
+            });
+        }
+
+        $users = $query->get();
         $studentsWithSections = User::where('role', 'student')->whereHas('sections')->get();
 
         return view('dashboard.users.index', compact('users', 'studentsWithSections'));

@@ -89,7 +89,7 @@ class SectionsController extends Controller
     public function showUsers($id)
     {
         $section = Section::with('users')->findOrFail($id);
-        $students = User::where('role', 'student')->get();
+        $students = User::where('role', 'student')->whereDoesntHave('sections')->get();
         $teachers = User::where('role', 'teacher')->get();
         $courses = Course::all();
         return view('dashboard.sections.show', compact('section', 'students', 'teachers', 'courses'));
@@ -106,5 +106,17 @@ class SectionsController extends Controller
         $section->users()->syncWithoutDetaching($request->users);
 
         return redirect()->back()->with('success', 'Users added to section successfully.');
+    }
+
+    public function removeUser($sectionId, $userId)
+    {
+        $section = Section::findOrFail($sectionId);
+        $user = User::findOrFail($userId);
+
+        if ($section->users()->detach($user->id)) {
+            return redirect()->back()->with('success', 'تم إزالة المستخدم بنجاح.');
+        }
+        return redirect()->back()->with('error', 'حدث خطأ أثناء محاولة إزالة المستخدم.');
+
     }
 }

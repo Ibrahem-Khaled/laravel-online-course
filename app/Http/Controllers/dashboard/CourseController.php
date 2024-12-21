@@ -15,7 +15,7 @@ class CourseController extends Controller
         $courses = Course::all();
         $users = User::where('role', 'teacher')->get();
         $categories = Category::all();
-        return view('dashboard.courses', compact('courses', 'users', 'categories'));
+        return view('dashboard.courses.index', compact('courses', 'users', 'categories'));
     }
 
     public function store(Request $request)

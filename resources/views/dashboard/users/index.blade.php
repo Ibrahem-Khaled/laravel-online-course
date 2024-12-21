@@ -2,6 +2,15 @@
 
 @section('content')
     <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form action="{{ route('users.index') }}" method="GET" class="d-flex">
+                    <input type="text" name="search" class="form-control me-2" placeholder="بحث عن المستخدمين..."
+                        value="{{ request('search') }}">
+                    <button type="submit" class="btn btn-primary">بحث</button>
+                </form>
+            </div>
+        </div>
         <h2 class="my-4">إدارة المستخدمين</h2>
 
         <!-- زر لإضافة مستخدم جديد -->
@@ -59,7 +68,7 @@
             </div>
             <div class="tab-pane fade" id="studen-section" role="tabpanel" aria-labelledby="student-sections">
                 @include('dashboard.users.table', [
-                    'users' => $studentsWithSections
+                    'users' => $studentsWithSections,
                 ])
             </div>
         </div>
@@ -73,7 +82,8 @@
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">إضافة مستخدم جديد</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             @include('dashboard.users.form', ['user' => null])

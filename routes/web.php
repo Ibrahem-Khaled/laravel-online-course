@@ -79,6 +79,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'isAdmin']], fun
     Route::resource('sections', SectionsController::class);
     Route::get('section/{id}', [SectionsController::class, 'showUsers'])->name('sections.show');
     Route::post('sections/{id}/add-users', [SectionsController::class, 'addUsers'])->name('sections.addUsers');
+    Route::delete('sections/{section}/users/{user}', [SectionsController::class, 'removeUser'])->name('sections.removeUser');
     Route::resource('section-calendars', SectionCalendarController::class);
 
 

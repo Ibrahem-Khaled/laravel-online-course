@@ -8,6 +8,11 @@
         overflow: hidden;
     }
 
+    .swiper-wrapper {
+        justify-content: center;
+        /* يضمن أن الشرائح تبقى في المنتصف */
+    }
+
     .student-section h2 {
         font-size: 2.5rem;
         font-weight: bold;
@@ -98,7 +103,7 @@
 
 @if ($students->count() > 0)
     <section class="student-section">
-        <h2>طلاب برنامج طموح</h2>
+        <h2>{{ $title ?? 'طلاب برنامج طموح' }}</h2>
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 @foreach ($students as $student)
@@ -144,7 +149,8 @@
             autoplay: {
                 delay: 3000, // المدة بين كل تقليب (بالميلي ثانية)
                 disableOnInteraction: false, // استمرار التشغيل التلقائي حتى بعد التفاعل
-            }
+            },
+
         });
     });
 </script>

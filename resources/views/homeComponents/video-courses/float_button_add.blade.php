@@ -149,7 +149,9 @@ background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width:
                         <!-- Edit Video Tab -->
                         <div class="tab-pane fade" id="edit-video" role="tabpanel" aria-labelledby="edit-video-tab">
                             @php
-                                $videos = App\Models\CourseVideo::all();
+                                $videos = App\Models\CourseVideo::whereHas('course', function ($query) {
+                                    $query->where('user_id', auth()->id());
+                                })->get();
                             @endphp
                             <form action="{{ route('editVideoFromCourse') }}" method="POST"
                                 enctype="multipart/form-data" class="mt-3">

@@ -5,8 +5,14 @@
         <h1 class="my-4">فيديوهات الدورة: {{ $course->title }}</h1>
 
         <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addVideoModal">إضافة فيديو جديد</button>
-        @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
 
         <table class="table table-bordered">
@@ -24,7 +30,7 @@
                     <tr>
                         <td>{{ $video->title }}</td>
                         <td> {!! $video->video !!}</td>
-                        <td>{{ $video->description }}</td>
+                        <td>{{ \Illuminate\Support\Str::limit($video->description, 50, '...') }}</td>
                         <td>
                             @if ($video->image)
                                 <img src="{{ asset('storage/' . $video->image) }}" alt="صورة الفيديو" width="100">

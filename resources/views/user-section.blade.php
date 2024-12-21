@@ -135,7 +135,7 @@
             @include('homeComponents.section.details')
             <!-- جدول المواد الدراسية -->
             <h3 class="info-header" style="text-align: right;">الجدول الأسبوعي</h3>
-            <table class="table table-bordered text-center">
+            <table style="width: 100%; border-collapse: collapse; text-align: center; direction: rtl;">
                 <thead>
                     <tr>
                         <th>اليوم</th>
@@ -162,25 +162,36 @@
                                         @endforeach
                                     </ul>
                                 @else
-                                    <span class="text-muted">إجازة</span>
+                                    <span class="text-white">إجازة</span>
                                 @endif
                             </td>
                             <td>
                                 @if ($daySchedule->isNotEmpty())
                                     <ul class="list-unstyled">
                                         @foreach ($daySchedule as $schedule)
-                                            <li>{{ $schedule->start_time }} - {{ $schedule->end_time }}</li>
+                                            @php
+                                                $time = \Carbon\Carbon::createFromFormat(
+                                                    'H:i:s',
+                                                    $schedule->start_time,
+                                                )->format('h:i A');
+                                                $timeInArabic = str_replace(['AM', 'PM'], ['صباحًا', 'مساءً'], $time);
+                                            @endphp
+                                            <li>{{ $timeInArabic }}</li>
                                         @endforeach
+
                                     </ul>
                                 @else
-                                    <span class="text-muted">---</span>
+                                    <span class="text-white">---</span>
                                 @endif
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-            @include('homeComponents.home.best-students', ['students' => $sectionStudents])
+            @include('homeComponents.home.best-students', [
+                'students' => $sectionStudents,
+                'title' => "طلاب فصل {$section->name}",
+            ])
         </div>
         <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
             <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">

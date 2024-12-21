@@ -2,6 +2,10 @@
 
 @section('content')
     <div class="container">
+        <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addUsersModal">إضافة
+            مستخدمين</button>
+
+
         <h1>الفصل: {{ $section->name }}</h1>
         <p>{{ $section->description }}</p>
 
@@ -73,8 +77,6 @@
             </div>
 
             <div class="tab-content mt-3" id="sectionTabsContent">
-                <!-- التبويبات السابقة -->
-
                 <!-- تبويب التقويم -->
                 <div class="tab-pane fade" id="calendar" role="tabpanel" aria-labelledby="calendar-tab">
                     <h3>التقويم الأسبوعي</h3>
@@ -112,8 +114,20 @@
                                         @if ($daySchedule->isNotEmpty())
                                             <ul class="list-unstyled">
                                                 @foreach ($daySchedule as $schedule)
-                                                    <li>{{ $schedule->start_time }} - {{ $schedule->end_time }}</li>
+                                                    @php
+                                                        $time = \Carbon\Carbon::createFromFormat(
+                                                            'H:i:s',
+                                                            $schedule->start_time,
+                                                        )->format('h:i A');
+                                                        $timeInArabic = str_replace(
+                                                            ['AM', 'PM'],
+                                                            ['صباحًا', 'مساءً'],
+                                                            $time,
+                                                        );
+                                                    @endphp
+                                                    <li>{{ $timeInArabic }}</li>
                                                 @endforeach
+
                                             </ul>
                                         @else
                                             <span class="text-muted">---</span>
@@ -121,28 +135,28 @@
                                     </td>
                                     <td>
                                         @if (auth()->user()->isAdmin())
-                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editCalendarModal{{ $dayIndex + 1 }}">تعديل</button>
-                                            <form action="{{ route('section-calendars.destroy', $dayIndex + 1) }}"
-                                                method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">حذف</button>
-                                            </form>
+                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editCalendarModal{{ $dayIndex + 1 }}">اضافة</button>
+                                            @foreach ($daySchedule as $schedule)
+                                                <form action="{{ route('section-calendars.destroy', $schedule->id) }}"
+                                                    method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+                                                </form>
+                                            @endforeach
                                         @else
                                             <span class="text-muted">غير مسموح</span>
                                         @endif
                                     </td>
                                 </tr>
-
                                 <!-- تعديل التقويم -->
                                 @if (auth()->user()->isAdmin())
                                     <div class="modal fade" id="editCalendarModal{{ $dayIndex + 1 }}" tabindex="-1"
                                         aria-labelledby="editCalendarModalLabel{{ $dayIndex + 1 }}" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <form action="{{ route('section-calendars.store') }}"
-                                                    method="POST">
+                                                <form action="{{ route('section-calendars.store') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="section_id" value="{{ $section->id }}">
                                                     <input type="hidden" name="day_number" value="{{ $dayIndex + 1 }}">
@@ -187,9 +201,6 @@
             </div>
 
         </div>
-
-        <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addUsersModal">إضافة
-            مستخدمين</button>
     </div>
 
     <!-- نافذة إضافة المستخدمين -->
@@ -231,7 +242,7 @@
                         <!-- اختيار المعلمين -->
                         <div class="form-group mt-3">
                             <label for="teachers">اختر المعلمين</label>
-                            <select name="users[]" id="teachers" class="form-control" multiple required>
+                            <select name="users[]" id="teachers" class="form-control" multiple>
                                 @foreach ($teachers as $user)
                                     <option value="{{ $user->id }}"
                                         {{ in_array($user->id, old('users', [])) ? 'selected' : '' }}>

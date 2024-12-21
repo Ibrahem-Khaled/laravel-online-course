@@ -20,7 +20,7 @@ class SectionCalendarController extends Controller
             'start_time' => 'nullable|required_with:course_id|date_format:H:i',
         ]);
 
-        SectionCalendar::create($validated);
+        SectionCalendar::updateOrCreate($validated);
 
         return redirect()->back()->with('success', 'تمت إضافة الجدول بنجاح!');
     }
