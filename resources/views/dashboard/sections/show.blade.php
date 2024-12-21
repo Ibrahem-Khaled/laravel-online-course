@@ -141,13 +141,12 @@
                                         aria-labelledby="editCalendarModalLabel{{ $dayIndex + 1 }}" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <form action="{{ route('section-calendars.update', $dayIndex + 1) }}"
+                                                <form action="{{ route('section-calendars.store') }}"
                                                     method="POST">
                                                     @csrf
-                                                    @method('PUT')
                                                     <input type="hidden" name="section_id" value="{{ $section->id }}">
                                                     <input type="hidden" name="day_number" value="{{ $dayIndex + 1 }}">
-                                                    
+
                                                     <div class="modal-header">
                                                         <h5 class="modal-title"
                                                             id="editCalendarModalLabel{{ $dayIndex + 1 }}">
