@@ -146,6 +146,8 @@
                                                     @csrf
                                                     @method('PUT')
                                                     <input type="hidden" name="section_id" value="{{ $section->id }}">
+                                                    <input type="hidden" name="day_number" value="{{ $dayIndex + 1 }}">
+                                                    
                                                     <div class="modal-header">
                                                         <h5 class="modal-title"
                                                             id="editCalendarModalLabel{{ $dayIndex + 1 }}">
@@ -163,11 +165,6 @@
                                                                     </option>
                                                                 @endforeach
                                                             </select>
-                                                        </div>
-                                                        <div class="form-group mt-3">
-                                                            <label for="day_number">اليوم</label>
-                                                            <input type="number" name="day_number" min="1" max="7" class="form-control"
-                                                                value="{{ old('day_number') }}">
                                                         </div>
                                                         <div class="form-group mt-3">
                                                             <label for="start_time">وقت البداية</label>
