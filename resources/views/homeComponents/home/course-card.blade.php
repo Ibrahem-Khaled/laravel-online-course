@@ -10,7 +10,8 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s;
         text-align: right;
-        margin: 10px auto;
+        margin: 10px;
+        /* مسافة حول كل كارد */
     }
 
     .course-card:hover {
@@ -106,7 +107,7 @@
         }
     }
 </style>
-<div class="col-lg-3 col-md-4 col-sm-6">
+<div class="col-lg-3 col-md-4 col-sm-6" style=" gap: 20px;">
     <a href="{{ route('courses.videos', $course->id) }}" class="text-decoration-none">
         <div class="course-card">
             <button class="favorite-btn">
