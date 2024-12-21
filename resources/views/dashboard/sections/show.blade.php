@@ -5,9 +5,13 @@
         <h1>الفصل: {{ $section->name }}</h1>
         <p>{{ $section->description }}</p>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
@@ -24,6 +28,10 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="teachers-tab" data-bs-toggle="tab" data-bs-target="#teachers" type="button"
                     role="tab" aria-controls="teachers" aria-selected="false">المعلمين</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="calendar-tab" data-bs-toggle="tab" data-bs-target="#calendar" type="button"
+                    role="tab" aria-controls="calendar" aria-selected="false">التقويم</button>
             </li>
         </ul>
 
@@ -63,9 +71,129 @@
                     @endforelse
                 </ul>
             </div>
+
+            <div class="tab-content mt-3" id="sectionTabsContent">
+                <!-- التبويبات السابقة -->
+
+                <!-- تبويب التقويم -->
+                <div class="tab-pane fade" id="calendar" role="tabpanel" aria-labelledby="calendar-tab">
+                    <h3>التقويم الأسبوعي</h3>
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th>اليوم</th>
+                                <th>المواد</th>
+                                <th>الأوقات</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $days = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+                            @endphp
+                            @foreach ($days as $dayIndex => $day)
+                                <tr>
+                                    <td>{{ $day }}</td>
+                                    <td>
+                                        @php
+                                            $daySchedule = $section->calendars->where('day_number', $dayIndex + 1);
+                                        @endphp
+                                        @if ($daySchedule->isNotEmpty())
+                                            <ul class="list-unstyled">
+                                                @foreach ($daySchedule as $schedule)
+                                                    <li>{{ $schedule->course->title ?? 'لا توجد مادة' }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            <span class="text-muted">إجازة</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($daySchedule->isNotEmpty())
+                                            <ul class="list-unstyled">
+                                                @foreach ($daySchedule as $schedule)
+                                                    <li>{{ $schedule->start_time }} - {{ $schedule->end_time }}</li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            <span class="text-muted">---</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if (auth()->user()->isAdmin())
+                                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editCalendarModal{{ $dayIndex + 1 }}">تعديل</button>
+                                            <form action="{{ route('section-calendars.destroy', $dayIndex + 1) }}"
+                                                method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+                                            </form>
+                                        @else
+                                            <span class="text-muted">غير مسموح</span>
+                                        @endif
+                                    </td>
+                                </tr>
+
+                                <!-- تعديل التقويم -->
+                                @if (auth()->user()->isAdmin())
+                                    <div class="modal fade" id="editCalendarModal{{ $dayIndex + 1 }}" tabindex="-1"
+                                        aria-labelledby="editCalendarModalLabel{{ $dayIndex + 1 }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form action="{{ route('section-calendars.update', $dayIndex + 1) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" name="section_id" value="{{ $section->id }}">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            id="editCalendarModalLabel{{ $dayIndex + 1 }}">
+                                                            تعديل جدول {{ $day }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="إغلاق"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="course_id">اختر المادة</label>
+                                                            <select name="course_id" id="course_id" class="form-control">
+                                                                @foreach ($courses as $course)
+                                                                    <option value="{{ $course->id }}">
+                                                                        {{ $course->title }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group mt-3">
+                                                            <label for="day_number">اليوم</label>
+                                                            <input type="number" name="day_number" min="1" max="7" class="form-control"
+                                                                value="{{ old('day_number') }}">
+                                                        </div>
+                                                        <div class="form-group mt-3">
+                                                            <label for="start_time">وقت البداية</label>
+                                                            <input type="time" name="start_time" class="form-control"
+                                                                value="{{ old('start_time') }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">حفظ
+                                                            التعديلات</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
-        <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addUsersModal">إضافة مستخدمين</button>
+        <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addUsersModal">إضافة
+            مستخدمين</button>
     </div>
 
     <!-- نافذة إضافة المستخدمين -->

@@ -133,9 +133,54 @@
     <div class="tab-content" id="videoTabsContent">
         <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
             @include('homeComponents.section.details')
+            <!-- جدول المواد الدراسية -->
+            <h3 class="info-header" style="text-align: right;">الجدول الأسبوعي</h3>
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>اليوم</th>
+                        <th>المواد</th>
+                        <th>الأوقات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $days = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+                    @endphp
+                    @foreach ($days as $dayIndex => $day)
+                        <tr>
+                            <td>{{ $day }}</td>
+                            <td>
+                                @php
+                                    $daySchedule = $sectionCalendars->where('day_number', $dayIndex + 1); // 1 = السبت
+                                @endphp
 
+                                @if ($daySchedule->isNotEmpty())
+                                    <ul class="list-unstyled">
+                                        @foreach ($daySchedule as $schedule)
+                                            <li>{{ $schedule->course->title ?? 'لا توجد مادة' }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <span class="text-muted">إجازة</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($daySchedule->isNotEmpty())
+                                    <ul class="list-unstyled">
+                                        @foreach ($daySchedule as $schedule)
+                                            <li>{{ $schedule->start_time }} - {{ $schedule->end_time }}</li>
+                                        @endforeach
+                                    </ul>
+                                @else
+                                    <span class="text-muted">---</span>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
             @include('homeComponents.home.best-students', ['students' => $sectionStudents])
-
         </div>
         <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
             <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">
@@ -176,7 +221,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
 </body>
 
 </html>

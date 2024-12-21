@@ -5,6 +5,7 @@ use App\Http\Controllers\dashboard\ContactUsController;
 use App\Http\Controllers\dashboard\CourseController;
 use App\Http\Controllers\dashboard\CourseRatingController;
 use App\Http\Controllers\dashboard\CourseVideoController;
+use App\Http\Controllers\dashboard\SectionCalendarController;
 use App\Http\Controllers\dashboard\SectionsController;
 use App\Http\Controllers\dashboard\UserController;
 use App\Http\Controllers\HomeController;
@@ -78,6 +79,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'isAdmin']], fun
     Route::resource('sections', SectionsController::class);
     Route::get('section/{id}', [SectionsController::class, 'showUsers'])->name('sections.show');
     Route::post('sections/{id}/add-users', [SectionsController::class, 'addUsers'])->name('sections.addUsers');
+    Route::resource('section-calendars', SectionCalendarController::class);
 
 
 });

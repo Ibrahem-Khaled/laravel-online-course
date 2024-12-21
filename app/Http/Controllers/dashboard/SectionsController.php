@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -90,7 +91,8 @@ class SectionsController extends Controller
         $section = Section::with('users')->findOrFail($id);
         $students = User::where('role', 'student')->get();
         $teachers = User::where('role', 'teacher')->get();
-        return view('dashboard.sections.show', compact('section', 'students', 'teachers'));
+        $courses = Course::all();
+        return view('dashboard.sections.show', compact('section', 'students', 'teachers', 'courses'));
     }
 
     public function addUsers(Request $request, $id)

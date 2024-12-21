@@ -19,4 +19,8 @@ class Section extends Model
     {
         return $this->belongsToMany(Course::class, 'section_courses', 'section_id', 'course_id');
     }
+    public function calendars()
+    {
+        return $this->hasMany(SectionCalendar::class);
+    }
 }

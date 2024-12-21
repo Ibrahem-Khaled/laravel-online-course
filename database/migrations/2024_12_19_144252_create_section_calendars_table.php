@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('section_calendars', function (Blueprint $table) {
             $table->id();
             $table->foreignId('section_id')->constrained();
-            $table->foreignId('course_id')->constrained();
+            $table->foreignId('course_id')->nullable()->constrained();
             $table->integer('day_number')->required()->max(7);
             $table->time('start_time')->required();
             $table->timestamps();

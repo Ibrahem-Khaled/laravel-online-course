@@ -11,6 +11,10 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
     protected $guarded = ['id'];
     protected $hidden = [
         'password',
@@ -41,7 +45,7 @@ class User extends Authenticatable
     }
     public function userReports()
     {
-        return $this->hasMany(UserRepots::class, 'user_id'); 
+        return $this->hasMany(UserRepots::class, 'user_id');
     }
 
     public function teacherReports()

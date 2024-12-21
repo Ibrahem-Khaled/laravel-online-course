@@ -40,9 +40,17 @@ class UserSectionController extends Controller
 
         // جلب الكورسات الخاصة بالقسم
         $sectionCourses = $section->courses()->get();
+        $sectionCalendars = $section->calendars;
         $categories = Category::all();
         $sectionStudents = $section->users()->where('role', 'student')->get();
-        return view('user-section', compact('section', 'courses', 'sectionCourses', 'categories', 'sectionStudents'));
+        return view('user-section', compact(
+            'section',
+            'courses',
+            'sectionCourses',
+            'categories',
+            'sectionStudents',
+            'sectionCalendars'
+        ));
     }
 
     public function addStudentReportsDaily(Request $request, $student_id)
@@ -127,7 +135,7 @@ class UserSectionController extends Controller
     public function editVideoFromCourse(Request $request)
     {
         $video = CourseVideo::findOrFail($request->video_id);
-        
+
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
             'title' => 'required|string|max:255',
