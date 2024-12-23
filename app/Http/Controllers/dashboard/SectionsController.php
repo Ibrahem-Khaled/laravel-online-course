@@ -117,6 +117,5 @@ class SectionsController extends Controller
             return redirect()->back()->with('success', 'تم إزالة المستخدم بنجاح.');
         }
         return redirect()->back()->with('error', 'حدث خطأ أثناء محاولة إزالة المستخدم.');
-
     }
 }
