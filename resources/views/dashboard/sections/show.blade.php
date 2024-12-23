@@ -134,66 +134,61 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if (auth()->user()->role == 'admin')
-                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editCalendarModal{{ $dayIndex + 1 }}">اضافة</button>
-                                            @foreach ($daySchedule as $schedule)
-                                                <form action="{{ route('section-calendars.destroy', $schedule->id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">حذف</button>
-                                                </form>
-                                            @endforeach
-                                        @else
-                                            <span class="text-muted">غير مسموح</span>
-                                        @endif
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#editCalendarModal{{ $dayIndex + 1 }}">اضافة</button>
+                                        @foreach ($daySchedule as $schedule)
+                                            <form action="{{ route('section-calendars.destroy', $schedule->id) }}"
+                                                method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+                                            </form>
+                                        @endforeach
+
                                     </td>
                                 </tr>
                                 <!-- تعديل التقويم -->
-                                @if (auth()->user()->role == 'admin')
-                                    <div class="modal fade" id="editCalendarModal{{ $dayIndex + 1 }}" tabindex="-1"
-                                        aria-labelledby="editCalendarModalLabel{{ $dayIndex + 1 }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <form action="{{ route('section-calendars.store') }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="section_id" value="{{ $section->id }}">
-                                                    <input type="hidden" name="day_number" value="{{ $dayIndex + 1 }}">
+                                <div class="modal fade" id="editCalendarModal{{ $dayIndex + 1 }}" tabindex="-1"
+                                    aria-labelledby="editCalendarModalLabel{{ $dayIndex + 1 }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action="{{ route('section-calendars.store') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="section_id" value="{{ $section->id }}">
+                                                <input type="hidden" name="day_number" value="{{ $dayIndex + 1 }}">
 
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title"
-                                                            id="editCalendarModalLabel{{ $dayIndex + 1 }}">
-                                                            تعديل جدول {{ $day }}</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="إغلاق"></button>
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="editCalendarModalLabel{{ $dayIndex + 1 }}">
+                                                        تعديل جدول {{ $day }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="إغلاق"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label for="course_id">اختر المادة</label>
+                                                        <select name="course_id" id="course_id" class="form-control">
+                                                            @foreach ($courses as $course)
+                                                                <option value="{{ $course->id }}">
+                                                                    {{ $course->title }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <label for="course_id">اختر المادة</label>
-                                                            <select name="course_id" id="course_id" class="form-control">
-                                                                @foreach ($courses as $course)
-                                                                    <option value="{{ $course->id }}">
-                                                                        {{ $course->title }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group mt-3">
-                                                            <label for="start_time">وقت البداية</label>
-                                                            <input type="time" name="start_time" class="form-control"
-                                                                value="{{ old('start_time') }}">
-                                                        </div>
+                                                    <div class="form-group mt-3">
+                                                        <label for="start_time">وقت البداية</label>
+                                                        <input type="time" name="start_time" class="form-control"
+                                                            value="{{ old('start_time') }}">
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary">حفظ
-                                                            التعديلات</button>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">حفظ
+                                                        التعديلات</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
-                                @endif
+                                </div>
                             @endforeach
                         </tbody>
                     </table>
