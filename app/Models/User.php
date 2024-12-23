@@ -11,10 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
+
     protected $guarded = ['id'];
     protected $hidden = [
         'password',

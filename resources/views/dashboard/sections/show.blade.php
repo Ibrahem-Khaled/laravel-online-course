@@ -134,7 +134,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if (auth()->user()->isAdmin())
+                                        @if (auth()->user()->role == 'admin')
                                             <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#editCalendarModal{{ $dayIndex + 1 }}">اضافة</button>
                                             @foreach ($daySchedule as $schedule)
@@ -151,7 +151,7 @@
                                     </td>
                                 </tr>
                                 <!-- تعديل التقويم -->
-                                @if (auth()->user()->isAdmin())
+                                @if (auth()->user()->role == 'admin')
                                     <div class="modal fade" id="editCalendarModal{{ $dayIndex + 1 }}" tabindex="-1"
                                         aria-labelledby="editCalendarModalLabel{{ $dayIndex + 1 }}" aria-hidden="true">
                                         <div class="modal-dialog">
