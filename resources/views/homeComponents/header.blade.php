@@ -108,7 +108,7 @@
                     @if (
                         (Auth::check() && Auth::user()->sections->count() > 1) ||
                             Auth::user()->role === 'admin' ||
-                            Auth::user()->role === 'moderator')
+                            Auth::user()->role === 'supervisor')
                         <a class="nav-link dropdown-toggle" href="#" id="userSections" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             برنامج طموح
