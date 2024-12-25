@@ -18,31 +18,43 @@ class UserSectionController extends Controller
     {
         $user = auth()->user();
 
-        // التحقق إذا كان المستخدم ينتمي إلى أي قسم
-        if (!$user->sections()->exists()) {
-            return redirect()->back()->with('error', 'لم يتم تعيينك إلى أي قسم بعد.');
-        }
+        // السماح للمستخدم إذا كان لديه دور "أدمن" أو "مشرف"
+        if ($user->role === 'admin' || $user->role === 'supervisor') {
+            $sections = Section::all(); // جلب جميع الأقسام
+            $section = $request->has('section_id')
+                ? Section::find($request->query('section_id'))
+                : $sections->first();
 
-        $courses = Course::where('status', 'draft')->get();
-
-        // التحقق من القسم المُرسل عبر الطلب
-        if ($request->has('section_id')) {
-            $section = $user->sections()->where('section_id', $request->query('section_id'))->first();
-
-            // إذا كان القسم غير موجود ضمن أقسام المستخدم
             if (!$section) {
-                return redirect()->back()->with('error', 'غير مصرح لك بالدخول إلى هذا الفصل.');
+                return redirect()->back()->with('error', 'القسم المطلوب غير موجود.');
             }
         } else {
-            // إذا لم يُرسل section_id وكان المستخدم لديه قسم واحد
-            $section = $user->sections()->first();
+            // التحقق إذا كان المستخدم ينتمي إلى أي قسم
+            if (!$user->sections()->exists()) {
+                return redirect()->back()->with('error', 'لم يتم تعيينك إلى أي قسم بعد.');
+            }
+
+            // التحقق من القسم المُرسل عبر الطلب
+            if ($request->has('section_id')) {
+                $section = $user->sections()->where('section_id', $request->query('section_id'))->first();
+
+                // إذا كان القسم غير موجود ضمن أقسام المستخدم
+                if (!$section) {
+                    return redirect()->back()->with('error', 'غير مصرح لك بالدخول إلى هذا الفصل.');
+                }
+            } else {
+                // إذا لم يُرسل section_id وكان المستخدم لديه قسم واحد
+                $section = $user->sections()->first();
+            }
         }
 
         // جلب الكورسات الخاصة بالقسم
+        $courses = Course::where('status', 'draft')->get();
         $sectionCourses = $section->courses()->get();
         $sectionCalendars = $section->calendars;
         $categories = Category::all();
         $sectionStudents = $section->users()->where('role', 'student')->get();
+
         return view('user-section', compact(
             'section',
             'courses',

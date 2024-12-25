@@ -35,8 +35,8 @@ Route::group([], function () {
     Route::post('add-homework', [videoCourseController::class, 'addHomework'])->name('add-homework')->middleware('auth');
     Route::post('add-comment', [videoCourseController::class, 'videoDiscssion'])->name('add-comment')->middleware('auth');
     Route::post('homework/{id}/reply', [videoCourseController::class, 'homeworkReply'])->name('homework.reply')->middleware('auth');
-    Route::post('/video-usage/add', [videoCourseController::class, 'addVideoUsage'])->name('addVideoUsage');
-    Route::put('/video/{id}/question', [videoCourseController::class, 'updateQuestion'])->name('updateQuestion');
+    Route::post('/video-usage/add', [videoCourseController::class, 'addVideoUsage'])->name('addVideoUsage')->middleware('auth');
+    Route::put('/video/{id}/question', [videoCourseController::class, 'updateQuestion'])->name('updateQuestion')->middleware('auth');
 
     //this route geting all courses
     Route::get('all-courses/{category_id?}', [HomeController::class, 'allCourses'])->name('all-courses');
@@ -45,7 +45,7 @@ Route::group([], function () {
     Route::get('user/section', [UserSectionController::class, 'index'])->name('user-section')->middleware('auth');
     Route::put('update-user-reports/{student_id}', [UserSectionController::class, 'addStudentReportsDaily'])->name('update-user-reports')->middleware('auth');
     Route::post('addVideoFromCourse', [UserSectionController::class, 'addVideoFromCourse'])->name('addVideoFromCourse')->middleware('auth');
-    Route::get('/video/{id}', [UserSectionController::class, 'getVideo'])->name('getVideo');
+    Route::get('/video/{id}', [UserSectionController::class, 'getVideo'])->name('getVideo')->middleware('auth');
     Route::put('editVideoFromCourse', [UserSectionController::class, 'editVideoFromCourse'])->name('editVideoFromCourse')->middleware('auth');
 
 });

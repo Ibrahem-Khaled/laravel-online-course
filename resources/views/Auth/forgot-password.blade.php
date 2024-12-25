@@ -91,7 +91,7 @@
     <div class="reset-container">
         <div class="reset-card">
             <h3 class="text-center mb-4">استعادة كلمة المرور</h3>
-            <form  method="POST">
+            <form action="{{ route('reset-password') }}"  method="POST">
                 @csrf
                 <!-- Email Input -->
                 <div class="mb-3">

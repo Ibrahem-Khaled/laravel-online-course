@@ -105,13 +105,22 @@
                         href="{{ route('all-courses') }}">الدورات</a>
                 </li>
                 <li class="nav-item dropdown">
-                    @if (Auth::check() && Auth::user()->sections->count() > 1)
+                    @if (
+                        (Auth::check() && Auth::user()->sections->count() > 1) ||
+                            Auth::user()->role === 'admin' ||
+                            Auth::user()->role === 'moderator')
                         <a class="nav-link dropdown-toggle" href="#" id="userSections" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             برنامج طموح
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="userSections">
-                            @foreach (Auth::user()->sections as $section)
+                            @php
+                                $sections =
+                                    Auth::user()->role === 'admin' || Auth::user()->role === 'supervisor'
+                                        ? \App\Models\Section::all()
+                                        : Auth::user()->sections;
+                            @endphp
+                            @foreach ($sections as $section)
                                 <li>
                                     <a class="dropdown-item"
                                         href="{{ route('user-section', ['section_id' => $section->id]) }}">
@@ -122,9 +131,12 @@
                         </ul>
                     @else
                         <a class="nav-link {{ Route::currentRouteName() == 'user-section' ? 'active' : '' }}"
-                            href="{{ route('user-section') }}">برنامج طموح</a>
+                            href="{{ route('user-section') }}">
+                            برنامج طموح
+                        </a>
                     @endif
                 </li>
+
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="programDropdown" role="button"

@@ -83,6 +83,20 @@ class AuthController extends Controller
         return view('Auth.forgot-password');
     }
 
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user) {
+            return redirect()->route('login')->with('success', 'تم ارسال رابط استعادة كلمة المرور لبريدك الإلكتروني');
+        }
+        return redirect()->back()->with('error', 'البريد الإلكتروني غير موجود في قاعدة البيانات.');
+    }
+
     // تنفيذ تسجيل الخروج
     public function logout(Request $request)
     {

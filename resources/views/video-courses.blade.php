@@ -164,8 +164,8 @@
                 <ul class="nav nav-tabs" id="videoTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details"
-                            type="button" role="tab" aria-controls="details" aria-selected="true">تفاصيل
-                            الدورة</button>
+                            type="button" role="tab" aria-controls="details" aria-selected="true">
+                            محتوي الدرس</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="sources-tab" data-bs-toggle="tab" data-bs-target="#sources"

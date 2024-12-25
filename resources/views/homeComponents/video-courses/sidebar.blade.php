@@ -77,8 +77,11 @@
     }
 
     .progress-container {
-        margin: 10px;
+        margin: 16.5px 0;
         color: #fff;
+        background-color: #035971;
+        padding: 10px;
+        border-radius: 10px;
     }
 
     .progress {
@@ -146,16 +149,15 @@
     }
 </style>
 
-<div class="col-lg-4" style="margin-top: 12%">
+<div class="col-lg-4" style="margin-top: 5%">
     <!-- قائمة الفيديوهات مع شريط التقدم المدمج -->
-    <div class="video-list">
-        <div class="progress-container">
-            <h5>نسبة الإنجاز: {{ round($progress, 2) }}%</h5>
-            <p>الفيديو {{ $currentVideoIndex }} من {{ $totalVideos }}</p>
-            <div class="progress">
-                <div class="progress-bar" style="width: {{ $progress }}%;"></div>
-            </div>
+    <div class="progress-container">
+        <h5>نسبة الإنجاز: {{ round($progress, 2) }}%</h5>
+        <div class="progress">
+            <div class="progress-bar" style="width: {{ $progress }}%;"></div>
         </div>
+    </div>
+    <div class="video-list">
 
         @foreach ($course->videos as $index => $otherVideo)
             <a href="{{ route('courses.videos', ['course' => $course->id, 'video' => $otherVideo->id]) }}"
