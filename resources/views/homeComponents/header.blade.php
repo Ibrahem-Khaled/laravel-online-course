@@ -107,8 +107,8 @@
                 <li class="nav-item dropdown">
                     @if (
                         (Auth::check() && Auth::user()->sections->count() > 1) ||
-                            Auth::user()->role === 'admin' ||
-                            Auth::user()->role === 'supervisor')
+                            Auth::user()?->role === 'admin' ||
+                            Auth::user()?->role === 'supervisor')
                         <a class="nav-link dropdown-toggle" href="#" id="userSections" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             برنامج طموح
@@ -116,7 +116,7 @@
                         <ul class="dropdown-menu" aria-labelledby="userSections">
                             @php
                                 $sections =
-                                    Auth::user()->role === 'admin' || Auth::user()->role === 'supervisor'
+                                    Auth::user()?->role === 'admin' || Auth::user()?->role === 'supervisor'
                                         ? \App\Models\Section::all()
                                         : Auth::user()->sections;
                             @endphp
