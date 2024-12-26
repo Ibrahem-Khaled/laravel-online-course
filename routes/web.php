@@ -34,7 +34,7 @@ Route::group([], function () {
 
     Route::post('add-homework', [videoCourseController::class, 'addHomework'])->name('add-homework')->middleware('auth');
     Route::post('add-comment', [videoCourseController::class, 'videoDiscssion'])->name('add-comment')->middleware('auth');
-    Route::post('homework/{id}/reply', [videoCourseController::class, 'homeworkReply'])->name('homework.reply')->middleware('auth');
+    Route::post('homework/reply/{id}', [videoCourseController::class, 'homeworkReply'])->name('homework.reply')->middleware('auth');
     Route::post('/video-usage/add', [videoCourseController::class, 'addVideoUsage'])->name('addVideoUsage')->middleware('auth');
     Route::put('/video/{id}/question', [videoCourseController::class, 'updateQuestion'])->name('updateQuestion')->middleware('auth');
 

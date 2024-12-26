@@ -85,15 +85,15 @@
     }
 
     .progress {
-        background-color: #ff9c00;
+        background-color: #072D38;
         height: 5px;
         border-radius: 3px;
         overflow: hidden;
         margin-top: 10px;
     }
-
+    
     .progress-bar {
-        background-color: #072D38;
+        background-color: #ff9c00;
         height: 100%;
     }
 
@@ -148,7 +148,7 @@
         padding: 10px;
     }
 </style>
-
+ 
 <div class="col-lg-4" style="margin-top: 5%">
     <!-- قائمة الفيديوهات مع شريط التقدم المدمج -->
     <div class="progress-container">
@@ -157,8 +157,7 @@
             <div class="progress-bar" style="width: {{ $progress }}%;"></div>
         </div>
     </div>
-    <div class="video-list">
-
+    <div class="video-list" style="max-height: 470px; overflow-y: auto;">
         @foreach ($course->videos as $index => $otherVideo)
             <a href="{{ route('courses.videos', ['course' => $course->id, 'video' => $otherVideo->id]) }}"
                 class="video-list-item {{ $video->id === $otherVideo->id ? 'active' : '' }}">
@@ -217,7 +216,7 @@
                 @endforeach
             </div>
         @else
-            <h5 style="color: #666; text-align: center;">لا يوجد برامج مستخدمة</h5>
+            <h5 class="text-white text-center">لا يوجد برامج مستخدمة</h5>
         @endif
     </div>
 

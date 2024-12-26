@@ -42,13 +42,25 @@ class videoCourseController extends Controller
             'body' => 'required|string',
         ]);
 
-        VideoDiscussion::create([
+        $comment = VideoDiscussion::create([
             'course_video_id' => $request->input('video_id'),
             'user_id' => auth()->user()->id,
             'body' => $request->input('body'),
         ]);
 
-        return redirect()->back()->with('success', 'تم اضافة التعليق بنجاح');
+        return response()->json([
+            'success' => true,
+            'comment' => [
+                'user_image' => $comment->user->image
+                    ? asset('storage/' . $comment->user->image)
+                    : ($comment->user->userInfo?->gender == 'female'
+                        ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
+                        : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png'),
+                'user_name' => $comment->user->name,
+                'created_at' => $comment->created_at->locale('ar')->diffForHumans(),
+                'body' => $comment->body,
+            ],
+        ]);
     }
 
     public function homeworkReply(Request $request, $id)
@@ -60,34 +72,40 @@ class videoCourseController extends Controller
             'rating' => $request->rating,
         ]);
 
-        return redirect()->back()->with('success', 'تم إضافة الرد والتقييم بنجاح!');
+        return response()->json(['success' => true, 'message' => 'تم إرسال التقييم بنجاح!']);
     }
 
     public function addVideoUsage(Request $request)
     {
         $request->validate([
             'course_video_id' => 'required|exists:course_videos,id',
-            'type' => 'required|in:software,attachment',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'file' => 'nullable|mimes:pdf,doc,docx,zip,txt|max:5120',
+            'usages.*.type' => 'required|in:software,attachment',
+            'usages.*.title' => 'required|string|max:255',
+            'usages.*.description' => 'nullable|string',
+            'usages.*.image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'usages.*.files.*' => 'nullable|mimes:pdf,doc,docx,zip,txt|max:5120',
         ]);
 
-        // رفع الملفات (إن وجد)
-        $imagePath = $request->file('image') ? $request->file('image')->store('images', 'public') : null;
-        $filePath = $request->file('file') ? $request->file('file')->store('files', 'public') : null;
+        foreach ($request->usages as $usage) {
+            $imagePath = isset($usage['image']) ? $usage['image']->store('images', 'public') : null;
 
-        // حفظ البيانات
-        inVideoUsage::create([
-            'user_id' => auth()->user()->id,
-            'course_video_id' => $request->course_video_id,
-            'type' => $request->type,
-            'title' => $request->title,
-            'description' => $request->description,
-            'image' => $imagePath,
-            'file' => $filePath,
-        ]);
+            $filePaths = [];
+            if (isset($usage['files'])) {
+                foreach ($usage['files'] as $file) {
+                    $filePaths[] = $file->store('files', 'public');
+                }
+            }
+
+            inVideoUsage::create([
+                'user_id' => auth()->id(),
+                'course_video_id' => $request->course_video_id,
+                'type' => $usage['type'],
+                'title' => $usage['title'],
+                'description' => $usage['description'],
+                'image' => $imagePath,
+                'file' => json_encode($filePaths),
+            ]);
+        }
 
         return redirect()->back()->with('success', 'تمت الإضافة بنجاح!');
     }

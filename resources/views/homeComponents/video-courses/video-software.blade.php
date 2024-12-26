@@ -1,4 +1,5 @@
 <div class="attachments-section" style="margin: 20px 0;">
+    @include('homeComponents.video-courses.in_video_usages')
     @if ($video->videoUsage->where('type', 'attachment')->count() > 0)
         <h5 class="text-white mb-4 font-weight-bold text-center">المرفقات</h5>
         <div class="list-group">

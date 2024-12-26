@@ -137,7 +137,8 @@
                 (Auth::check() && Auth::user()->role == 'teacher') ||
                     Auth::user()->role == 'supervisor' ||
                     Auth::user()->role == 'admin')
-                <form action="{{ route('homework.reply', $homework->id) }}" method="POST" class="mt-3">
+                <form action="{{ route('homework.reply', $homework->id) }}" method="POST"
+                    class="homework-reply-form mt-3" data-id="{{ $homework->id }}">
                     @csrf
                     <div class="form-group mb-2">
                         <label for="reply_{{ $homework->id }}" class="text-white">رد الأستاذ:</label>
@@ -152,10 +153,51 @@
                             @endfor
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-sm btn-success">إرسال</button>
+                    <button type="button" class="btn btn-sm w-100 btn-success submit-reply"
+                        data-id="{{ $homework->id }}">إرسال</button>
+                    <span class="text-info d-none" id="success-message-{{ $homework->id }}">تم إرسال التقييم
+                        بنجاح</span>
                 </form>
             @endif
         </div>
     @endforeach
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.submit-reply').forEach(button => {
+                button.addEventListener('click', function() {
+                    const homeworkId = this.getAttribute('data-id');
+                    const form = document.querySelector(
+                        `.homework-reply-form[data-id="${homeworkId}"]`);
+                    const reply = form.querySelector(`#reply_${homeworkId}`).value;
+                    const rating = form.querySelector(`#rating_${homeworkId}`).value;
 
+                    // إعداد طلب AJAX
+                    fetch(`{{ url('homework/reply') }}/${homeworkId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                reply: reply,
+                                rating: rating
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // عرض رسالة النجاح
+                                document.getElementById(`success-message-${homeworkId}`)
+                                    .classList.remove('d-none');
+                            } else {
+                                alert('حدث خطأ أثناء إرسال التقييم.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                });
+            });
+        });
+    </script>
 </div>

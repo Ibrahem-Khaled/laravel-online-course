@@ -121,6 +121,15 @@
 
 <body>
     @include('homeComponents.header')
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="container main-content">
         <!-- معلومات الدورة -->
         <div class="row">
@@ -201,7 +210,6 @@
             </div>
 
             @include('homeComponents.video-courses.sidebar')
-            @include('homeComponents.video-courses.in_video_usages')
         </div>
     </div>
     @include('homeComponents.footer')
