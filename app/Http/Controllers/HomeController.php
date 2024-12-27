@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\CourseVideo;
 use App\Models\Section;
 use App\Models\User;
+use App\Models\VideoHistory;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -54,10 +55,7 @@ class HomeController extends Controller
 
     public function showVideos(Course $course, CourseVideo $video = null)
     {
-
-        // التحقق إذا كان الكورس يحتوي على فيديوهات
         if ($course->videos->isEmpty()) {
-            // إعادة المستخدم للخلف مع رسالة تنبيه
             return redirect()->back()->with('warning', 'قريباً سيتم إضافة فيديوهات.');
         }
         // إذا لم يتم تحديد فيديو معين، نعرض أول فيديو
@@ -73,8 +71,25 @@ class HomeController extends Controller
 
         // حساب نسبة الإنجاز
         $progress = ($currentVideoIndex / $totalVideos) * 100;
+        VideoHistory::create([
+            'user_id' => auth()->user()->id,
+            'course_video_id' => $video->id
+        ]);
 
-        return view('video-courses', compact('course', 'video', 'progress', 'currentVideoIndex', 'totalVideos'));
+        $videoHistories = auth()->user()
+            ->videoHistories()
+            ->whereIn('course_video_id', $course->videos->pluck('id'))
+            ->get()
+            ->keyBy('id');
+
+        return view('video-courses', compact(
+            'course',
+            'video',
+            'progress',
+            'currentVideoIndex',
+            'totalVideos',
+            'videoHistories'
+        ));
     }
 
     public function allCourses($category_id = null)

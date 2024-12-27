@@ -36,4 +36,10 @@ class CourseVideo extends Model
     {
         return $this->hasMany(inVideoUsage::class);
     }
+    public function histories()
+    {
+        return $this->belongsToMany(User::class, 'video_histories', 'course_video_id', 'user_id')
+            ->withPivot(['completed', 'completed_at', 'last_viewed_time'])
+            ->withTimestamps();
+    }
 }

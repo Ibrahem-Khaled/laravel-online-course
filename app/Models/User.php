@@ -49,4 +49,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserRepots::class, 'teacher_id');
     }
+
+    public function videoHistories()
+    {
+        return $this->belongsToMany(CourseVideo::class, 'video_histories', 'user_id', 'course_video_id')
+            ->withPivot(['completed', 'completed_at', 'last_viewed_time'])
+            ->withTimestamps();
+    }
 }

@@ -91,7 +91,7 @@
         overflow: hidden;
         margin-top: 10px;
     }
-    
+
     .progress-bar {
         background-color: #ff9c00;
         height: 100%;
@@ -148,7 +148,7 @@
         padding: 10px;
     }
 </style>
- 
+
 <div class="col-lg-4" style="margin-top: 5%">
     <!-- قائمة الفيديوهات مع شريط التقدم المدمج -->
     <div class="progress-container">
@@ -159,19 +159,24 @@
     </div>
     <div class="video-list" style="max-height: 470px; overflow-y: auto;">
         @foreach ($course->videos as $index => $otherVideo)
+            @php
+                $history = $videoHistories->get($otherVideo->id);
+                $isCompleted = $history && $history->pivot->completed;
+                $isViewed = $history && !$history->pivot->completed;
+            @endphp
+
             <a href="{{ route('courses.videos', ['course' => $course->id, 'video' => $otherVideo->id]) }}"
                 class="video-list-item {{ $video->id === $otherVideo->id ? 'active' : '' }}">
                 <div class="d-flex align-items-center">
-                    @if ($index < $currentVideoIndex - 1)
-                        <span class="video-status-icon">✔️</span> <!-- رمز للدرس السابق -->
-                    @elseif ($index == $currentVideoIndex - 1)
-                        <span class="video-status-icon">▶️</span> <!-- رمز للفيديو الحالي -->
+                    @if ($isCompleted)
+                        <span class="video-status-icon">✔️</span> <!-- رمز للفيديو المكتمل -->
+                    @elseif ($isViewed)
+                        <span class="video-status-icon">🕒</span> <!-- رمز للفيديو المشاهد -->
                     @else
-                        <span class="video-status-icon">🔒</span> <!-- رمز للدرس التالي -->
+                        <span class="video-status-icon">🔒</span> <!-- رمز للفيديو غير المشاهد -->
                     @endif
                     <span>{{ $index + 1 }}. {{ $otherVideo->title }}</span>
                 </div>
-                {{-- <p class="text-muted m-0">{{ Str::limit($otherVideo->description, 30) }}</p> --}}
             </a>
         @endforeach
     </div>
