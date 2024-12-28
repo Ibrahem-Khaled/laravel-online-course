@@ -11,7 +11,8 @@
 
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logo-ct.png') }}">
 
-    <title>منصة الرواد التعليمية</title>
+    
+    <title>{{ env('APP_NAME') }}</title>
     <style>
         body {
             font-family: "Cairo", serif;

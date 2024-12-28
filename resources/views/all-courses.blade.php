@@ -10,7 +10,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logo-ct.png') }}">
 
-    <title>منصة الرواد التعليمية</title>
+    <title>{{ env('APP_NAME') }}</title>
     <style>
         body {
             font-family: "Cairo", sans-serif;

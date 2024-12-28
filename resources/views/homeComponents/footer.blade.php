@@ -55,7 +55,7 @@
         <hr style="border-color: rgba(255, 255, 255, 0.2); margin: 1rem 0;">
         <div class="row">
             <div class="col-12 text-center">
-                <p class="mb-0 small">&copy; {{ date('Y') }} Al-Ruad Academy. جميع الحقوق محفوظة.</p>
+                <p class="mb-0 small">&copy; {{ date('Y') }} {{env('APP_NAME')}}. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </div>
