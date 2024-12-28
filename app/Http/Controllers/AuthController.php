@@ -97,6 +97,27 @@ class AuthController extends Controller
         return redirect()->back()->with('error', 'البريد الإلكتروني غير موجود في قاعدة البيانات.');
     }
 
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        // التحقق من صحة البيانات المدخلة
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back()->withErrors(['current_password' => 'كلمة المرور الحالية غير صحيحة.']);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'تم تحديث كلمة المرور بنجاح!');
+    }
+
+
     // تنفيذ تسجيل الخروج
     public function logout(Request $request)
     {

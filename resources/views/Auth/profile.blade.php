@@ -20,12 +20,40 @@
             padding-top: 100px;
             text-align: right;
         }
+
+        .modal-header {
+            border-bottom: none;
+        }
+
+        .modal-content {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
     </style>
 </head>
 
 <body>
     @include('homeComponents.header')
-
+    @if ($errors->any())
+        <div class="alert alert-danger w-50 mx-auto align-self-center">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="container mt-5">
         <div class="row">
             <!-- القسم الأيمن (الدورات) -->
@@ -51,24 +79,7 @@
                         </div>
                     </div>
                     <!-- البطاقة الثانية -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card" style="background-color: #06455E; color: white; border: none;">
-                            <img src="https://via.placeholder.com/300x200" class="card-img-top"
-                                alt="تصميم الويب سريع الاستجابة">
-                            <div class="card-body">
-                                <h5 class="card-title">تصميم الويب سريع الاستجابة</h5>
-                                <p class="card-text">
-                                    <i class="fas fa-user"></i> إعداد: يوسف باسم
-                                </p>
-                                <p class="card-text">
-                                    <i class="fas fa-star"></i> 1937 تقييم
-                                </p>
-                                <p class="card-text">
-                                    <i class="fas fa-money-bill"></i> 76.84 ريال
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
             <!-- القسم الأيسر (المعلومات الجانبية) -->
@@ -85,6 +96,12 @@
                             </div>
                         </div>
                         <button class="btn btn-outline-light w-100 mb-3">إعدادات الحساب</button>
+                        <button type="button" class="btn btn-warning w-100 mb-3 text-white"
+                            style="background-color: #ff9c00" data-bs-toggle="modal"
+                            data-bs-target="#changePasswordModal">
+                            تغيير كلمة المرور
+                        </button>
+
                         <hr style="border-top: 1px solid white;">
                         <ul class="list-unstyled">
                             <li class="mb-3">
@@ -101,6 +118,57 @@
                             </li>
                         </ul>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content"
+                style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
+                <div class="modal-header" style="background-color: #072D38; color: white;">
+                    <h5 class="modal-title" id="changePasswordModalLabel">تغيير كلمة المرور</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="إغلاق"></button>
+                </div>
+                <div class="modal-body" style="background-color: #06455E; color: white;">
+                    <form action="{{ route('change-password') }}" method="POST">
+                        @csrf
+
+                        <!-- كلمة المرور القديمة -->
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">كلمة المرور الحالية</label>
+                            <input type="password" name="current_password" id="currentPassword" class="form-control"
+                                placeholder="أدخل كلمة المرور الحالية" required
+                                style="border: 2px solid #072D38; border-radius: 10px;">
+                        </div>
+
+                        <!-- كلمة المرور الجديدة -->
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">كلمة المرور الجديدة</label>
+                            <input type="password" name="new_password" id="newPassword" class="form-control"
+                                placeholder="أدخل كلمة المرور الجديدة" required
+                                style="border: 2px solid #072D38; border-radius: 10px;">
+                        </div>
+
+                        <!-- تأكيد كلمة المرور الجديدة -->
+                        <div class="mb-3">
+                            <label for="confirmNewPassword" class="form-label">تأكيد كلمة المرور الجديدة</label>
+                            <input type="password" name="new_password_confirmation" id="confirmNewPassword"
+                                class="form-control" placeholder="أعد إدخال كلمة المرور الجديدة" required
+                                style="border: 2px solid #072D38; border-radius: 10px;">
+                        </div>
+
+                        <!-- زر التحديث -->
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-warning w-100 text-white"
+                                style="background-color: #ff9c00">تحديث
+                                كلمة المرور</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
