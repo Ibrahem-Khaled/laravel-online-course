@@ -3,6 +3,7 @@
     body {
         height: 100vh;
     }
+
     footer {
         flex-shrink: 0;
     }
@@ -10,33 +11,23 @@
 <!-- Footer Section -->
 <footer style="background-color: #035971; color: white; padding: 1.5rem 0; text-align: center;">
     <div class="container">
-        <div class="row gy-3">
-            <!-- Company Section -->
-            <div class="col-md-3 col-sm-6">
-                <h6 class="fw-bold mb-3">شركة</h6>
-                <ul class="list-unstyled">
-                    <li><a href="#" class="text-light text-decoration-none small">المعلمين</a></li>
-                    <li><a href="#" class="text-light text-decoration-none small">وظائف</a></li>
-                    <li><a href="#" class="text-light text-decoration-none small">اتصال</a></li>
-                </ul>
-            </div>
-
+        <div class="row gy-3">           
             <!-- Product Section -->
             <div class="col-md-3 col-sm-6">
-                <h6 class="fw-bold mb-3">منتج</h6>
+                <h6 class="fw-bold mb-3">برنامج طموح</h6>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-light text-decoration-none small">الدورات</a></li>
-                    <li><a href="#" class="text-light text-decoration-none small">التسعيره</a></li>
-                    <li><a href="#" class="text-light text-decoration-none small">المدونات</a></li>
+                    <li><a href="#" class="text-light text-decoration-none small">المسار</a></li>
+                    <li><a href="#" class="text-light text-decoration-none small">طلاب طموح</a></li>
+                    <li><a href="#" class="text-light text-decoration-none small">اعمال الطلاب</a></li>
                 </ul>
             </div>
 
             <!-- Legal Section -->
             <div class="col-md-3 col-sm-6">
-                <h6 class="fw-bold mb-3">قانوني</h6>
+                <h6 class="fw-bold mb-3">السياسات</h6>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-light text-decoration-none small">شروط واحكام</a></li>
-                    <li><a href="#" class="text-light text-decoration-none small">سياسة الخصوصيه</a></li>
+                    <li><a href="#" class="text-light text-decoration-none small">سياسة التسجيل</a></li>
+                    <li><a href="#" class="text-light text-decoration-none small">سياسة الاستبعاد</a></li>
                 </ul>
             </div>
 
@@ -55,7 +46,7 @@
         <hr style="border-color: rgba(255, 255, 255, 0.2); margin: 1rem 0;">
         <div class="row">
             <div class="col-12 text-center">
-                <p class="mb-0 small">&copy; {{ date('Y') }} {{env('APP_NAME')}}. جميع الحقوق محفوظة.</p>
+                <p class="mb-0 small">&copy; {{ date('Y') }} {{ env('APP_NAME') }}. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </div>
