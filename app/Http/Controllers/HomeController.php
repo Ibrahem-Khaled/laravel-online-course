@@ -78,10 +78,12 @@ class HomeController extends Controller
         // حساب نسبة الإنجاز
         $progress = $totalVideos > 0 ? ($completedVideosCount / $totalVideos) * 100 : 0;
 
-        VideoHistory::create([
-            'user_id' => auth()->user()->id,
-            'course_video_id' => $video->id
-        ]);
+        VideoHistory::updateOrCreate(
+            ['user_id' => auth()->id(), 'course_video_id' => $video->id],
+            [
+                'last_viewed_time' => now(), // تحديث آخر وقت مشاهدة
+            ]
+        );
 
         $videoHistories = auth()->user()
             ->videoHistories()
