@@ -47,6 +47,8 @@ class AuthController extends Controller
     // تنفيذ عملية التسجيل
     public function registerPost(Request $request)
     {
+        $fullPhoneNumber = $request->input('country_code') . $request->input('phone');
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
@@ -59,7 +61,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
+            'phone' => $fullPhoneNumber,
             'address' => $request->address,
             'password' => Hash::make($request->password),
         ]);

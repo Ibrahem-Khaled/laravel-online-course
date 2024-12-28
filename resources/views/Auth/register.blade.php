@@ -116,12 +116,21 @@
                 <!-- الهاتف -->
                 <div class="mb-3">
                     <label for="phone" class="form-label">الهاتف</label>
-                    <input type="tel" name="phone" class="form-control" id="phone"
-                        placeholder="أدخل رقم الهاتف">
+                    <div class="input-group">
+                        <!-- اختيار مفتاح الدولة -->
+                        <select class="form-select" name="country_code" style="max-width: 120px;">
+                            <option value="+20">مصر (+20)</option>
+                            <option value="+966">السعودية (+966)</option>
+                        </select>
+                        <!-- إدخال رقم الهاتف -->
+                        <input type="tel" name="phone" class="form-control" id="phone"
+                            placeholder="أدخل رقم الهاتف" required>
+                    </div>
                     @error('phone')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
+
 
                 <!-- العنوان -->
                 <div class="mb-3">
