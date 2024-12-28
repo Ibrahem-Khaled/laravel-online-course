@@ -32,9 +32,7 @@ class AuthController extends Controller
             return redirect()->route('home')->with('success', 'تم تسجيل الدخول بنجاح');
         }
 
-        return back()->withErrors([
-            'email' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
-        ])->withInput(); // إعادة تعبئة البيانات في حالة الخطأ
+        return redirect()->back()->with('error', 'البريد الإلكتروني او كلمة المرور غير صحيحة');
     }
 
     // عرض صفحة التسجيل
