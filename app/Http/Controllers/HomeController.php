@@ -64,13 +64,20 @@ class HomeController extends Controller
         // حساب ترتيب الفيديو الحالي في قائمة الفيديوهات
         $currentVideoIndex = $course->videos->search(function ($v) use ($video) {
             return $v->id === $video->id;
-        }) + 1; // +1 لأن الترتيب يبدأ من 0
+        }) + 1;
+
+        $completedVideosCount = auth()->user()
+            ->videoHistories()
+            ->whereIn('course_video_id', $course->videos->pluck('id'))
+            ->where('completed', true)
+            ->count();
 
         // إجمالي عدد الفيديوهات
         $totalVideos = $course->videos->count();
 
         // حساب نسبة الإنجاز
-        $progress = ($currentVideoIndex / $totalVideos) * 100;
+        $progress = $totalVideos > 0 ? ($completedVideosCount / $totalVideos) * 100 : 0;
+
         VideoHistory::create([
             'user_id' => auth()->user()->id,
             'course_video_id' => $video->id

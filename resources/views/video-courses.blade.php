@@ -195,7 +195,7 @@
                 </ul>
                 <div class="tab-content" id="videoTabsContent">
                     <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
-                        <h6 class="text-white text-center mt-3 p-3">{{ $video->description }}</h6>
+                        <h6 class="text-white text-right mt-3 p-3" style="line-height: 2;">{{ $video->description }}</h6>
                     </div>
                     <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
                         @include('homeComponents.video-courses.video-software')
