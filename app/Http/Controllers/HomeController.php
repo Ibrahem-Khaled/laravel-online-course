@@ -110,4 +110,10 @@ class HomeController extends Controller
         }
         return view('all-courses', compact('courses'));
     }
+
+    public function allStudentsSections()
+    {
+        $students = User::where('role', 'student')->whereHas('sections')->get();
+        return view('all_students_section', compact('students'));
+    }
 }

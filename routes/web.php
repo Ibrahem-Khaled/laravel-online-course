@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([], function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('all-students-sections', [HomeController::class, 'allStudentsSections'])->name('all-students-sections');
 
     //this routes for video-courses with home works and comments and rating
     Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos');

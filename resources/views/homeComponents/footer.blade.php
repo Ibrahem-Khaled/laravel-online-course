@@ -11,13 +11,14 @@
 <!-- Footer Section -->
 <footer style="background-color: #035971; color: white; padding: 1.5rem 0; text-align: center;">
     <div class="container">
-        <div class="row gy-3">           
+        <div class="row gy-3">
             <!-- Product Section -->
             <div class="col-md-3 col-sm-6">
                 <h6 class="fw-bold mb-3">برنامج طموح</h6>
                 <ul class="list-unstyled">
                     <li><a href="#" class="text-light text-decoration-none small">المسار</a></li>
-                    <li><a href="#" class="text-light text-decoration-none small">طلاب طموح</a></li>
+                    <li><a href="{{ route('all-students-sections') }}" class="text-light text-decoration-none small">طلاب
+                            طموح</a></li>
                     <li><a href="#" class="text-light text-decoration-none small">اعمال الطلاب</a></li>
                 </ul>
             </div>

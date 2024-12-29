@@ -156,8 +156,14 @@
                 </li>
                 @auth
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="accountDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ Auth::user()->avatar
+                                ? asset('storage/' . Auth::user()->avatar)
+                                : (Auth::user()->gender == 'female'
+                                    ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
+                                    : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
+                                alt="Avatar" class="rounded-circle" style="width: 30px; height: 30px; margin: 0 8px;">
                             {{ Auth::user()->name }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="accountDropdown">
