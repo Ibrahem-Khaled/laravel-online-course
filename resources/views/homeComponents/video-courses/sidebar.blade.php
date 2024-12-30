@@ -168,12 +168,27 @@
             <a href="{{ route('courses.videos', ['course' => $course->id, 'video' => $otherVideo->id]) }}"
                 class="video-list-item {{ $video->id === $otherVideo->id ? 'active' : '' }}">
                 <div class="d-flex align-items-center">
-                    @if ($isCompleted)
-                        <span class="video-status-icon">✔️</span> <!-- رمز للفيديو المكتمل -->
+                    <!-- التحقق من حالة الفيديو -->
+                    @if ($video->id === $otherVideo->id)
+                        <!-- أيقونة للفيديو الذي يتم تشغيله حالياً -->
+                        <span class="video-status-icon">
+                            <i class="fas fa-play-circle" style="color: #007bff;"></i>
+                        </span>
+                    @elseif ($isCompleted)
+                        <!-- أيقونة للفيديو المكتمل -->
+                        <span class="video-status-icon">
+                            <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                        </span>
                     @elseif ($isViewed)
-                        <span class="video-status-icon">🕒</span> <!-- رمز للفيديو المشاهد -->
+                        <!-- أيقونة للفيديو المشاهد -->
+                        <span class="video-status-icon">
+                            <i class="fas fa-clock" style="color: #ffc107;"></i>
+                        </span>
                     @else
-                        <span class="video-status-icon">🔒</span> <!-- رمز للفيديو غير المشاهد -->
+                        <!-- أيقونة للفيديو غير المشاهد -->
+                        <span class="video-status-icon">
+                            <i class="fas fa-lock" style="color: #dc3545;"></i>
+                        </span>
                     @endif
                     <span>{{ $index + 1 }}. {{ $otherVideo->title }}</span>
                 </div>

@@ -126,6 +126,20 @@ class UserController extends Controller
         return view('dashboard.users.reports', compact('user', 'teachers'));
     }
 
+    public function changePassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'تم تغيير كلمة المرور بنجاح.');
+    }
+
+
     public function storeReport(Request $request)
     {
         $request->validate([

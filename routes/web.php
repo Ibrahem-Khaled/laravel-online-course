@@ -31,7 +31,7 @@ Route::group([], function () {
     Route::get('all-students-sections', [HomeController::class, 'allStudentsSections'])->name('all-students-sections');
 
     //this routes for video-courses with home works and comments and rating
-    Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos');
+    Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos')->middleware('auth');
 
     Route::post('add-homework', [videoCourseController::class, 'addHomework'])->name('add-homework')->middleware('auth');
     Route::post('add-comment', [videoCourseController::class, 'videoDiscssion'])->name('add-comment')->middleware('auth');
@@ -51,12 +51,13 @@ Route::group([], function () {
 
 });
 
-Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'isAdmin']], function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admin,supervisor']], function () {
 
     Route::get('/', [HomeController::class, 'dashboard'])->name('home.dashboard');
 
     //this user controller for dashboard
     Route::resource('users', UserController::class);
+    Route::put('/users/{id}/change-password', [UserController::class, 'changePassword'])->name('users.changePassword');
     Route::get('show-all-user-reports/{id}', [UserController::class, 'showAllUserReports'])->name('show.all.user.reports');
     Route::post('/user-reports', [UserController::class, 'storeReport'])->name('userReports.store');
     Route::delete('/user-reports/{id}', [UserController::class, 'destroyReport'])->name('userReports.destroy');

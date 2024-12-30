@@ -26,6 +26,9 @@
                     <button class="btn btn-warning" data-bs-toggle="modal"
                         data-bs-target="#editUserModal{{ $user->id }}">تعديل</button>
 
+                    <button class="btn btn-info" data-bs-toggle="modal"
+                        data-bs-target="#changePasswordModal{{ $user->id }}">تغيير كلمة المرور</button>
+
                     <!-- زر لحذف المستخدم -->
                     <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline-block;">
                         @csrf
@@ -61,6 +64,41 @@
                     </div>
                 </div>
             </div>
+
+            <!-- مودال لتغيير كلمة المرور -->
+            <div class="modal fade" id="changePasswordModal{{ $user->id }}" tabindex="-1"
+                aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="{{ route('users.changePassword', $user->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="modal-header">
+                                <h5 class="modal-title">تغيير كلمة المرور</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">كلمة المرور الجديدة</label>
+                                    <input type="password" name="password" class="form-control" id="newPassword"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">تأكيد كلمة المرور</label>
+                                    <input type="password" name="password_confirmation" class="form-control"
+                                        id="confirmPassword" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                                <button type="submit" class="btn btn-primary">تغيير</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
 
         @empty
             <tr>
