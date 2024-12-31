@@ -122,10 +122,11 @@
                                             <h5 class="card-title" style="color: #fff; font-weight: bold;">
                                                 {{ $item->name }}
                                             </h5>
-                                            <p class="card-text" style="color: #aaa;">{{ $item->description }}</p>
+                                            {{-- <p class="card-text" style="color: #aaa;">
+                                                {{ $item->description ? $item->description : 'لا يوجد وصف' }}</p> --}}
                                             <div class="d-flex align-items-center justify-content-center">
                                                 <div class="d-flex flex-wrap align-items-center"
-                                                    style="background-color: #035971; padding: 10px 20px; border-radius: 15px; width: 60%;">
+                                                    style="background-color: #035971; padding: 10px 20px; border-radius: 15px;">
                                                     @foreach ($item->users->where('role', 'student')->take(3) as $student)
                                                         <img src="{{ $student->image
                                                             ? asset('storage/' . $student->image)
