@@ -97,7 +97,7 @@
                         </div>
                         <button class="btn btn-outline-light w-100 mb-3">إعدادات الحساب</button>
                         <button type="button" class="btn btn-warning w-100 mb-3 text-white"
-                            style="background-color: #ff9c00" data-bs-toggle="modal"
+                            style="background-color: #ed6b2f" data-bs-toggle="modal"
                             data-bs-target="#changePasswordModal">
                             تغيير كلمة المرور
                         </button>
@@ -165,7 +165,7 @@
                         <!-- زر التحديث -->
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-warning w-100 text-white"
-                                style="background-color: #ff9c00">تحديث
+                                style="background-color: #ed6b2f">تحديث
                                 كلمة المرور</button>
                         </div>
                     </form>

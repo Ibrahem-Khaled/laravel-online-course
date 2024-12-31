@@ -6,7 +6,7 @@
             @foreach ($video->videoUsage->where('type', 'attachment') as $item)
                 <div class="list-group-item" style="background-color: #004051; color: #ffffff; border-radius: 12px; margin-bottom: 15px; padding: 20px;">
                     <!-- العنوان -->
-                    <h6 style="font-weight: bold; color: #ff9c00; margin-bottom: 10px;">{{ $item->title }}</h6>
+                    <h6 style="font-weight: bold; color: #ed6b2f; margin-bottom: 10px;">{{ $item->title }}</h6>
 
                     <!-- الوصف -->
                     @if ($item->description)

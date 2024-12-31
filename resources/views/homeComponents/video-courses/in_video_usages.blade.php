@@ -1,6 +1,6 @@
 @if (Auth::user()->role == 'admin' || Auth::user()->role == 'supervisor' || Auth::user()->role == 'teacher')
     <!-- زر الإضافة -->
-    <button type="button" class="btn" style="background-color: #ff9c00; color: #fff;" data-bs-toggle="modal"
+    <button type="button" class="btn" style="background-color: #ed6b2f; color: #fff;" data-bs-toggle="modal"
         data-bs-target="#addUsageModal" style="margin-bottom: 20px;">
         إضافة مرفقات الدرس
     </button>
@@ -70,7 +70,7 @@
                         <!-- زر الإضافة -->
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary w-100"
-                                style="background-color: #ff9c00; border: none; border-radius: 8px; padding: 10px 20px; font-weight: bold;">
+                                style="background-color: #ed6b2f; border: none; border-radius: 8px; padding: 10px 20px; font-weight: bold;">
                                 إضافة
                             </button>
                         </div>

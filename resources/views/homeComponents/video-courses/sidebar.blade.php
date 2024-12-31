@@ -7,36 +7,11 @@
         max-height: 60%;
         overflow: auto;
         scrollbar-width: thin;
-        /* لتحديد عرض شريط التمرير في فايرفوكس */
         scrollbar-color: #035971 #01222d;
-        /* لتحديد ألوان شريط التمرير في فايرفوكس */
     }
 
-    /* تخصيص شريط التمرير في المتصفحات التي تدعم webkit */
-    .video-list::-webkit-scrollbar {
-        width: 8px;
-        /* عرض شريط التمرير */
-    }
-
-    .video-list::-webkit-scrollbar-track {
-        background: #01222d;
-        /* لون المسار */
-        border-radius: 10px;
-        /* جعل الحواف دائرية */
-    }
-
-    .video-list::-webkit-scrollbar-thumb {
-        background-color: #2e8b57;
-        /* لون مقبض التمرير */
-        border-radius: 10px;
-        /* جعل الحواف دائرية */
-        border: 2px solid #01222d;
-        /* إضافة حد للمقبض */
-    }
-
-    .video-list::-webkit-scrollbar-thumb:hover {
-        background-color: #45a76b;
-        /* لون المقبض عند التمرير */
+    a {
+        text-decoration: none;
     }
 
     .video-list-item {
@@ -54,12 +29,12 @@
     }
 
     .video-list-item.active {
-        background-color: #ff9c00;
+        background-color: #ed6b2f;
         color: #fff;
     }
 
     .video-list-item:hover {
-        background-color: #ff9c00;
+        background-color: #ed6b2f;
         color: #fff;
     }
 
@@ -93,7 +68,7 @@
     }
 
     .progress-bar {
-        background-color: #ff9c00;
+        background-color: #ed6b2f;
         height: 100%;
     }
 
@@ -103,39 +78,6 @@
         padding: 15px;
         border-radius: 10px;
         margin-top: 20px;
-        color: #fff;
-    }
-
-    .trainer-info {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .trainer-info img {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        margin-right: 15px;
-        border: 2px solid #ff9c00;
-    }
-
-    .trainer-buttons {
-        margin: 20px 10px;
-    }
-
-    .trainer-button {
-        background-color: #007b8f;
-        color: #fff;
-        padding: 8px 15px;
-        border-radius: 5px;
-        text-decoration: none;
-        margin-right: 5px;
-        transition: background-color 0.3s;
-    }
-
-    .trainer-button:hover {
-        background-color: #ff9c00;
         color: #fff;
     }
 
@@ -149,7 +91,7 @@
     }
 </style>
 
-<div class="col-lg-4" style="margin-top: 5%">
+<div class="col-lg-4" style="margin-top: 1.5%">
     <!-- قائمة الفيديوهات مع شريط التقدم المدمج -->
     <div class="progress-container">
         <h5>نسبة الإنجاز: {{ round($progress, 2) }}%</h5>
@@ -172,7 +114,7 @@
                     @if ($video->id === $otherVideo->id)
                         <!-- أيقونة للفيديو الذي يتم تشغيله حالياً -->
                         <span class="video-status-icon">
-                            <i class="fas fa-play-circle" style="color: #007bff;"></i>
+                            <i class="fas fa-play-circle" style="color: #fff;"></i>
                         </span>
                     @elseif ($isCompleted)
                         <!-- أيقونة للفيديو المكتمل -->
@@ -182,12 +124,12 @@
                     @elseif ($isViewed)
                         <!-- أيقونة للفيديو المشاهد -->
                         <span class="video-status-icon">
-                            <i class="fas fa-clock" style="color: #ffc107;"></i>
+                            <i class="fas fa-clock" style="color: #fff;"></i>
                         </span>
                     @else
                         <!-- أيقونة للفيديو غير المشاهد -->
                         <span class="video-status-icon">
-                            <i class="fas fa-lock" style="color: #dc3545;"></i>
+                            <i class="fas fa-lock" style="color: #fff;"></i>
                         </span>
                     @endif
                     <span>{{ $index + 1 }}. {{ $otherVideo->title }}</span>
@@ -197,19 +139,28 @@
     </div>
 
     <!-- قسم المدرب -->
-    <div class="trainer-section">
-        <h5>المدربين</h5>
-        <div class="trainer-info">
-            <img src="{{ $course->user->image ? asset('storage/' . $course->user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
-                alt="Trainer Image">
-            <div>
-                <p class="m-0">{{ $course->user->name }}</p>
-                <small>خبير ومدرب معتمد من أدوي</small>
+    <div class="trainer-section text-white p-3 rounded mt-3">
+        <h5 class="mb-3">المدربين</h5>
+        <div class="d-flex align-items-start mb-3 justify-content-around">
+            <img src="{{ $course->user->image
+                ? asset('storage/' . $course->user->image)
+                : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
+                alt="Trainer Image" class="rounded-circle me-3" style="width: 60px; height: 60px;">
+            <div class="ms-3">
+                <p class="m-0 fw-bold">{{ $course->user->name }}</p>
+                <small>{{ $course->user()?->userInfo?->bio ?? 'لا توجد معلومات متاحة' }}</small>
             </div>
-        </div>
-        <div class="trainer-buttons">
-            <a href="chat_link_here" class="trainer-button">دردشة</a>
-            <a href="https://wa.me/{{ $course->user->phone }}" target="_blank" class="trainer-button">واتساب</a>
+            <div class="d-flex gap-2 ">
+                <a href="chat_link_here" class="d-flex justify-content-center align-items-center text-white"
+                    style="width: 40px; height: 40px; font-size: 25px;">
+                    <i class="fas fa-comment"></i>
+                </a>
+                <a href="https://wa.me/{{ $course->user->phone }}" target="_blank"
+                    class="d-flex justify-content-center align-items-center text-white" text-white
+                    style="width: 40px; height: 40px; font-size: 25px;">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+            </div>
         </div>
     </div>
 

@@ -51,4 +51,10 @@ class Course extends Model
     {
         return $this->belongsToMany(Section::class, 'section_courses', 'course_id', 'section_id');
     }
+
+    public function requirements()
+    {
+        return $this->hasMany(inVideoUsage::class, 'course_video_id')
+            ->where('type', 'software');
+    }
 }

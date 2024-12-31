@@ -19,7 +19,7 @@
                 (Auth::check() && Auth::user()->role == 'teacher') ||
                     Auth::user()->role == 'supervisor' ||
                     Auth::user()->role == 'admin')
-                <button type="button" class="btn btn-sm mt-3" style="background-color: #ff9c00; color: #fff;"
+                <button type="button" class="btn btn-sm mt-3" style="background-color: #ed6b2f; color: #fff;"
                     data-bs-toggle="modal" data-bs-target="#editQuestionModal">
                     @if ($video->question)
                         تعديل السؤال الواجب
@@ -48,7 +48,7 @@
                                     </div>
                                     <div class="d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary w-100"
-                                            style="background-color: #ff9c00; border: none;">تحديث السؤال</button>
+                                            style="background-color: #ed6b2f; border: none;">تحديث السؤال</button>
                                     </div>
                                 </form>
                             </div>

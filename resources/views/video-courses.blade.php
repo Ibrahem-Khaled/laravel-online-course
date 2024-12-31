@@ -57,6 +57,34 @@
             position: relative;
         }
 
+        .rating-container .rating-text {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .rating-stars i {
+            font-size: 1.2rem;
+        }
+
+        .rating-stars .fa-star,
+        .rating-stars .fa-star-half-alt {
+            animation: shine 1.5s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
         .course-meta {
             display: flex;
             align-items: center;
@@ -105,8 +133,8 @@
         }
 
         .nav-tabs .nav-link.active {
-            color: #ff9c00;
-            border-bottom: 3px solid #ff9c00;
+            color: #ed6b2f;
+            border-bottom: 3px solid #ed6b2f;
             background-color: #072D38;
         }
 
@@ -137,7 +165,7 @@
                 <div class="course-info">
                     <h2 class="course-title">{{ $course->title }}</h2>
                     <div class="course-meta">
-                        <div class="trainer-info">
+                        {{-- <div class="trainer-info">
                             <img src="{{ $course->user->image ? asset('storage/' . $course->user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
                                 alt="Trainer Image">
                             <div>
@@ -145,8 +173,12 @@
                                 <small>خبير ومدرب</small>
                             </div>
                         </div>
+                        <h6>|</h6> --}}
+                        <span>المتطلبات:
+                            {{ $course->requirements()?->where('type', 'software')->first()?->title ?? 'لا توجد متطلبات حالياً' }}</span>
                         <h6>|</h6>
-                        <span>عدد الطلبات: 7555</span>
+                        <span>عدد الساعات:
+                            {{ $course->duration_in_hours }}</span>
                         <h6>|</h6>
                         <span>مستوى الدورة:
                             @if ($course->difficulty_level == 'beginner')
@@ -158,7 +190,23 @@
                             @endif
                         </span>
                         <h6>|</h6>
-                        <span>({{ $course->ratings?->avg('rating') ?? 0 }}) <span style="color: gold;">⭐</span></span>
+                        <div class="d-flex align-items-center gap-2 rating-container">
+                            <span class="badge text-white text-dark rating-text" style="background-color: #ed6b2f;">
+                                {{ round($course->ratings?->avg('rating') ?? 0, 1) }}
+                            </span>
+                            <div class="rating-stars">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= floor($course->ratings?->avg('rating') ?? 0))
+                                        <i class="fas fa-star" style="color: #ed6b2f;"></i>
+                                    @elseif ($i - ($course->ratings?->avg('rating') ?? 0) < 1)
+                                        <i class="fas fa-star-half-alt" style="color: #ed6b2f;"></i>
+                                    @else
+                                        <i class="far fa-star text-secondary"></i>
+                                    @endif
+                                @endfor
+                            </div>
+                        </div>
+
                         {{-- <h6>|</h6>
                         <span>السعر: ${{ $course->price }}</span> --}}
                     </div>
@@ -195,7 +243,8 @@
                 </ul>
                 <div class="tab-content" id="videoTabsContent">
                     <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
-                        <h6 class="text-white text-right mt-3 p-3" style="line-height: 2;">{{ $video->description }}</h6>
+                        <h6 class="text-white text-right mt-3 p-3" style="line-height: 2;">{{ $video->description }}
+                        </h6>
                     </div>
                     <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
                         @include('homeComponents.video-courses.video-software')

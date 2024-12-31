@@ -81,7 +81,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <a href="{{ $section?->meeting_link }}" target="_blank" class="btn "
-                style="background: #ff9c00; color: #fff;">رابط
+                style="background: #ed6b2f; color: #fff;">رابط
                 المحاضرة اليومي</a>
         </div>
     </div>

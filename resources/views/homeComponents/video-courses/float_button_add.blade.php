@@ -16,8 +16,8 @@
     }
 
     .nav-tabs .nav-link.active {
-        color: #ff9c00;
-        border-bottom: 3px solid #ff9c00;
+        color: #ed6b2f;
+        border-bottom: 3px solid #ed6b2f;
         background-color: #072D38;
     }
 
@@ -33,21 +33,21 @@
 @if (Auth::user()->role == 'teacher' || Auth::user()->role == 'admin' || Auth::user()->role == 'supervisor')
     <button type="button" class="btn btn-floating" data-bs-toggle="modal" data-bs-target="#addCourseModal"
         style="position: fixed; 
-background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width: 60px; height: 60px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+background-color: #ed6b2f; bottom: 20px; right: 20px; border-radius: 50%; width: 60px; height: 60px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
         <i class="bi bi-plus" style="font-size: 24px; color: #fff;"></i>
     </button>
 
     <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content" style="background-color: #02475E; color: #fff;">
-                <div class="modal-header" style="border-bottom: 1px solid #ff9c00;">
+                <div class="modal-header" style="border-bottom: 1px solid #ed6b2f;">
                     <h5 class="modal-title" id="addCourseModalLabel">إدارة الدرس</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Tabs Navigation -->
                     <ul class="nav nav-tabs" id="addCourseTabs" role="tablist"
-                        style="border-bottom: 1px solid #ff9c00;">
+                        style="border-bottom: 1px solid #ed6b2f;">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="upload-video-tab" data-bs-toggle="tab"
                                 data-bs-target="#upload-video" type="button" role="tab"
@@ -140,7 +140,7 @@ background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width:
 
                                 <div class="d-flex justify-content-end">
                                     <button type="submit" class="btn btn-warning w-100"
-                                        style="background-color: #ff9c00; color: #fff;">رفع الفيديو</button>
+                                        style="background-color: #ed6b2f; color: #fff;">رفع الفيديو</button>
                                 </div>
                             </form>
                         </div>
@@ -197,7 +197,7 @@ background-color: #ff9c00; bottom: 20px; right: 20px; border-radius: 50%; width:
 
                     </div>
                 </div>
-                <div class="modal-footer" style="border-top: 1px solid #ff9c00;">
+                <div class="modal-footer" style="border-top: 1px solid #ed6b2f;">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
                 </div>
             </div>

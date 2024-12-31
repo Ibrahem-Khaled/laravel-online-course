@@ -1,4 +1,21 @@
 <style>
+    body::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    body::-webkit-scrollbar-track {
+        background: #01222d;
+    }
+
+    body::-webkit-scrollbar-thumb {
+        background-color: #ed6b2f;
+        border: 2px solid #01222d;
+    }
+
+    body::-webkit-scrollbar-thumb:hover {
+        background-color: #ed6b2f;
+    }
+
     .navbar {
         background-color: #035971;
         direction: rtl;
@@ -8,19 +25,14 @@
         z-index: 999;
     }
 
-    .navbar-brand {
-        margin-left: auto;
-        /* يجعل اللوجو في أقصى اليمين */
-    }
-
     .navbar-brand img {
-        width: 150px;
+        width: 40px;
         height: auto;
     }
 
     .navbar-nav {
         margin: auto;
-        width: 80%;
+        width: 75%;
         justify-content: space-between;
     }
 

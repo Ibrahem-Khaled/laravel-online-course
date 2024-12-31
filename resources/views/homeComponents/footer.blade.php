@@ -34,7 +34,7 @@
 
             <!-- Contact Info Section -->
             <div class="col-md-3 col-sm-6 text-md-end text-sm-start">
-                <img src="{{ asset('assets/img/logo-ct.png') }}" alt="Al-Ruad"
+                <img src="{{ asset('assets/img/logo-ct-dark.png') }}" alt="Al-Ruad"
                     style="width: 150px; margin-bottom: 1rem;">
                 <p class="small mb-1"><i class="bi bi-whatsapp"></i>
                     <a href="https://wa.me/966581870300" target="_blank" class="text-light text-decoration-none">+966 58

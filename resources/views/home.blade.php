@@ -11,7 +11,7 @@
 
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logo-ct.png') }}">
 
-    
+
     <title>{{ env('APP_NAME') }}</title>
     <style>
         body {
@@ -25,6 +25,7 @@
 
         h4 {
             color: #F4813E;
+            margin: 10px 0;
         }
 
         /* Responsive Design */
@@ -104,7 +105,7 @@
     @include('homeComponents.home.best-students')
 
     <section class="d-flex flex-column align-items-center justify-content-center mt-5" style="text-align: center;">
-        <h4 class="mb-4" style="color: #F4813E; font-size: 24px;">الفصول الدراسية</h4>
+        <h4 class="mb-4">الفصول الدراسية</h4>
         <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel"
             style="position: relative; height: auto; width: 100%;">
             <div class="carousel-inner" style="max-width: 80%; margin: auto;">
@@ -123,14 +124,17 @@
                                             </h5>
                                             <p class="card-text" style="color: #aaa;">{{ $item->description }}</p>
                                             <div class="d-flex align-items-center justify-content-center">
-                                                <div
-                                                    style="background-color: #035971; padding: 10px 20px; border-radius: 15px; display: flex; align-items: center;">
-                                                    <img src="https://via.placeholder.com/40"
-                                                        class="rounded-circle me-2" alt="طالب">
-                                                    <img src="https://via.placeholder.com/40"
-                                                        class="rounded-circle me-2" alt="طالب">
-                                                    <img src="https://via.placeholder.com/40"
-                                                        class="rounded-circle me-2" alt="طالب">
+                                                <div class="d-flex flex-wrap align-items-center"
+                                                    style="background-color: #035971; padding: 10px 20px; border-radius: 15px; width: 60%;">
+                                                    @foreach ($item->users->where('role', 'student')->take(3) as $student)
+                                                        <img src="{{ $student->image
+                                                            ? asset('storage/' . $student->image)
+                                                            : ($student->userInfo?->gender == 'female'
+                                                                ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
+                                                                : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
+                                                            class="rounded-circle me-2" alt="{{ $student->name }}"
+                                                            style="width: 40px; height: 40px; object-fit: cover;">
+                                                    @endforeach
                                                     <span
                                                         style="color: white; margin-left: 10px;">+{{ $item->users->where('role', 'student')->count() }}</span>
                                                 </div>
