@@ -11,7 +11,9 @@
 
                     <!-- الوصف -->
                     @if ($item->description)
-                        <p style="font-size: 14px; margin-bottom: 10px; color: #e0e0e0;">{{ $item->description }}</p>
+                        <p style="font-size: 14px; margin-bottom: 10px; color: #e0e0e0;">
+                            {!! formatTextWithLinks($item->description) !!}
+                        </p>
                     @endif
 
                     <!-- الصورة -->
