@@ -4,7 +4,8 @@
         <h5 class="text-white mb-4 font-weight-bold text-center">المرفقات</h5>
         <div class="list-group">
             @foreach ($video->videoUsage->where('type', 'attachment') as $item)
-                <div class="list-group-item" style="background-color: #004051; color: #ffffff; border-radius: 12px; margin-bottom: 15px; padding: 20px;">
+                <div class="list-group-item"
+                    style="background-color: #004051; color: #ffffff; border-radius: 12px; margin-bottom: 15px; padding: 20px;">
                     <!-- العنوان -->
                     <h6 style="font-weight: bold; color: #ed6b2f; margin-bottom: 10px;">{{ $item->title }}</h6>
 
@@ -27,6 +28,22 @@
                             style="border-radius: 8px; margin-bottom: 10px;">
                             <i class="bi bi-file-earmark"></i> تحميل الملف
                         </a>
+                    @endif
+
+                    <!-- زر المسح -->
+                    @if (
+                        (auth()->check() && auth()->user()->role == 'admin') ||
+                            auth()->user()->role == 'supervisor' ||
+                            auth()->user()->role == 'teacher')
+                        <form action="{{ route('videoUsage.destroy', $item->id) }}" method="POST"
+                            style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                style="border-radius: 8px; margin-bottom: 10px;">
+                                <i class="bi bi-trash"></i> مسح
+                            </button>
+                        </form>
                     @endif
                 </div>
             @endforeach

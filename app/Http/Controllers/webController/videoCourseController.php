@@ -8,6 +8,7 @@ use App\Models\inVideoUsage;
 use App\Models\VideoHomeWork;
 use App\Models\VideoDiscussion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class videoCourseController extends Controller
 {
@@ -103,6 +104,18 @@ class videoCourseController extends Controller
         }
 
         return redirect()->back()->with('success', 'تمت الإضافة بنجاح!');
+    }
+
+    public function destroyVideoUsage($id)
+    {
+        // البحث عن العنصر
+        $videoUsage = inVideoUsage::findOrFail($id);
+        if ($videoUsage->file) {
+            Storage::delete($videoUsage->file);
+        }
+        $videoUsage->delete();
+
+        return redirect()->back()->with('success', 'تم حذف المرفق بنجاح.');
     }
 
     public function updateQuestion(Request $request, $id)
