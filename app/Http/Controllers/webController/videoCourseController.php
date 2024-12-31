@@ -88,13 +88,8 @@ class videoCourseController extends Controller
 
         foreach ($request->usages as $usage) {
             $imagePath = isset($usage['image']) ? $usage['image']->store('images', 'public') : null;
+            $filePath = isset($usage['file']) ? $usage['file']->store('files', 'public') : null;
 
-            $filePaths = [];
-            if (isset($usage['files'])) {
-                foreach ($usage['files'] as $file) {
-                    $filePaths[] = $file->store('files', 'public');
-                }
-            }
 
             inVideoUsage::create([
                 'user_id' => auth()->id(),
@@ -103,7 +98,7 @@ class videoCourseController extends Controller
                 'title' => $usage['title'],
                 'description' => $usage['description'],
                 'image' => $imagePath,
-                'file' => json_encode($filePaths),
+                'file' => $filePath,
             ]);
         }
 
