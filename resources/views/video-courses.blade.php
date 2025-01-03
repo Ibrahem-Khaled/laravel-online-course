@@ -17,7 +17,6 @@
             color: #fff;
             margin: 0;
             padding-top: 100px;
-
         }
 
         .form-control {
@@ -243,8 +242,21 @@
                 </ul>
                 <div class="tab-content" id="videoTabsContent">
                     <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
-                        <h6 class="text-white text-right mt-3 p-3" style="line-height: 2;">{{ $video->description }}
-                        </h6>
+                        @if (Auth::check() && in_array(Auth::user()->role, ['admin', 'supervisor', 'teacher']))
+                            <!-- محرر النصوص -->
+                            <form action="{{ route('videos.updateDescription', $video->id) }}" method="POST"
+                                id="description-form">
+                                @csrf
+                                @method('PUT')
+                                <div id="description-editor" style="height: 300px;">{!! $video->description !!}</div>
+                                <input type="hidden" name="description" id="description-input">
+                                <button type="submit" class="btn btn-primary mt-3">حفظ التعديلات</button>
+                            </form>
+                        @else
+                            <!-- عرض الوصف فقط -->
+                            <h6 class="text-white text-right mt-3 p-3" style="line-height: 2;">{{ $video->description }}
+                            </h6>
+                        @endif
                     </div>
                     <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
                         @include('homeComponents.video-courses.video-software')
@@ -266,6 +278,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('description-editor')) {
+                var quill = new Quill('#description-editor', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            ['bold', 'italic', 'underline'], // تنسيقات النصوص
+                            [{
+                                'list': 'ordered'
+                            }, {
+                                'list': 'bullet'
+                            }], // القوائم
+                            ['link'] // الروابط
+                        ]
+                    }
+                });
+
+                // عند إرسال النموذج، قم بنقل محتوى المحرر إلى الحقل المخفي
+                document.getElementById('description-form').addEventListener('submit', function(e) {
+                    document.getElementById('description-input').value = quill.root.innerHTML;
+                });
+            }
+        });
+    </script>
+    <!-- Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 
 </body>
 

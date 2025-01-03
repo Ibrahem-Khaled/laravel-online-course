@@ -38,6 +38,7 @@ Route::group([], function () {
     Route::post('homework/reply/{id}', [videoCourseController::class, 'homeworkReply'])->name('homework.reply')->middleware('auth');
     Route::post('/video-usage/add', [videoCourseController::class, 'addVideoUsage'])->name('addVideoUsage')->middleware('auth');
     Route::delete('/video-usage/{id}', [videoCourseController::class, 'destroyVideoUsage'])->name('videoUsage.destroy');
+    Route::put('/videos/{id}/update-description', [videoCourseController::class, 'updateDescription'])->name('videos.updateDescription');
 
     Route::put('/video/{id}/question', [videoCourseController::class, 'updateQuestion'])->name('updateQuestion')->middleware('auth');
 

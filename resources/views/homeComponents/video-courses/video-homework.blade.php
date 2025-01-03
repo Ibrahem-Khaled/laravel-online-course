@@ -92,29 +92,33 @@
     <h5 class="mt-4 mb-3">واجبات الطلاب ({{ $video->homeWorks->count() }})</h5>
     @foreach ($video->homeWorks as $homework)
         <div class="p-3 mb-3" style="background-color: #004051; border-radius: 10px;">
-            <!-- معلومات الطالب -->
-            <div class="d-flex align-items-center mb-2">
-                <img src="{{ $homework->user->image
-                    ? asset('storage/' . $homework->user->image)
-                    : ($homework->user?->userInfo?->gender == 'female'
-                        ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
-                        : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
-                    alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
-                <div class="ms-3" style="margin-right: 10px;">
-                    <p class="m-0 text-white">{{ $homework->user->name }}</p>
-                    <small class="text-white">{{ $homework->created_at->locale('ar')->diffForHumans() }}</small>
+            @if (Auth::check() && (Auth::user()->role != 'student' || Auth::id() == $homework->user_id))
+                <!-- معلومات الطالب -->
+                <div class="d-flex align-items-center mb-2">
+                    <img src="{{ $homework->user->image
+                        ? asset('storage/' . $homework->user->image)
+                        : ($homework->user?->userInfo?->gender == 'female'
+                            ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
+                            : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
+                        alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
+                    <div class="ms-3" style="margin-right: 10px;">
+                        <p class="m-0 text-white">{{ $homework->user->name }}</p>
+                        <small class="text-white">{{ $homework->created_at->locale('ar')->diffForHumans() }}</small>
+                    </div>
                 </div>
-            </div>
 
-            <!-- محتوى الواجب -->
-            <div class="p-2 rounded text-white" style="background-color: #035971;">
-                <p class="mb-1">{{ $homework->text ?? 'لا يوجد نص مكتوب' }}</p>
-                @if ($homework->file)
-                    <a href="{{ asset('uploads/' . $homework->file) }}" target="_blank" class="btn btn-sm btn-light">
-                        <i class="bi bi-file-earmark"></i> عرض الملف
-                    </a>
-                @endif
-            </div>
+                <!-- محتوى الواجب -->
+                <div class="p-2 rounded text-white" style="background-color: #035971;">
+                    <p class="mb-1">{{ $homework->text ?? 'لا يوجد نص مكتوب' }}</p>
+                    @if ($homework->file)
+                        <a href="{{ asset('uploads/' . $homework->file) }}" target="_blank"
+                            class="btn btn-sm btn-light">
+                            <i class="bi bi-file-earmark"></i> عرض الملف
+                        </a>
+                    @endif
+                </div>
+            @endif
+
 
             <!-- رد الأستاذ أو تقييمه -->
             @if ($homework->reply || $homework->rating)

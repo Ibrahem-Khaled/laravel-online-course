@@ -118,6 +118,19 @@ class videoCourseController extends Controller
         return redirect()->back()->with('success', 'تم حذف المرفق بنجاح.');
     }
 
+    public function updateDescription(Request $request, $id)
+    {
+        $request->validate([
+            'description' => 'required|string',
+        ]);
+
+        $video = CourseVideo::findOrFail($id);
+        $video->description = $request->description;
+        $video->save();
+
+        return redirect()->back()->with('success', 'تم تحديث وصف الفيديو بنجاح.');
+    }
+
     public function updateQuestion(Request $request, $id)
     {
         $request->validate([

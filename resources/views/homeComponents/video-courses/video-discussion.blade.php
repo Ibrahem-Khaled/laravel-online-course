@@ -19,29 +19,30 @@
     <!-- عرض التعليقات -->
     <h5 class="mt-4 mb-3">الاستفسارات</h5>
     @foreach ($video->videoDiscussions as $comment)
-        <div class="p-3 mb-3" style="background-color: #004051; border-radius: 10px;">
-            <div class="d-flex align-items-center mb-2">
+        @if (Auth::check() && (Auth::user()->role != 'student' || Auth::id() == $homework->user_id))
+            <div class="p-3 mb-3" style="background-color: #004051; border-radius: 10px;">
+                <div class="d-flex align-items-center mb-2">
+                    <img src="{{ $comment->user->image
+                        ? asset('storage/' . $comment->user->image)
+                        : ($comment->user?->userInfo?->gender == 'female'
+                            ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
+                            : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
+                        alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
 
-                <img src="{{ $comment->user->image
-                    ? asset('storage/' . $comment->user->image)
-                    : ($comment->user?->userInfo?->gender == 'female'
-                        ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
-                        : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
-                    alt="User Image" class="rounded-circle" style="width: 40px; height: 40px;">
-
-                <div class="ms-3" style="margin-right: 10px;">
-                    <p class="m-0">{{ $comment->user->name }}</p>
-                    <small class="text-white">{{ $comment->created_at->locale('ar')->diffForHumans() }}</small>
+                    <div class="ms-3" style="margin-right: 10px;">
+                        <p class="m-0">{{ $comment->user->name }}</p>
+                        <small class="text-white">{{ $comment->created_at->locale('ar')->diffForHumans() }}</small>
+                    </div>
                 </div>
-            </div>
-            <div class="p-2 rounded text-white" style="background-color: #035971;">
-                <p class="mb-1">{{ $comment->body }}</p>
-                {{-- <div class="d-flex justify-content-start mt-2">
+                <div class="p-2 rounded text-white" style="background-color: #035971;">
+                    <p class="mb-1">{{ $comment->body }}</p>
+                    {{-- <div class="d-flex justify-content-start mt-2">
                     <button class="btn btn-sm btn-light me-2">👍 {{ 0 }}</button>
                     <button class="btn btn-sm btn-light">💬 {{ 0 }}</button>
                 </div> --}}
+                </div>
             </div>
-        </div>
+        @endif
     @endforeach
 
     {{-- <!-- زر عرض المزيد من التعليقات -->
