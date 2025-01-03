@@ -29,26 +29,43 @@
     }
 
     .video-list-item.active {
-        background-color: #ed6b2f;
+        background-color: #024e66;
         color: #fff;
     }
 
     .video-list-item:hover {
-        background-color: #ed6b2f;
+        background-color: #024e66;
         color: #fff;
     }
 
     .video-status-icon {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         margin: 0 10px 0 10px;
     }
 
-    .video-list-item img {
-        width: 40px;
-        height: 40px;
-        object-fit: cover;
-        border-radius: 5px;
-        margin-left: 10px;
+    .part-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #024e66;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        color: #fff;
+    }
+
+    .part-header:hover {
+        background-color: #007b8f;
+    }
+
+    .part-header .icon {
+        font-size: 1rem;
+    }
+
+    .video-group {
+        margin-left: 20px;
     }
 
     .progress-container {
@@ -68,7 +85,7 @@
     }
 
     .progress-bar {
-        background-color: #ed6b2f;
+        background-color: #28a745;
         height: 100%;
     }
 
@@ -99,44 +116,88 @@
             <div class="progress-bar" style="width: {{ $progress }}%;"></div>
         </div>
     </div>
-    <div class="video-list" style="max-height: 470px; overflow-y: auto;">
-        @foreach ($course->videos as $index => $otherVideo)
-            @php
-                $history = $videoHistories->get($otherVideo->id);
-                $isCompleted = $history && $history->pivot->completed;
-                $isViewed = $history && !$history->pivot->completed;
-            @endphp
 
-            <a href="{{ route('courses.videos', ['course' => $course->id, 'video' => $otherVideo->id]) }}"
-                class="video-list-item {{ $video->id === $otherVideo->id ? 'active' : '' }}">
-                <div class="d-flex align-items-center">
-                    <!-- التحقق من حالة الفيديو -->
-                    @if ($video->id === $otherVideo->id)
-                        <!-- أيقونة للفيديو الذي يتم تشغيله حالياً -->
-                        <span class="video-status-icon">
-                            <i class="fas fa-play-circle" style="color: #fff;"></i>
-                        </span>
-                    @elseif ($isCompleted)
-                        <!-- أيقونة للفيديو المكتمل -->
-                        <span class="video-status-icon">
-                            <i class="fas fa-check-circle" style="color: #28a745;"></i>
-                        </span>
-                    @elseif ($isViewed)
-                        <!-- أيقونة للفيديو المشاهد -->
-                        <span class="video-status-icon">
-                            <i class="fas fa-clock" style="color: #fff;"></i>
-                        </span>
-                    @else
-                        <!-- أيقونة للفيديو غير المشاهد -->
-                        <span class="video-status-icon">
-                            <i class="fas fa-lock" style="color: #fff;"></i>
-                        </span>
-                    @endif
-                    <span>{{ $index + 1 }}. {{ $otherVideo->title }}</span>
+    <div class="video-list" style="max-height: 470px; overflow-y: auto;">
+        @if ($course->parts->count() > 0)
+            <!-- إذا كانت الدورة تحتوي على أجزاء -->
+            @foreach ($course->parts as $part)
+                <div class="part-header" data-bs-toggle="collapse" data-bs-target="#part-{{ $part->id }}">
+                    <span>{{ $part->name }}</span>
+                    <span class="icon">
+                        <i class="fas {{ $loop->first ? 'fa-minus' : 'fa-plus' }}"></i>
+                    </span>
                 </div>
-            </a>
-        @endforeach
+                <div id="part-{{ $part->id }}" class="collapse video-group {{ $loop->first ? 'show' : '' }}">
+                    @foreach ($part->videos as $otherVideo)
+                        @php
+                            $history = $videoHistories->get($otherVideo->id);
+                            $isCompleted = $history && $history->pivot->completed;
+                            $isViewed = $history && !$history->pivot->completed;
+                        @endphp
+                        <a href="{{ route('courses.videos', ['course' => $course->id, 'video' => $otherVideo->id]) }}"
+                            class="video-list-item {{ $video->id === $otherVideo->id ? 'active' : '' }}">
+                            <div class="d-flex align-items-center">
+                                <!-- التحقق من حالة الفيديو -->
+                                @if ($otherVideo->id === $video->id)
+                                    <span class="video-status-icon">
+                                        <i class="fas fa-play-circle" style="color: #fff;"></i>
+                                    </span>
+                                @elseif ($isCompleted)
+                                    <span class="video-status-icon">
+                                        <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                                    </span>
+                                @elseif ($isViewed)
+                                    <span class="video-status-icon">
+                                        <i class="fas fa-clock" style="color: #fff;"></i>
+                                    </span>
+                                @else
+                                    <span class="video-status-icon">
+                                        <i class="fas fa-lock" style="color: #fff;"></i>
+                                    </span>
+                                @endif
+                                <span>{{ $loop->index + 1 }}. {{ $otherVideo->title }}</span>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            @endforeach
+        @else
+            <!-- إذا لم تكن الدورة تحتوي على أجزاء -->
+            @foreach ($course->videos as $otherVideo)
+                @php
+                    $history = $videoHistories->get($otherVideo->id);
+                    $isCompleted = $history && $history->pivot->completed;
+                    $isViewed = $history && !$history->pivot->completed;
+                @endphp
+                <a href="{{ route('courses.videos', ['course' => $course->id, 'video' => $otherVideo->id]) }}"
+                    class="video-list-item {{ $otherVideo->id === $video->id ? 'active' : '' }}">
+                    <div class="d-flex align-items-center">
+                        <!-- التحقق من حالة الفيديو -->
+                        @if ($otherVideo->id === $video->id)
+                            <span class="video-status-icon">
+                                <i class="fas fa-play-circle" style="color: #fff;"></i>
+                            </span>
+                        @elseif ($isCompleted)
+                            <span class="video-status-icon">
+                                <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                            </span>
+                        @elseif ($isViewed)
+                            <span class="video-status-icon">
+                                <i class="fas fa-clock" style="color: #fff;"></i>
+                            </span>
+                        @else
+                            <span class="video-status-icon">
+                                <i class="fas fa-lock" style="color: #fff;"></i>
+                            </span>
+                        @endif
+                        <span>{{ $loop->index + 1 }}. {{ $otherVideo->title }}</span>
+                    </div>
+                </a>
+            @endforeach
+        @endif
     </div>
+
+
 
     <!-- قسم المدرب -->
     <div class="trainer-section text-white p-3 rounded mt-3">
@@ -191,5 +252,13 @@
         @endif
     </div>
 
-
+    <script>
+        document.querySelectorAll('.part-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const icon = this.querySelector('.icon i');
+                icon.classList.toggle('fa-plus');
+                icon.classList.toggle('fa-minus');
+            });
+        });
+    </script>
 </div>

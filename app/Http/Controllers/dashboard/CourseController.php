@@ -5,6 +5,7 @@ namespace App\Http\Controllers\dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\Part;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -76,5 +77,20 @@ class CourseController extends Controller
         $course->delete();
 
         return redirect()->back()->with('success', 'تم حذف الدورة بنجاح!');
+    }
+
+    public function addPart(Request $request)
+    {
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'name' => 'required|string|max:255',
+        ]);
+
+        Part::create([
+            'course_id' => $request->course_id,
+            'name' => $request->name,
+        ]);
+
+        return redirect()->back()->with('success', 'تم إضافة القسم بنجاح!');
     }
 }

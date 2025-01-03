@@ -10,6 +10,7 @@ class CourseVideo extends Model
     use HasFactory;
     protected $fillable = [
         'course_id',
+        'part_id',
         'title',
         'video',
         'description',
@@ -41,5 +42,10 @@ class CourseVideo extends Model
         return $this->belongsToMany(User::class, 'video_histories', 'course_video_id', 'user_id')
             ->withPivot(['completed', 'completed_at', 'last_viewed_time'])
             ->withTimestamps();
+    }
+
+    public function part()
+    {
+        return $this->belongsTo(Part::class);
     }
 }

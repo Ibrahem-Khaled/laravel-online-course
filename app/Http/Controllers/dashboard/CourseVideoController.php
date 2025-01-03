@@ -5,6 +5,7 @@ namespace App\Http\Controllers\dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\CourseVideo;
+use App\Models\Part;
 use Illuminate\Http\Request;
 
 class CourseVideoController extends Controller
@@ -21,6 +22,7 @@ class CourseVideoController extends Controller
     {
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
+            'part_id' => 'nullable|exists:parts,id',
             'title' => 'required|string|max:255',
             'video' => 'required|string',
             'description' => 'required|string',
@@ -43,6 +45,7 @@ class CourseVideoController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'part_id' => 'nullable|exists:parts,id',
             'video' => 'required|string',
             'description' => 'required|string',
             'image' => 'nullable|image|max:2048',
@@ -61,8 +64,8 @@ class CourseVideoController extends Controller
     public function showByCourse($courseId)
     {
         $course = Course::with('videos')->findOrFail($courseId);
-
-        return view('dashboard.course_videos.index', compact('course'));
+        $parts = Part::where('course_id', $courseId)->get();
+        return view('dashboard.course_videos.index', compact('course', 'parts'));
     }
 
     public function destroy($id)

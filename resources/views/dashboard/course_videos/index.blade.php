@@ -5,6 +5,8 @@
         <h1 class="my-4">فيديوهات الدورة: {{ $course->title }}</h1>
 
         <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addVideoModal">إضافة فيديو جديد</button>
+        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addPartModal">إضافة قسم جديد</button>
+
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -65,6 +67,15 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="mb-3">
+                                            <label for="part_id" class="form-label">اسم القسم</label>
+                                            <select name="part_id" class="form-select">
+                                                <option value="{{ $video?->part_id }}" selected>{{ $video?->part?->name }}</option>
+                                                @foreach ($parts as $part)
+                                                    <option value="{{ $part->id }}">{{ $part->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
                                             <label for="title" class="form-label">العنوان</label>
                                             <input type="text" name="title" class="form-control"
                                                 value="{{ $video->title }}" required>
@@ -101,6 +112,32 @@
             </tbody>
         </table>
 
+        <!-- Add Part Modal -->
+        <div class="modal fade" id="addPartModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="{{ route('course_parts.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="course_id" value="{{ $course->id }}">
+                        <div class="modal-header">
+                            <h5 class="modal-title">إضافة قسم جديد</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">اسم القسم</label>
+                                <input type="text" name="name" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                            <button type="submit" class="btn btn-primary">إضافة</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <!-- Add Video Modal -->
         <div class="modal fade" id="addVideoModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
@@ -110,9 +147,19 @@
                         <input type="hidden" name="course_id" value="{{ $course->id }}">
                         <div class="modal-header">
                             <h5 class="modal-title">إضافة فيديو جديد</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="part_id" class="form-label">اسم القسم</label>
+                                <select name="part_id" class="form-select">
+                                    <option value="">-- اختر القسم --</option>
+                                    @foreach ($parts as $part)
+                                        <option value="{{ $part->id }}">{{ $part->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="mb-3">
                                 <label for="title" class="form-label">العنوان</label>
                                 <input type="text" name="title" class="form-control" required>
