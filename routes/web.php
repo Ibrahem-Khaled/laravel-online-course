@@ -31,14 +31,14 @@ Route::group([], function () {
     Route::get('all-students-sections', [HomeController::class, 'allStudentsSections'])->name('all-students-sections');
 
     //this routes for video-courses with home works and comments and rating
-    Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos');
+    Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos')->middleware('auth');
 
     Route::post('add-homework', [videoCourseController::class, 'addHomework'])->name('add-homework')->middleware('auth');
     Route::post('add-comment', [videoCourseController::class, 'videoDiscssion'])->name('add-comment')->middleware('auth');
     Route::post('homework/reply/{id}', [videoCourseController::class, 'homeworkReply'])->name('homework.reply')->middleware('auth');
     Route::post('/video-usage/add', [videoCourseController::class, 'addVideoUsage'])->name('addVideoUsage')->middleware('auth');
-    Route::delete('/video-usage/{id}', [videoCourseController::class, 'destroyVideoUsage'])->name('videoUsage.destroy');
-    Route::put('/videos/{id}/update-description', [videoCourseController::class, 'updateDescription'])->name('videos.updateDescription');
+    Route::delete('/video-usage/{id}', [videoCourseController::class, 'destroyVideoUsage'])->name('videoUsage.destroy')->middleware('auth');
+    Route::put('/videos/{id}/update-description', [videoCourseController::class, 'updateDescription'])->name('videos.updateDescription')->middleware('auth');
 
     Route::put('/video/{id}/question', [videoCourseController::class, 'updateQuestion'])->name('updateQuestion')->middleware('auth');
 
