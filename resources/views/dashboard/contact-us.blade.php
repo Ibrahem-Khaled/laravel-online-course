@@ -5,7 +5,7 @@
         <h1 class="my-4">إدارة الرسائل</h1>
 
         <!-- زر إضافة رسالة جديدة -->
-        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addMessageModal">إرسال رسالة
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addMessageModal">إرسال رسالة
             جديدة</button>
 
         @if (session('success'))
@@ -57,7 +57,7 @@
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">إرسال رسالة جديدة</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -87,7 +87,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
                             <button type="submit" class="btn btn-primary">إرسال</button>
                         </div>
                     </form>

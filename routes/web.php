@@ -24,33 +24,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/approved/page', [HomeController::class, 'approvedPage'])->name('approved.page')->middleware('auth');
 
-Route::group([], function () {
+Route::group(['middleware' => ['auth', 'isActive']], function () {
 
-    Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('all-students-sections', [HomeController::class, 'allStudentsSections'])->name('all-students-sections');
 
     //this routes for video-courses with home works and comments and rating
-    Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos')->middleware('auth');
+    Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos');
 
-    Route::post('add-homework', [videoCourseController::class, 'addHomework'])->name('add-homework')->middleware('auth');
-    Route::post('add-comment', [videoCourseController::class, 'videoDiscssion'])->name('add-comment')->middleware('auth');
-    Route::post('homework/reply/{id}', [videoCourseController::class, 'homeworkReply'])->name('homework.reply')->middleware('auth');
-    Route::post('/video-usage/add', [videoCourseController::class, 'addVideoUsage'])->name('addVideoUsage')->middleware('auth');
-    Route::delete('/video-usage/{id}', [videoCourseController::class, 'destroyVideoUsage'])->name('videoUsage.destroy')->middleware('auth');
-    Route::put('/videos/{id}/update-description', [videoCourseController::class, 'updateDescription'])->name('videos.updateDescription')->middleware('auth');
+    Route::post('add-homework', [videoCourseController::class, 'addHomework'])->name('add-homework');
+    Route::post('add-comment', [videoCourseController::class, 'videoDiscssion'])->name('add-comment');
+    Route::post('homework/reply/{id}', [videoCourseController::class, 'homeworkReply'])->name('homework.reply');
+    Route::post('/video-usage/add', [videoCourseController::class, 'addVideoUsage'])->name('addVideoUsage');
+    Route::delete('/video-usage/{id}', [videoCourseController::class, 'destroyVideoUsage'])->name('videoUsage.destroy');
+    Route::put('/videos/{id}/update-description', [videoCourseController::class, 'updateDescription'])->name('videos.updateDescription');
 
-    Route::put('/video/{id}/question', [videoCourseController::class, 'updateQuestion'])->name('updateQuestion')->middleware('auth');
+    Route::put('/video/{id}/question', [videoCourseController::class, 'updateQuestion'])->name('updateQuestion');
 
     //this route geting all courses
     Route::get('all-courses/{category_id?}', [HomeController::class, 'allCourses'])->name('all-courses');
 
     //this route geting sections
-    Route::get('user/section', [UserSectionController::class, 'index'])->name('user-section')->middleware('auth');
-    Route::put('update-user-reports/{student_id}', [UserSectionController::class, 'addStudentReportsDaily'])->name('update-user-reports')->middleware('auth');
-    Route::post('addVideoFromCourse', [UserSectionController::class, 'addVideoFromCourse'])->name('addVideoFromCourse')->middleware('auth');
-    Route::get('/video/{id}', [UserSectionController::class, 'getVideo'])->name('getVideo')->middleware('auth');
-    Route::put('editVideoFromCourse', [UserSectionController::class, 'editVideoFromCourse'])->name('editVideoFromCourse')->middleware('auth');
+    Route::get('user/section', [UserSectionController::class, 'index'])->name('user-section');
+    Route::put('update-user-reports/{student_id}', [UserSectionController::class, 'addStudentReportsDaily'])->name('update-user-reports');
+    Route::post('addVideoFromCourse', [UserSectionController::class, 'addVideoFromCourse'])->name('addVideoFromCourse');
+    Route::get('/video/{id}', [UserSectionController::class, 'getVideo'])->name('getVideo');
+    Route::put('editVideoFromCourse', [UserSectionController::class, 'editVideoFromCourse'])->name('editVideoFromCourse');
 
 });
 
@@ -60,6 +61,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
 
     //this user controller for dashboard
     Route::resource('users', UserController::class);
+    Route::patch('/users/{user}/change-status', [UserController::class, 'changeStatus'])->name('users.changeStatus');
     Route::put('/users/{id}/change-password', [UserController::class, 'changePassword'])->name('users.changePassword');
     Route::get('show-all-user-reports/{id}', [UserController::class, 'showAllUserReports'])->name('show.all.user.reports');
     Route::post('/user-reports', [UserController::class, 'storeReport'])->name('userReports.store');

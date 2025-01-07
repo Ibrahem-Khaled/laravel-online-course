@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addUsersModal">إضافة
+        <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#addUsersModal">إضافة
             مستخدمين</button>
 
 
@@ -22,19 +22,19 @@
         <!-- نظام التبويبات -->
         <ul class="nav nav-tabs" id="sectionTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button"
+                <button class="nav-link active" id="all-tab" data-toggle="tab" data-target="#all" type="button"
                     role="tab" aria-controls="all" aria-selected="true">الكل</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="students-tab" data-bs-toggle="tab" data-bs-target="#students" type="button"
+                <button class="nav-link" id="students-tab" data-toggle="tab" data-target="#students" type="button"
                     role="tab" aria-controls="students" aria-selected="false">الطلاب</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="teachers-tab" data-bs-toggle="tab" data-bs-target="#teachers" type="button"
+                <button class="nav-link" id="teachers-tab" data-toggle="tab" data-target="#teachers" type="button"
                     role="tab" aria-controls="teachers" aria-selected="false">المعلمين</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="calendar-tab" data-bs-toggle="tab" data-bs-target="#calendar" type="button"
+                <button class="nav-link" id="calendar-tab" data-toggle="tab" data-target="#calendar" type="button"
                     role="tab" aria-controls="calendar" aria-selected="false">التقويم</button>
             </li>
         </ul>
@@ -171,8 +171,8 @@
                                     </td>
                                     <td>
                                         @if (auth()->user()->role == 'admin' || auth()->user()->role == 'supervisor')
-                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#editCalendarModal{{ $dayIndex + 1 }}">اضافة</button>
+                                            <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#editCalendarModal{{ $dayIndex + 1 }}">اضافة</button>
                                             @foreach ($daySchedule as $schedule)
                                                 <form action="{{ route('section-calendars.destroy', $schedule->id) }}"
                                                     method="POST" class="d-inline">
@@ -201,7 +201,7 @@
                                                         <h5 class="modal-title"
                                                             id="editCalendarModalLabel{{ $dayIndex + 1 }}">
                                                             تعديل جدول {{ $day }}</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        <button type="button" class="btn-close" data-dismiss="modal"
                                                             aria-label="إغلاق"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -247,7 +247,7 @@
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="addUsersModalLabel">إضافة مستخدمين إلى {{ $section->name }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="إغلاق"></button>
                     </div>
                     <div class="modal-body">
                         <!-- عرض الأخطاء -->

@@ -69,7 +69,7 @@
             <h4 class="mb-4">من خلال الانضمام إلى منصة التعلم الإلكتروني، يمكنك الاستفادة من الكثير من الفوائد.</h4>
 
             <!-- Carousel -->
-            <div id="coursesCarousel" class="carousel slide" data-bs-ride="carousel"
+            <div id="coursesCarousel" class="carousel slide" data-ride="carousel"
                 style="position: relative; height: auto;">
                 <div class="carousel-inner">
                     @foreach ($courses->chunk(3) as $chunkIndex => $chunk)
@@ -84,13 +84,13 @@
                 </div>
 
                 <!-- Controls -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#coursesCarousel"
-                    data-bs-slide="prev">
+                <button class="carousel-control-prev" type="button" data-target="#coursesCarousel"
+                    data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">السابق</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#coursesCarousel"
-                    data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-target="#coursesCarousel"
+                    data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">التالي</span>
                 </button>
@@ -106,7 +106,7 @@
 
     <section class="d-flex flex-column align-items-center justify-content-center mt-5" style="text-align: center;">
         <h4 class="mb-4">الفصول الدراسية</h4>
-        <div id="sectionsCarousel" class="carousel slide" data-bs-ride="carousel"
+        <div id="sectionsCarousel" class="carousel slide" data-ride="carousel"
             style="position: relative; height: auto; width: 100%;">
             <div class="carousel-inner" style="max-width: 80%; margin: auto;">
                 @foreach ($sections->chunk(3) as $chunkIndex => $chunk)
@@ -151,12 +151,12 @@
             </div>
 
             <!-- Controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="prev"
+            <button class="carousel-control-prev" type="button" data-target="#sectionsCarousel" data-slide="prev"
                 style="position: absolute; top: 6rem; transform: translateY(-50%); z-index: 2; left: -3rem;">
                 <span class="carousel-control-prev-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">السابق</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#sectionsCarousel" data-bs-slide="next"
+            <button class="carousel-control-next" type="button" data-target="#sectionsCarousel" data-slide="next"
                 style="position: absolute; top: 6rem; transform: translateY(-50%); z-index: 2; right: -3rem;">
                 <span class="carousel-control-next-icon bg-dark p-3 rounded-circle" aria-hidden="true"></span>
                 <span class="visually-hidden">التالي</span>

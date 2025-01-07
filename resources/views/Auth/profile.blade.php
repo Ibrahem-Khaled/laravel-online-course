@@ -97,8 +97,8 @@
                         </div>
                         <button class="btn btn-outline-light w-100 mb-3">إعدادات الحساب</button>
                         <button type="button" class="btn btn-warning w-100 mb-3 text-white"
-                            style="background-color: #ed6b2f" data-bs-toggle="modal"
-                            data-bs-target="#changePasswordModal">
+                            style="background-color: #ed6b2f" data-toggle="modal"
+                            data-target="#changePasswordModal">
                             تغيير كلمة المرور
                         </button>
 
@@ -131,7 +131,7 @@
                 style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
                 <div class="modal-header" style="background-color: #072D38; color: white;">
                     <h5 class="modal-title" id="changePasswordModalLabel">تغيير كلمة المرور</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    <button type="button" class="btn-close btn-close-white" data-dismiss="modal"
                         aria-label="إغلاق"></button>
                 </div>
                 <div class="modal-body" style="background-color: #06455E; color: white;">

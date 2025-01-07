@@ -100,7 +100,7 @@
         </a>
 
         <!-- زر القائمة للهاتف -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -122,7 +122,7 @@
                             Auth::user()?->role === 'admin' ||
                             Auth::user()?->role === 'supervisor')
                         <a class="nav-link dropdown-toggle" href="#" id="userSections" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                            data-toggle="dropdown" aria-expanded="false">
                             برنامج طموح
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="userSections">
@@ -152,7 +152,7 @@
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="programDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                        data-toggle="dropdown" aria-expanded="false">
                         البرامج التدريبية
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="programDropdown">
@@ -169,7 +169,7 @@
                 @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="accountDropdown"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            role="button" data-toggle="dropdown" aria-expanded="false">
                             <img src="{{ Auth::user()->avatar
                                 ? asset('storage/' . Auth::user()->avatar)
                                 : (Auth::user()->gender == 'female'

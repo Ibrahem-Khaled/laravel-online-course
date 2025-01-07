@@ -1,7 +1,7 @@
 @if (Auth::user()->role == 'admin' || Auth::user()->role == 'supervisor' || Auth::user()->role == 'teacher')
     <!-- زر الإضافة -->
-    <button type="button" class="btn" style="background-color: #ed6b2f; color: #fff;" data-bs-toggle="modal"
-        data-bs-target="#addUsageModal" style="margin-bottom: 20px;">
+    <button type="button" class="btn" style="background-color: #ed6b2f; color: #fff;" data-toggle="modal"
+        data-target="#addUsageModal" style="margin-bottom: 20px;">
         إضافة مرفقات الدرس
     </button>
 
@@ -11,7 +11,7 @@
             <div class="modal-content" style="border-radius: 12px; overflow: hidden;">
                 <div class="modal-header" style="background-color: #02475E; color: #ffffff;">
                     <h5 class="modal-title" id="addUsageModalLabel">إضافة مرفقات الدرس</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
                         style="background-color: #ffffff; color: #000;"></button>
                 </div>
                 <div class="modal-body" style="background-color: #072D38; color: #ffffff;">

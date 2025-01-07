@@ -219,23 +219,23 @@
                 <!-- التابات -->
                 <ul class="nav nav-tabs" id="videoTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details"
+                        <button class="nav-link active" id="details-tab" data-toggle="tab" data-target="#details"
                             type="button" role="tab" aria-controls="details" aria-selected="true">
                             محتوي الدرس</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="sources-tab" data-bs-toggle="tab" data-bs-target="#sources"
+                        <button class="nav-link" id="sources-tab" data-toggle="tab" data-target="#sources"
                             type="button" role="tab" aria-controls="sources" aria-selected="false">
                             المرفقات
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="homework-tab" data-bs-toggle="tab" data-bs-target="#homework"
+                        <button class="nav-link" id="homework-tab" data-toggle="tab" data-target="#homework"
                             type="button" role="tab" aria-controls="homework"
                             aria-selected="false">الواجبات</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="discussion-tab" data-bs-toggle="tab" data-bs-target="#discussion"
+                        <button class="nav-link" id="discussion-tab" data-toggle="tab" data-target="#discussion"
                             type="button" role="tab" aria-controls="discussion"
                             aria-selected="false">المناقشة</button>
                     </li>

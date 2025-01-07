@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->text('description');
             $table->text('question')->nullable();
             $table->string('image')->nullable();
-            $table->integer('duration')->nullable();
+            $table->integer('duration')->default(0);
             $table->timestamps();
         });
     }

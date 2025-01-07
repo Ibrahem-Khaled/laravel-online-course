@@ -24,7 +24,10 @@ class HomeController extends Controller
 
         $allStudentsCount = User::where('role', 'student')->count();
 
-        $coursesHours = Course::sum('duration_in_hours');
+        $coursesHours = 0;
+        foreach ($courses as $key => $course) {
+            $coursesHours += $course->duration_in_hours;
+        }
 
         return view('home', compact(
             'courses',
@@ -35,6 +38,11 @@ class HomeController extends Controller
             'teachers',
             'students',
         ));
+    }
+
+    public function approvedPage()
+    {
+        return view('approved_page');
     }
 
     public function dashboard()

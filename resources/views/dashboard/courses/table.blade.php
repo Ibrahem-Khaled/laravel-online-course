@@ -29,8 +29,8 @@
                 <td>{{ $course?->sections?->first()?->name }}</td>
                 <td>
                     <!-- زر تعديل الدورة -->
-                    <button class="btn btn-warning" data-bs-toggle="modal"
-                        data-bs-target="#editCourseModal{{ $course->id }}">تعديل</button>
+                    <button class="btn btn-warning" data-toggle="modal"
+                        data-target="#editCourseModal{{ $course->id }}">تعديل</button>
 
                     <!-- نموذج حذف الدورة -->
                     <form action="{{ route('courses.destroy', $course->id) }}" method="POST" style="display:inline;">
@@ -51,7 +51,7 @@
                             @method('PUT')
                             <div class="modal-header">
                                 <h5 class="modal-title">تعديل الدورة</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                <button type="button" class="btn-close" data-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -140,7 +140,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">إغلاق</button>
+                                    data-dismiss="modal">إغلاق</button>
                                 <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
                             </div>
                         </form>

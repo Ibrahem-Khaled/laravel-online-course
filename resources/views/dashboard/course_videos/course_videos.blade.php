@@ -4,12 +4,9 @@
     <div class="container">
         <h1 class="my-4">إدارة فيديوهات الدورات</h1>
 
-        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addVideoModal">إضافة فيديو جديد</button>
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addVideoModal">إضافة فيديو جديد</button>
 
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
+        @include('homeComponents.alerts')
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -17,6 +14,7 @@
                     <th>العنوان</th>
                     <th>الفيديو</th>
                     <th>الوصف</th>
+                    <th>المدة (ساعات)</th>
                     <th>الصورة</th>
                     <th>الإجراءات</th>
                 </tr>
@@ -27,7 +25,8 @@
                         <td>{{ $video->course->title }}</td>
                         <td>{{ $video->title }}</td>
                         <td> {!! $video->video !!}</td>
-                        <td>{{ $video->description }}</td>
+                        <td>{{ Str::limit($video->description, 50, '...') }}</td>
+                        <td>{{ $video->duration }}</td>
                         <td>
                             @if ($video->image)
                                 <img src="{{ asset('storage/' . $video->image) }}" alt="صورة الفيديو" width="100">
@@ -36,8 +35,8 @@
                             @endif
                         </td>
                         <td>
-                            <button class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#editVideoModal{{ $video->id }}">تعديل</button>
+                            <button class="btn btn-warning" data-toggle="modal"
+                                data-target="#editVideoModal{{ $video->id }}">تعديل</button>
                             <form action="{{ route('course_videos.destroy', $video->id) }}" method="POST"
                                 style="display:inline;">
                                 @csrf
@@ -57,7 +56,7 @@
                                     @method('PUT')
                                     <div class="modal-header">
                                         <h5 class="modal-title">تعديل الفيديو</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        <button type="button" class="btn-close" data-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -87,13 +86,18 @@
                                             <textarea name="description" class="form-control" rows="3" required>{{ $video->description }}</textarea>
                                         </div>
                                         <div class="mb-3">
+                                            <label for="duration" class="form-label">المدة (ساعات)</label>
+                                            <input type="number" name="duration" class="form-control"
+                                                value="{{ $video->duration }}" required>
+                                        </div>
+                                        <div class="mb-3">
                                             <label for="image" class="form-label">الصورة</label>
                                             <input type="file" name="image" class="form-control">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">إغلاق</button>
+                                            data-dismiss="modal">إغلاق</button>
                                         <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
                                     </div>
                                 </form>
@@ -104,6 +108,10 @@
             </tbody>
         </table>
 
+        <div class="d-flex justify-content-center">
+            {{ $videos->links() }}
+        </div>
+
         <!-- Add Video Modal -->
         <div class="modal fade" id="addVideoModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
@@ -112,7 +120,7 @@
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">إضافة فيديو جديد</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -136,12 +144,16 @@
                                 <textarea name="description" class="form-control" rows="3" required></textarea>
                             </div>
                             <div class="mb-3">
+                                <label for="duration" class="form-label">المدة (ساعات)</label>
+                                <input type="number" name="duration" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
                                 <label for="image" class="form-label">الصورة</label>
                                 <input type="file" name="image" class="form-control">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
                             <button type="submit" class="btn btn-primary">إضافة</button>
                         </div>
                     </form>

@@ -5,7 +5,7 @@
         <h1 class="my-4">إدارة الدورات</h1>
 
         <!-- زر إضافة دورة جديدة -->
-        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addCourseModal">إضافة دورة جديدة</button>
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addCourseModal">إضافة دورة جديدة</button>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -18,15 +18,15 @@
 
         <ul class="nav nav-tabs mb-4" id="courseStatusTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button"
+                <button class="nav-link active" id="active-tab" data-toggle="tab" data-target="#active" type="button"
                     role="tab" aria-controls="active" aria-selected="true">نشطة</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="inactive-tab" data-bs-toggle="tab" data-bs-target="#inactive" type="button"
+                <button class="nav-link" id="inactive-tab" data-toggle="tab" data-target="#inactive" type="button"
                     role="tab" aria-controls="inactive" aria-selected="false">غير نشطة</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="draft-tab" data-bs-toggle="tab" data-bs-target="#draft" type="button"
+                <button class="nav-link" id="draft-tab" data-toggle="tab" data-target="#draft" type="button"
                     role="tab" aria-controls="draft" aria-selected="false">دورات برنامج طموح</button>
             </li>
         </ul>
@@ -54,7 +54,7 @@
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">إضافة دورة جديدة</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -122,7 +122,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
                             <button type="submit" class="btn btn-primary">إضافة</button>
                         </div>
                     </form>

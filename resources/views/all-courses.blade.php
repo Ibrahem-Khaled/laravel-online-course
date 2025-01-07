@@ -64,7 +64,7 @@
         <h5>الدورات</h5>
         <div class="dropdown" style="flex-direction: row-reverse; display: flex; align-items: center;">
             <h3 class="sort-title">ترتيب حسب</h3>
-            <button class="dropdown-toggle-sort" id="dropdownMenuButton" data-bs-toggle="dropdown"
+            <button class="dropdown-toggle-sort" id="dropdownMenuButton" data-toggle="dropdown"
                 aria-expanded="false">
                 المضاف حديثاً
             </button>

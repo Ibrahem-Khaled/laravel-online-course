@@ -29,6 +29,16 @@ class UserController extends Controller
         return view('dashboard.users.index', compact('users', 'studentsWithSections'));
     }
 
+    public function changeStatus(User $user)
+    {
+        $user->status = $user->status === 'active' ? 'inactive' : 'active';
+        $user->save();
+
+        $message = $user->status !== 'active' ? 'تم تعطيل المستخدم بنجاح' : 'تم تفعيل المستخدم بنجاح';
+
+        return redirect()->back()->with('success', $message);
+    }
+
     public function store(Request $request)
     {
         // التحقق من صحة البيانات

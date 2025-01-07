@@ -5,7 +5,7 @@
         <h2 class="my-4">إدارة الفئات</h2>
 
         <!-- زر لإضافة فئة جديدة -->
-        <button class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#createCategoryModal">إضافة فئة
+        <button class="btn btn-primary mb-4" data-toggle="modal" data-target="#createCategoryModal">إضافة فئة
             جديدة</button>
 
         @if (session('success'))
@@ -37,8 +37,8 @@
                         </td>
                         <td>
                             <!-- زر لتعديل الفئة -->
-                            <button class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#editCategoryModal{{ $category->id }}">تعديل</button>
+                            <button class="btn btn-warning" data-toggle="modal"
+                                data-target="#editCategoryModal{{ $category->id }}">تعديل</button>
 
                             <!-- زر لحذف الفئة -->
                             <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
@@ -61,7 +61,7 @@
                                     @method('PUT')
                                     <div class="modal-header">
                                         <h5 class="modal-title">تعديل الفئة</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        <button type="button" class="btn-close" data-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">إلغاء</button>
+                                            data-dismiss="modal">إلغاء</button>
                                         <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
                                     </div>
                                 </form>
@@ -92,14 +92,14 @@
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">إضافة فئة جديدة</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <!-- الحقول المعتادة هنا -->
                             @include('dashboard.categories.form', ['category' => null])
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
                             <button type="submit" class="btn btn-primary">إضافة</button>
                         </div>
                     </form>

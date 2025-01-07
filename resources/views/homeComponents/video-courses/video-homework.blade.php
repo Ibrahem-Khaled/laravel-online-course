@@ -20,7 +20,7 @@
                     Auth::user()->role == 'supervisor' ||
                     Auth::user()->role == 'admin')
                 <button type="button" class="btn btn-sm mt-3" style="background-color: #ed6b2f; color: #fff;"
-                    data-bs-toggle="modal" data-bs-target="#editQuestionModal">
+                    data-toggle="modal" data-target="#editQuestionModal">
                     @if ($video->question)
                         تعديل السؤال الواجب
                     @else
@@ -35,7 +35,7 @@
                         <div class="modal-content">
                             <div class="modal-header" style="background-color: #02475E; color: #fff;">
                                 <h5 class="modal-title" id="editQuestionModalLabel">تعديل سؤال الواجب</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                <button type="button" class="btn-close" data-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body" style="background-color: #02475E; color: #fff;">

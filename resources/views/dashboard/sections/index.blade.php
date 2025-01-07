@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mt-5">
         <h2 class="text-center mb-4">إدارة الأقسام</h2>
-        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createSectionModal">إضافة قسم
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#createSectionModal">إضافة قسم
             جديد</button>
 
         <!-- جدول عرض الأقسام -->
@@ -36,8 +36,8 @@
                             @endif
                         </td>
                         <td>
-                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#editSectionModal{{ $section->id }}">تعديل</button>
+                            <button class="btn btn-warning btn-sm" data-toggle="modal"
+                                data-target="#editSectionModal{{ $section->id }}">تعديل</button>
                             <form action="{{ route('sections.destroy', $section->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
@@ -55,7 +55,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editSectionModalLabel">تعديل القسم</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        <button type="button" class="btn-close" data-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -80,7 +80,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">إغلاق</button>
+                                            data-dismiss="modal">إغلاق</button>
                                         <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
                                     </div>
                                 </div>
@@ -101,7 +101,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="createSectionModalLabel">إضافة قسم جديد</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
@@ -122,7 +122,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
                         <button type="submit" class="btn btn-primary">إضافة</button>
                     </div>
                 </div>

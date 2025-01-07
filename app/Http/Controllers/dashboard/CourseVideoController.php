@@ -12,7 +12,7 @@ class CourseVideoController extends Controller
 {
     public function index()
     {
-        $videos = CourseVideo::with('course')->get();
+        $videos = CourseVideo::with('course')->paginate(10);
         $courses = Course::all();
 
         return view('dashboard.course_videos.course_videos', compact('videos', 'courses'));
@@ -28,6 +28,7 @@ class CourseVideoController extends Controller
             'description' => 'required|string',
             'image' => 'nullable|image|max:2048',
             'question' => 'nullable|string',
+            'duration' => 'required|numeric|min:0',
         ]);
 
         if ($request->hasFile('image')) {
@@ -50,6 +51,7 @@ class CourseVideoController extends Controller
             'description' => 'required|string',
             'image' => 'nullable|image|max:2048',
             'question' => 'nullable|string',
+            'duration' => 'required|numeric|min:0',
         ]);
 
         if ($request->hasFile('image')) {

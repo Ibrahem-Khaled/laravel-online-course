@@ -43,6 +43,20 @@
         margin: 0 10px 0 10px;
     }
 
+    .video-duration {
+        font-size: 0.5rem;
+        color: #fff;
+        align-items: center;
+        display: flex;
+        gap: 5px;
+        width: 100px;
+    }
+
+    .video-duration i {
+        font-size: 0.5rem;
+        color: #fff;
+    }
+
     .part-header {
         display: flex;
         justify-content: space-between;
@@ -121,7 +135,7 @@
         @if ($course->parts->count() > 0)
             <!-- إذا كانت الدورة تحتوي على أجزاء -->
             @foreach ($course->parts as $part)
-                <div class="part-header" data-bs-toggle="collapse" data-bs-target="#part-{{ $part->id }}">
+                <div class="part-header" data-toggle="collapse" data-target="#part-{{ $part->id }}">
                     <span>{{ $part->name }}</span>
                     <span class="icon">
                         <i class="fas {{ $loop->first ? 'fa-minus' : 'fa-plus' }}"></i>
@@ -156,6 +170,14 @@
                                     </span>
                                 @endif
                                 <span>{{ $loop->index + 1 }}. {{ $otherVideo->title }}</span>
+                                <span class="video-duration">
+                                    (<i class="fas fa-clock"></i>
+                                    @php
+                                        $hours = floor($otherVideo->duration / 60);
+                                        $minutes = $otherVideo->duration % 60;
+                                        echo $hours > 0 ? "{$hours} ساعات و {$minutes} دقائق" : "{$minutes} دقائق";
+                                    @endphp)
+                                </span>
                             </div>
                         </a>
                     @endforeach
@@ -191,6 +213,14 @@
                             </span>
                         @endif
                         <span>{{ $loop->index + 1 }}. {{ $otherVideo->title }}</span>
+                        <span class="video-duration">
+                            (<i class="fas fa-clock"></i>
+                            @php
+                                $hours = floor($otherVideo->duration / 60);
+                                $minutes = $otherVideo->duration % 60;
+                                echo $hours > 0 ? "{$hours} ساعات و {$minutes} دقائق" : "{$minutes} دقائق";
+                            @endphp)
+                        </span>
                     </div>
                 </a>
             @endforeach

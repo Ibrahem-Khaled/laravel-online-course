@@ -9,7 +9,7 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void
-    { 
+    {  
         Schema::create('courses', function (Blueprint $table) {
             $table->id(); // المعرف الأساسي للدورة
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // معرف المستخدم (علاقة مع جدول المستخدمين)
@@ -23,7 +23,6 @@ return new class extends Migration {
 
             // معلومات إضافية
             $table->enum('difficulty_level', ['beginner', 'intermediate', 'advanced'])->default('beginner'); // مستوى الصعوبة
-            $table->integer('duration_in_hours')->default(0); // مدة الدورة بالساعات
             $table->string('language', 50)->default('English'); // لغة الدورة
 
             // حالة الدورة وتوفرها

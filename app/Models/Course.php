@@ -17,7 +17,6 @@ class Course extends Model
         'price',
         'image',
         'difficulty_level',
-        'duration_in_hours',
         'language',
         'status',
         'is_featured',
@@ -54,6 +53,11 @@ class Course extends Model
     public function sections()
     {
         return $this->belongsToMany(Section::class, 'section_courses', 'course_id', 'section_id');
+    }
+
+    public function getDurationInHoursAttribute()
+    {
+        return $this->videos()->sum('duration');
     }
 
     public function requirements()

@@ -14,7 +14,7 @@
         <h2 class="my-4">إدارة المستخدمين</h2>
 
         <!-- زر لإضافة مستخدم جديد -->
-        <button class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#createUserModal">إضافة مستخدم
+        <button class="btn btn-primary mb-4" data-toggle="modal" data-target="#createUserModal">إضافة مستخدم
             جديد</button>
 
         @if (session('success'))
@@ -24,23 +24,23 @@
         <!-- التبويبات -->
         <ul class="nav nav-tabs mb-4" id="userRolesTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="tab-teachers" data-bs-toggle="tab" data-bs-target="#teachers"
+                <button class="nav-link active" id="tab-teachers" data-toggle="tab" data-target="#teachers"
                     type="button" role="tab" aria-controls="teachers" aria-selected="true">المدرسين</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tab-students" data-bs-toggle="tab" data-bs-target="#students" type="button"
+                <button class="nav-link" id="tab-students" data-toggle="tab" data-target="#students" type="button"
                     role="tab" aria-controls="students" aria-selected="false">الطلاب</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tab-supervisors" data-bs-toggle="tab" data-bs-target="#supervisors"
+                <button class="nav-link" id="tab-supervisors" data-toggle="tab" data-target="#supervisors"
                     type="button" role="tab" aria-controls="supervisors" aria-selected="false">المشرفين</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tab-admins" data-bs-toggle="tab" data-bs-target="#admins" type="button"
+                <button class="nav-link" id="tab-admins" data-toggle="tab" data-target="#admins" type="button"
                     role="tab" aria-controls="admins" aria-selected="false">المديرين</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="student-sections" data-bs-toggle="tab" data-bs-target="#studen-section"
+                <button class="nav-link" id="student-sections" data-toggle="tab" data-target="#studen-section"
                     type="button" role="tab" aria-controls="studen-section" aria-selected="false">طلاب طموح</button>
             </li>
         </ul>
@@ -82,14 +82,14 @@
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">إضافة مستخدم جديد</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            <button type="button" class="btn-close" data-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             @include('dashboard.users.form', ['user' => null])
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
                             <button type="submit" class="btn btn-primary">إضافة</button>
                         </div>
                     </form>

@@ -4,8 +4,8 @@
     <div class="container">
         <h1 class="my-4">فيديوهات الدورة: {{ $course->title }}</h1>
 
-        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addVideoModal">إضافة فيديو جديد</button>
-        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addPartModal">إضافة قسم جديد</button>
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addVideoModal">إضافة فيديو جديد</button>
+        <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addPartModal">إضافة قسم جديد</button>
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -41,8 +41,8 @@
                             @endif
                         </td>
                         <td>
-                            <button class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#editVideoModal{{ $video->id }}">تعديل</button>
+                            <button class="btn btn-warning" data-toggle="modal"
+                                data-target="#editVideoModal{{ $video->id }}">تعديل</button>
                             <form action="{{ route('course_videos.destroy', $video->id) }}" method="POST"
                                 style="display:inline;">
                                 @csrf
@@ -62,7 +62,7 @@
                                     @method('PUT')
                                     <div class="modal-header">
                                         <h5 class="modal-title">تعديل الفيديو</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        <button type="button" class="btn-close" data-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">إغلاق</button>
+                                            data-dismiss="modal">إغلاق</button>
                                         <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
                                     </div>
                                 </form>
@@ -121,7 +121,7 @@
                         <input type="hidden" name="course_id" value="{{ $course->id }}">
                         <div class="modal-header">
                             <h5 class="modal-title">إضافة قسم جديد</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -130,7 +130,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
                             <button type="submit" class="btn btn-primary">إضافة</button>
                         </div>
                     </form>
@@ -147,7 +147,7 @@
                         <input type="hidden" name="course_id" value="{{ $course->id }}">
                         <div class="modal-header">
                             <h5 class="modal-title">إضافة فيديو جديد</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            <button type="button" class="btn-close" data-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -182,7 +182,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
                             <button type="submit" class="btn btn-primary">إضافة</button>
                         </div>
                     </form>

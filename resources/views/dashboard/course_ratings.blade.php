@@ -4,7 +4,7 @@
     <div class="container">
         <h1 class="my-4">إدارة التقييمات</h1>
 
-        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addRatingModal">إضافة تقييم جديد</button>
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addRatingModal">إضافة تقييم جديد</button>
 
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
@@ -28,8 +28,8 @@
                         <td>{{ $rating->rating }}</td>
                         <td>{{ $rating->comment }}</td>
                         <td>
-                            <button class="btn btn-warning" data-bs-toggle="modal"
-                                data-bs-target="#editRatingModal{{ $rating->id }}">تعديل</button>
+                            <button class="btn btn-warning" data-toggle="modal"
+                                data-target="#editRatingModal{{ $rating->id }}">تعديل</button>
                             <form action="{{ route('course_ratings.destroy', $rating->id) }}" method="POST"
                                 style="display:inline;">
                                 @csrf
@@ -48,7 +48,7 @@
                                     @method('PUT')
                                     <div class="modal-header">
                                         <h5 class="modal-title">تعديل التقييم</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        <button type="button" class="btn-close" data-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
@@ -86,7 +86,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">إغلاق</button>
+                                            data-dismiss="modal">إغلاق</button>
                                         <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
                                     </div>
                                 </form>
@@ -105,7 +105,7 @@
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">إضافة تقييم جديد</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
                             <button type="submit" class="btn btn-primary">إضافة</button>
                         </div>
                     </form>

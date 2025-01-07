@@ -23,17 +23,24 @@
                 <td>{{ $user->status == 'active' ? 'نشط' : 'غير نشط' }}</td>
                 <td>
                     <!-- زر لتعديل المستخدم -->
-                    <button class="btn btn-warning" data-bs-toggle="modal"
-                        data-bs-target="#editUserModal{{ $user->id }}">تعديل</button>
+                    <button class="btn btn-warning" data-toggle="modal"
+                        data-target="#editUserModal{{ $user->id }}">تعديل</button>
 
-                    <button class="btn btn-info" data-bs-toggle="modal"
-                        data-bs-target="#changePasswordModal{{ $user->id }}">تغيير كلمة المرور</button>
+                    <button class="btn btn-info" data-toggle="modal"
+                        data-target="#changePasswordModal{{ $user->id }}">تغيير كلمة المرور</button>
 
                     <!-- زر لحذف المستخدم -->
                     <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline-block;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">حذف</button>
+                    </form>
+                    <form action="{{ route('users.changeStatus', $user->id) }}" method="POST"
+                        style="display:inline-block;">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit"
+                            class="btn btn-{{ $user->status !== 'active' ? 'danger' : 'success' }}">{{ $user->status !== 'active' ? 'غير نشط' : 'نشط' }}</button>
                     </form>
                 </td>
             </tr>
@@ -49,7 +56,7 @@
                             @method('PUT')
                             <div class="modal-header">
                                 <h5 class="modal-title">تعديل المستخدم</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                <button type="button" class="btn-close" data-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -57,7 +64,7 @@
                                 @include('dashboard.users.form', ['user' => $user])
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
                                 <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
                             </div>
                         </form>
@@ -75,7 +82,7 @@
                             @method('PUT')
                             <div class="modal-header">
                                 <h5 class="modal-title">تغيير كلمة المرور</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                <button type="button" class="btn-close" data-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -91,7 +98,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
                                 <button type="submit" class="btn btn-primary">تغيير</button>
                             </div>
                         </form>

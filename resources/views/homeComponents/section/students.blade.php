@@ -108,8 +108,8 @@
 
                     @if (Auth::user()->role == 'teacher')
                         <td>
-                            <button class="btn btn-success" data-bs-toggle="modal"
-                                data-bs-target="#editStudentModal{{ $student->id }}">تعديل البيانات</button>
+                            <button class="btn btn-success" data-toggle="modal"
+                                data-target="#editStudentModal{{ $student->id }}">تعديل البيانات</button>
                         </td>
                     @endif
                 </tr>
@@ -124,7 +124,7 @@
                                 <h5 class="modal-title" id="editStudentLabel">
                                     تعديل بيانات الطالب: <span style="color: #F48140;">{{ $student->name }}</span>
                                 </h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                <button type="button" class="btn-close btn-close-white" data-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -182,7 +182,7 @@
                                             style="background-color: #F48140; border: none;">
                                             حفظ التعديلات
                                         </button>
-                                        <button type="button" class="btn btn-secondary mt-3" data-bs-dismiss="modal">
+                                        <button type="button" class="btn btn-secondary mt-3" data-dismiss="modal">
                                             إغلاق
                                         </button>
                                     </div>
