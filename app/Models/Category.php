@@ -20,4 +20,9 @@ class Category extends Model
     {
         return $this->hasMany(Course::class);
     }
+
+    public function subCategories()
+    {
+        return $this->hasMany(subCategory::class);
+    }
 }

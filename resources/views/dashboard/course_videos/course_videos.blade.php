@@ -96,8 +96,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">إغلاق</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
                                         <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
                                     </div>
                                 </form>

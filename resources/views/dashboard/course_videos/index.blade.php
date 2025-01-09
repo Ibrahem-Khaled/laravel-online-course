@@ -24,6 +24,7 @@
                     <th>رابط الفيديو</th>
                     <th>الوصف</th>
                     <th>الصورة</th>
+                    <th>المدة (ساعات)</th>
                     <th>الإجراءات</th>
                 </tr>
             </thead>
@@ -40,6 +41,7 @@
                                 لا توجد صورة
                             @endif
                         </td>
+                        <td> {{ $video->duration }}</td>
                         <td>
                             <button class="btn btn-warning" data-toggle="modal"
                                 data-target="#editVideoModal{{ $video->id }}">تعديل</button>
@@ -69,7 +71,8 @@
                                         <div class="mb-3">
                                             <label for="part_id" class="form-label">اسم القسم</label>
                                             <select name="part_id" class="form-select">
-                                                <option value="{{ $video?->part_id }}" selected>{{ $video?->part?->name }}</option>
+                                                <option value="{{ $video?->part_id }}" selected>{{ $video?->part?->name }}
+                                                </option>
                                                 @foreach ($parts as $part)
                                                     <option value="{{ $part->id }}">{{ $part->name }}</option>
                                                 @endforeach
@@ -95,13 +98,17 @@
                                                 value="{{ $video->question }}">
                                         </div>
                                         <div class="mb-3">
+                                            <label for="duration" class="form-label">المدة (ساعات)</label>
+                                            <input type="text" name="duration" class="form-control"
+                                                value="{{ $video->duration }}">
+                                        </div>
+                                        <div class="mb-3">
                                             <label for="image" class="form-label">الصورة</label>
                                             <input type="file" name="image" class="form-control">
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">إغلاق</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
                                         <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
                                     </div>
                                 </form>
@@ -147,8 +154,7 @@
                         <input type="hidden" name="course_id" value="{{ $course->id }}">
                         <div class="modal-header">
                             <h5 class="modal-title">إضافة فيديو جديد</h5>
-                            <button type="button" class="btn-close" data-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -175,6 +181,10 @@
                             <div class="mb-3">
                                 <label for="question" class="form-label">سوال الواجب</label>
                                 <input type="text" name="question" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="duration" class="form-label">المدة (ساعات)</label>
+                                <input type="number" name="duration" class="form-control" required>
                             </div>
                             <div class="mb-3">
                                 <label for="image" class="form-label">الصورة</label>
