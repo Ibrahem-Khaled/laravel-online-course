@@ -12,6 +12,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('registerPost', [AuthController::class, 'registerPost'])->name('registerPost');
 
     Route::get('profile', [AuthController::class, 'profile'])->name('user.profile')->middleware('auth');
+    Route::get('profile/setting', [AuthController::class, 'setting'])->name('user.setting')->middleware('auth');
+    Route::post('/user/setting/update', [AuthController::class, 'update'])->name('user.update')->middleware('auth');
 
     Route::post('change-password', [AuthController::class, 'changePassword'])->name('change-password')->middleware('auth');
 

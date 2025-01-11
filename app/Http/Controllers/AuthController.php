@@ -133,4 +133,61 @@ class AuthController extends Controller
         $user = auth()->user();
         return view('Auth.profile', compact('user'));
     }
+    public function setting()
+    {
+        // جلب بيانات المستخدم المصادق عليه
+        $user = auth()->user();
+        return view('Auth.setting', compact('user'));
+    }
+
+    public function update(Request $request)
+    {
+        $user = auth()->user(); // المستخدم المصادق عليه
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:15|unique:users,phone,' . $user->id,
+            'address' => 'nullable|string|max:255',
+            'gender' => 'nullable|in:male,female',
+            'bio' => 'nullable|string|max:500',
+            'degree' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('avatars', 'public');
+        } else {
+            $imagePath = $user->avatar;
+        }
+
+        // تحديث جدول المستخدم
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'image' => $imagePath,
+        ]);
+
+        // تحديث جدول معلومات المستخدم
+        $userInfo = $user->userInfo;
+        if ($userInfo) {
+            $userInfo->update([
+                'gender' => $request->gender,
+                'bio' => $request->bio,
+                'degree' => $request->degree,
+            ]);
+        } else {
+            $user->userInfo()->create([
+                'gender' => $request->gender,
+                'bio' => $request->bio,
+                'degree' => $request->degree,
+            ]);
+        }
+
+        return redirect()->route('user.setting')->with('success', 'تم تحديث بياناتك بنجاح!');
+    }
+
 }
