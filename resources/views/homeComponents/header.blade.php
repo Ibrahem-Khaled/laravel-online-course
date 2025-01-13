@@ -170,8 +170,8 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="accountDropdown"
                             role="button" data-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ Auth::user()->avatar
-                                ? asset('storage/' . Auth::user()->avatar)
+                            <img src="{{ Auth::user()->image
+                                ? asset('storage/' . Auth::user()->image)
                                 : (Auth::user()->gender == 'female'
                                     ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
                                     : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
