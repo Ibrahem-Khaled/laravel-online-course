@@ -15,6 +15,7 @@
                     <th>الفيديو</th>
                     <th>الوصف</th>
                     <th>المدة (ساعات)</th>
+                    <th>الجهاز المستخدم</th>
                     <th>الصورة</th>
                     <th>الإجراءات</th>
                 </tr>
@@ -27,6 +28,7 @@
                         <td>{!! $video->video !!}</td>
                         <td>{{ Str::limit($video->description, 50, '...') }}</td>
                         <td>{{ $video->duration }}</td>
+                        <td>{{ $video->device }}</td>
                         <td>
                             @if ($video->image)
                                 <img src="{{ asset('storage/' . $video->image) }}" alt="صورة الفيديو" width="100">
@@ -94,6 +96,24 @@
                                             <label for="image" class="form-label">الصورة</label>
                                             <input type="file" name="image" class="form-control">
                                         </div>
+                                        <div class="mb-3">
+                                            <label for="device" class="form-label">جهاز التشغيل</label>
+                                            <select name="device" class="form-select" required>
+                                                <option value="all" {{ $video->device == 'all' ? 'selected' : '' }}>
+                                                    جميع الأجهزة
+                                                </option>
+                                                <option value="web" {{ $video->device == 'web' ? 'selected' : '' }}>ويب
+                                                </option>
+                                                <option value="mobile" {{ $video->device == 'mobile' ? 'selected' : '' }}>
+                                                    جوال</option>
+                                                <option value="desktop"
+                                                    {{ $video->device == 'desktop' ? 'selected' : '' }}>كمبيوتر
+                                                </option>
+                                                <option value="tablet" {{ $video->device == 'tablet' ? 'selected' : '' }}>
+                                                    تابلت
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
@@ -149,6 +169,21 @@
                             <div class="mb-3">
                                 <label for="image" class="form-label">الصورة</label>
                                 <input type="file" name="image" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="device" class="form-label">جهاز التشغيل</label>
+                                <select name="device" class="form-select" required>
+                                    <option value="web" {{ old('device') == 'web' ? 'selected' : '' }}>ويب</option>
+                                    <option value="mobile" {{ old('device') == 'mobile' ? 'selected' : '' }}>جوال</option>
+                                    <option value="desktop" {{ old('device') == 'desktop' ? 'selected' : '' }}>كمبيوتر
+                                    </option>
+                                    <option value="tablet" {{ old('device') == 'tablet' ? 'selected' : '' }}>تابلت
+                                    </option>
+                                    <option value="tv" {{ old('device') == 'tv' ? 'selected' : '' }}>تلفزيون</option>
+                                    <option value="other" {{ old('device') == 'other' ? 'selected' : '' }}>أخرى</option>
+                                    <option value="all" {{ old('device') == 'all' ? 'selected' : '' }}>جميع الأجهزة
+                                    </option>
+                                </select>
                             </div>
                         </div>
                         <div class="modal-footer">

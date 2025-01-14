@@ -17,6 +17,7 @@ class CourseVideo extends Model
         'image',
         'question',
         'duration',
+        'device',
     ];
 
     public function course()

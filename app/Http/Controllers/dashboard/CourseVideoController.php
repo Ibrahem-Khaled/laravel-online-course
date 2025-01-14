@@ -29,7 +29,7 @@ class CourseVideoController extends Controller
             'image' => 'nullable|image|max:2048',
             'question' => 'nullable|string',
             'duration' => 'required|numeric|min:0',
-        ]);
+        ]); 
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('course_videos', 'public');

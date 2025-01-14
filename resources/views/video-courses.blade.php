@@ -174,7 +174,20 @@
                         </div>
                         <h6>|</h6> --}}
                         <span>المتطلبات:
-                            {{ $course->requirements()?->where('type', 'software')->first()?->title ?? 'لا توجد متطلبات حالياً' }}</span>
+                            @php
+                                $deviceTranslations = [
+                                    'web' => 'ويب',
+                                    'mobile' => 'جوال',
+                                    'desktop' => 'كمبيوتر',
+                                    'tablet' => 'تابلت',
+                                    'tv' => 'تلفزيون',
+                                    'other' => 'أخرى',
+                                    'all' => 'جميع الأجهزة',
+                                ];
+                                $device = $video->device ?? 'web'; // القيمة الافتراضية إذا لم تكن موجودة
+                            @endphp
+                            {{ $deviceTranslations[$device] ?? 'لا توجد متطلبات حالياً' }}
+                        </span>
                         <h6>|</h6>
                         <span>عدد الساعات:
                             {{ $course->duration_in_hours }}</span>

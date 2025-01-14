@@ -31,10 +31,7 @@
         .hero-background {
             background-image: url("https://media.npr.org/assets/img/2017/04/19/students-in-social-studies-class-2_wide-170b4b5454916941b2d3f29c9442f50e9e1c82e5.jpg?s=1400");
             background-color: rgba(147, 53, 0, 0.5);
-            /* لون التلوين مع الشفافية */
             background-blend-mode: overlay;
-            /* طريقة الدمج */
-
             background-size: cover;
             background-position: center;
             filter: blur(3px);
@@ -81,6 +78,62 @@
             width: 90%;
             margin: 10px auto;
         }
+
+        /* تصميم الجدول الأسبوعي */
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            direction: rtl;
+        }
+
+        .calendar-day {
+            background-color: #02475E;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .calendar-day:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .calendar-day h4 {
+            margin: 0;
+            font-size: 18px;
+            color: #ed6b2f;
+            text-align: center;
+        }
+
+        .calendar-day ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 0 0;
+        }
+
+        .calendar-day ul li {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .calendar-day ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        .calendar-day .time {
+            font-size: 12px;
+            color: #ccc;
+        }
+
+        .calendar-day .holiday {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -88,10 +141,7 @@
     @include('homeComponents.header')
 
     <section class="hero-section">
-        <!-- الخلفية -->
         <div class="hero-background"></div>
-
-        <!-- المحتوى -->
         <div class="hero-content">
             <h1 class="hero-title">{{ $section->name }}</h1>
             <p class="hero-text">{{ $section->description }}</p>
@@ -118,82 +168,16 @@
                 role="tab" aria-controls="teachers" aria-selected="false">المعلمين</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="sources-tab" data-toggle="tab" data-target="#sources" type="button"
-                role="tab" aria-controls="sources" aria-selected="false">
-                المنهج والدورات
-            </button>
+            <button class="nav-link" id="details-tab" data-toggle="tab" data-target="#details" type="button"
+                role="tab" aria-controls="details" aria-selected="false">معلومات عن الفصل</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="details-tab" data-toggle="tab" data-target="#details"
-                type="button" role="tab" aria-controls="details" aria-selected="true">
-                معلومات عن الفصل
-            </button>
+            <button class="nav-link active" id="sources-tab" data-toggle="tab" data-target="#sources" type="button"
+                role="tab" aria-controls="sources" aria-selected="true">المنهج والدورات</button>
         </li>
     </ul>
     <div class="tab-content" id="videoTabsContent">
-        <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
-            @include('homeComponents.section.details')
-            <!-- جدول المواد الدراسية -->
-            <h3 class="info-header" style="text-align: right;">الجدول الأسبوعي</h3>
-            <table style="width: 100%; border-collapse: collapse; text-align: center; direction: rtl;">
-                <thead>
-                    <tr>
-                        <th>اليوم</th>
-                        <th>المواد</th>
-                        <th>الأوقات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $days = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
-                    @endphp
-                    @foreach ($days as $dayIndex => $day)
-                        <tr>
-                            <td>{{ $day }}</td>
-                            <td>
-                                @php
-                                    $daySchedule = $sectionCalendars->where('day_number', $dayIndex + 1); // 1 = السبت
-                                @endphp
-
-                                @if ($daySchedule->isNotEmpty())
-                                    <ul class="list-unstyled">
-                                        @foreach ($daySchedule as $schedule)
-                                            <li>{{ $schedule->course->title ?? 'لا توجد مادة' }}</li>
-                                        @endforeach
-                                    </ul>
-                                @else
-                                    <span class="text-white">إجازة</span>
-                                @endif
-                            </td>
-                            <td>
-                                @if ($daySchedule->isNotEmpty())
-                                    <ul class="list-unstyled">
-                                        @foreach ($daySchedule as $schedule)
-                                            @php
-                                                $time = \Carbon\Carbon::createFromFormat(
-                                                    'H:i:s',
-                                                    $schedule->start_time,
-                                                )->format('h:i A');
-                                                $timeInArabic = str_replace(['AM', 'PM'], ['صباحًا', 'مساءً'], $time);
-                                            @endphp
-                                            <li>{{ $timeInArabic }}</li>
-                                        @endforeach
-
-                                    </ul>
-                                @else
-                                    <span class="text-white">---</span>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            @include('homeComponents.home.best-students', [
-                'students' => $sectionStudents,
-                'title' => "طلاب فصل {$section->name}",
-            ])
-        </div>
-        <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
+        <div class="tab-pane fade show active" id="sources" role="tabpanel" aria-labelledby="sources-tab">
             <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">
                 <h2 class="info-header">المنهج والدورات</h2>
                 <div class="row" style="direction: rtl;">
@@ -203,10 +187,53 @@
                 </div>
             </section>
         </div>
+        <div class="tab-pane fade " id="details" role="tabpanel" aria-labelledby="details-tab">
+            @include('homeComponents.home.best-students', [
+                'students' => $sectionStudents,
+                'title' => "طلاب فصل {$section->name}",
+            ])
+            @include('homeComponents.section.details')
+            <h3 class="info-header" style="text-align: right;">الجدول الأسبوعي</h3>
+            <div class="calendar">
+                @php
+                    $days = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+                @endphp
+                @foreach ($days as $dayIndex => $day)
+                    <div class="calendar-day">
+                        <h4>{{ $day }}</h4>
+                        @php
+                            $daySchedule = $sectionCalendars->where('day_number', $dayIndex + 1); // 1 = السبت
+                        @endphp
+                        @if ($daySchedule->isNotEmpty())
+                            <ul>
+                                @foreach ($daySchedule as $schedule)
+                                    <li>
+                                        {{ $schedule->course->title ?? 'لا توجد مادة' }}
+                                        <div class="time">
+                                            @php
+                                                $time = \Carbon\Carbon::createFromFormat(
+                                                    'H:i:s',
+                                                    $schedule->start_time,
+                                                )->format('h:i A');
+                                                $timeInArabic = str_replace(['AM', 'PM'], ['صباحًا', 'مساءً'], $time);
+                                            @endphp
+                                            {{ $timeInArabic }}
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <span class="holiday">إجازة</span>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+
+        </div>
+
         <div class="tab-pane fade" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
             <section class="mt-5" style="text-align: right; width: 90%; margin: 10px auto;">
-                <h2 class="info-header">معلمين
-                    الفصل</h2>
+                <h2 class="info-header">معلمين الفصل</h2>
                 <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
                     @foreach ($section->users->where('role', 'teacher') as $user)
                         @include('homeComponents.section.teachers')
