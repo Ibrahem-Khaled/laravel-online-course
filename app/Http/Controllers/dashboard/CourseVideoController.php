@@ -65,11 +65,30 @@ class CourseVideoController extends Controller
 
     public function showByCourse($courseId)
     {
-        $course = Course::with('videos')->findOrFail($courseId);
+        // احصل على الدورة مع الفيديوهات المرتبة حسب ranking
+        $course = Course::with([
+            'videos' => function ($query) {
+                $query->orderBy('ranking'); // ترتيب الفيديوهات حسب ranking
+            }
+        ])->findOrFail($courseId);
+
+        // احصل على الأجزاء (parts) الخاصة بالدورة
         $parts = Part::where('course_id', $courseId)->get();
+
+        // قم بتمرير البيانات إلى العرض
         return view('dashboard.course_videos.index', compact('course', 'parts'));
     }
 
+    public function reorder(Request $request)
+    {
+        $order = $request->input('order');
+
+        foreach ($order as $index => $videoId) {
+            CourseVideo::where('id', $videoId)->update(['ranking' => $index + 1]);
+        }
+
+        return response()->json(['success' => true]);
+    }
     public function destroy($id)
     {
         $video = CourseVideo::findOrFail($id);

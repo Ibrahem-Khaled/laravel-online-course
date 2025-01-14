@@ -4,7 +4,7 @@
         border-radius: 10px;
         padding: 15px;
         color: #fff;
-        max-height: 60%;
+        height: 60%;
         overflow: auto;
         scrollbar-width: thin;
         scrollbar-color: #035971 #01222d;

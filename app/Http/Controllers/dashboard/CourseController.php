@@ -74,6 +74,8 @@ class CourseController extends Controller
     public function destroy($id)
     {
         $course = Course::findOrFail($id);
+        $course->sectionCalendars()->delete();
+
         $course->delete();
 
         return redirect()->back()->with('success', 'تم حذف الدورة بنجاح!');

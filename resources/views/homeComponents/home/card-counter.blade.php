@@ -56,7 +56,7 @@
         <i class="bi bi-people"></i>
         <h2>{{ $allStudentsCount }}+</h2>
         <p>الطلاب</p>
-    </div>
+    </div> 
 
     <div class="info-card">
         <i class="bi bi-people"></i>

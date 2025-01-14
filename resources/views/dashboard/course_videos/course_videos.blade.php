@@ -19,12 +19,12 @@
                     <th>الإجراءات</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="sortable">
                 @foreach ($videos as $video)
-                    <tr>
+                    <tr data-id="{{ $video->id }}">
                         <td>{{ $video->course->title }}</td>
                         <td>{{ $video->title }}</td>
-                        <td> {!! $video->video !!}</td>
+                        <td>{!! $video->video !!}</td>
                         <td>{{ Str::limit($video->description, 50, '...') }}</td>
                         <td>{{ $video->duration }}</td>
                         <td>
@@ -160,4 +160,38 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sortable = document.getElementById('sortable');
+
+            new Sortable(sortable, {
+                animation: 150, // سرعة الحركة
+                onEnd: function(event) {
+                    const rows = Array.from(sortable.querySelectorAll('tr'));
+                    const order = rows.map(row => row.getAttribute('data-id'));
+
+                    // إرسال الترتيب الجديد إلى الخادم
+                    fetch("{{ route('course_videos.reorder') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                            },
+                            body: JSON.stringify({
+                                order
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('تم تحديث الترتيب بنجاح!');
+                            } else {
+                                alert('حدث خطأ أثناء تحديث الترتيب.');
+                            }
+                        });
+                }
+            });
+        });
+    </script>
 @endsection

@@ -60,6 +60,11 @@ class Course extends Model
         return $this->videos()->sum('duration');
     }
 
+    public function sectionCalendars()
+    {
+        return $this->hasMany(SectionCalendar::class);
+    }
+
     public function requirements()
     {
         return $this->hasMany(inVideoUsage::class, 'course_video_id')
