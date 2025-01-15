@@ -246,12 +246,12 @@
                 <h2 class="info-header">طلاب</h2>
                 @include('homeComponents.section.students', [
                     ($students = $section->users->where('role', 'student')),
-                    ($trainer = $section->users->where('role', 'teacher')->first()),
+                    ($trainer = $section?->users?->where('role', 'teacher')?->first()),
                 ])
             </section>
         </div>
     </div>
-
+ 
     @include('homeComponents.video-courses.float_button_add')
 
     @include('homeComponents.footer')

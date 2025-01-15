@@ -86,7 +86,7 @@
                 @endphp
                 <tr>
                     <td>{{ $student->name }}</td>
-                    <td>أ/ {{ $trainer->name }}</td>
+                    <td>{{ 'أ/ ' . ($trainer?->name ?? 'لا يوجد مدرب') }}</td>
                     <td>{{ $student->userReports->last() ? $sumUserReport . '/60' : 'لا يوجد تقييم' }}</td>
                     <td>
                         @if ($sumUserReport >= 51)
