@@ -19,7 +19,7 @@
     <!-- عرض التعليقات -->
     <h5 class="mt-4 mb-3">الاستفسارات</h5>
     @foreach ($video->videoDiscussions as $comment)
-        @if (Auth::check() && (Auth::user()->role != 'student' || Auth::id() == $homework->user_id))
+        @if (Auth::check() && (Auth::user()->role != 'student' || Auth::id() == $comment->user_id))
             <div class="p-3 mb-3" style="background-color: #004051; border-radius: 10px;">
                 <div class="d-flex align-items-center mb-2">
                     <img src="{{ $comment->user->image
