@@ -99,13 +99,19 @@ class HomeController extends Controller
             ->get()
             ->keyBy('id');
 
+        $unresolvedHomeworksCount = $video->homeWorks()
+            ->whereNull('reply')
+            ->WhereNull('rating')
+            ->count();
+
         return view('video-courses', compact(
             'course',
             'video',
             'progress',
             'currentVideoIndex',
             'totalVideos',
-            'videoHistories'
+            'videoHistories',
+            'unresolvedHomeworksCount'
         ));
     }
 

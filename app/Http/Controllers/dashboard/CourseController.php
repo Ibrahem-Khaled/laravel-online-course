@@ -60,6 +60,8 @@ class CourseController extends Controller
             'language' => 'required|string|max:50',
             'status' => 'required|in:active,inactive,draft',
             'is_featured' => 'boolean',
+            'device' => 'required|in:web,mobile,desktop,tablet,tv,other,all', // التحقق من القيمة
+
         ]);
 
         if ($request->hasFile('image')) {
@@ -67,9 +69,10 @@ class CourseController extends Controller
         }
 
         $course->update($validated);
+        $course->videos()->update(['device' => $validated['device']]);
 
         return redirect()->back()->with('success', 'تم تعديل الدورة بنجاح!');
-    }
+    } 
 
     public function destroy($id)
     {

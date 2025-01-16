@@ -87,7 +87,7 @@
             </form>
         </div>
     @endif
-
+ 
     <!-- عرض واجبات الطلاب -->
     <h5 class="mt-4 mb-3">واجبات الطلاب ({{ $video->homeWorks->count() }})</h5>
     @foreach ($video->homeWorks as $homework)

@@ -137,10 +137,28 @@
                                     <label for="image" class="form-label">صورة الدورة</label>
                                     <input type="file" name="image" class="form-control">
                                 </div>
+                                <div class="mb-3">
+                                    <label for="device" class="form-label">نوع الجهاز</label>
+                                    <select name="device" class="form-select" required>
+                                        <option value="web" {{ $course->device == 'web' ? 'selected' : '' }}>ويب
+                                        </option>
+                                        <option value="mobile" {{ $course->device == 'mobile' ? 'selected' : '' }}>
+                                            موبايل</option>
+                                        <option value="desktop" {{ $course->device == 'desktop' ? 'selected' : '' }}>
+                                            كمبيوتر</option>
+                                        <option value="tablet" {{ $course->device == 'tablet' ? 'selected' : '' }}>
+                                            تابلت</option>
+                                        <option value="tv" {{ $course->device == 'tv' ? 'selected' : '' }}>تلفزيون
+                                        </option>
+                                        <option value="other" {{ $course->device == 'other' ? 'selected' : '' }}>أخرى
+                                        </option>
+                                        <option value="all" {{ $course->device == 'all' ? 'selected' : '' }}>جميع
+                                            الأجهزة</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                    data-dismiss="modal">إغلاق</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
                                 <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
                             </div>
                         </form>

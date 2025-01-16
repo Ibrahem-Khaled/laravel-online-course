@@ -94,8 +94,8 @@
 
         .course-meta span {
             display: inline-block;
-            margin-right: 10px;
             color: #ffffff;
+            font-size: 0.8rem;
         }
 
         .video-container {
@@ -173,24 +173,32 @@
                             </div>
                         </div>
                         <h6>|</h6> --}}
-                        <span>المتطلبات:
+                        <span> المتطلبات:
                             @php
                                 $deviceTranslations = [
-                                    'web' => 'ويب',
-                                    'mobile' => 'جوال',
-                                    'desktop' => 'كمبيوتر',
-                                    'tablet' => 'تابلت',
-                                    'tv' => 'تلفزيون',
-                                    'other' => 'أخرى',
-                                    'all' => 'جميع الأجهزة',
+                                    'web' => ['label' => 'ويب', 'icon' => '<i class="fas fa-globe"></i>'],
+                                    'mobile' => ['label' => 'جوال', 'icon' => '<i class="fas fa-mobile-alt"></i>'],
+                                    'desktop' => ['label' => 'كمبيوتر', 'icon' => '<i class="fas fa-desktop"></i>'],
+                                    'tablet' => ['label' => 'تابلت', 'icon' => '<i class="fas fa-tablet-alt"></i>'],
+                                    'tv' => ['label' => 'تلفزيون', 'icon' => '<i class="fas fa-tv"></i>'],
+                                    'other' => ['label' => 'أخرى', 'icon' => '<i class="fas fa-question-circle"></i>'],
+                                    'all' => [
+                                        'label' => 'جميع الأجهزة',
+                                        'icon' => '<i class="fas fa-layer-group"></i>',
+                                    ],
                                 ];
                                 $device = $video->device ?? 'web'; // القيمة الافتراضية إذا لم تكن موجودة
                             @endphp
-                            {{ $deviceTranslations[$device] ?? 'لا توجد متطلبات حالياً' }}
+                            {{ $deviceTranslations[$device]['label'] ?? 'لا توجد متطلبات حالياً' }}
+                            {!! $deviceTranslations[$device]['icon'] ?? '' !!}
                         </span>
+
                         <h6>|</h6>
                         <span>عدد الساعات:
                             {{ $course->duration_in_hours }}</span>
+                        <h6>|</h6>
+                        <span>عدد الفيديوهات:
+                            {{ $course->videos->count() }}</span>
                         <h6>|</h6>
                         <span>مستوى الدورة:
                             @if ($course->difficulty_level == 'beginner')
@@ -244,9 +252,16 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="homework-tab" data-toggle="tab" data-target="#homework"
-                            type="button" role="tab" aria-controls="homework"
-                            aria-selected="false">الواجبات</button>
+                            type="button" role="tab" aria-controls="homework" aria-selected="false">
+                            الواجبات
+                            @if ($unresolvedHomeworksCount > 0)
+                                <span id="homework-counter" class="badge bg-danger">
+                                    {{ $unresolvedHomeworksCount }}
+                                </span>
+                            @endif
+                        </button>
                     </li>
+                    
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="discussion-tab" data-toggle="tab" data-target="#discussion"
                             type="button" role="tab" aria-controls="discussion"
@@ -267,7 +282,8 @@
                             </form>
                         @else
                             <!-- عرض الوصف فقط -->
-                            <h6 class="text-white text-right mt-3 p-3" style="line-height: 2;">{{ $video->description }}
+                            <h6 class="text-white text-right mt-3 p-3" style="line-height: 2;">
+                                {{ $video->description }}
                             </h6>
                         @endif
                     </div>
