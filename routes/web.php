@@ -72,7 +72,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     //this course controller for dashboard
     Route::resource('courses', CourseController::class);
     Route::post('/course-parts', [CourseController::class, 'addPart'])->name('course_parts.store');
-
+    Route::put('/course_parts/{id}', [CourseController::class, 'updatePart'])->name('course_parts.update');
+    Route::delete('/course_parts/{id}', [CourseController::class, 'deletePart'])->name('course_parts.destroy');
+    
     //this contact-us controller for dashboard
     Route::resource('contact_us', ContactUsController::class);
 

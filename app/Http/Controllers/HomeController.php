@@ -117,12 +117,30 @@ class HomeController extends Controller
 
     public function allCourses($category_id = null)
     {
+        $limit = 8; // عدد الدورات التي يتم تحميلها في كل مرة
+        $page = request()->get('page', 1); // الصفحة الحالية
+
         if ($category_id) {
-            $courses = Course::where('status', 'active')->where('category_id', $category_id)->paginate(6);
+            $courses = Course::where('status', 'active')
+                ->where('category_id', $category_id)
+                ->skip(($page - 1) * $limit)
+                ->take($limit)
+                ->get();
         } else {
-            $courses = Course::where('status', 'active')->paginate(6);
+            $courses = Course::where('status', 'active')
+                ->skip(($page - 1) * $limit)
+                ->take($limit)
+                ->get();
         }
-        return view('all-courses', compact('courses'));
+
+        if (request()->ajax()) {
+            // إذا كان الطلب عبر AJAX، نرجع البيانات كـ JSON
+            return response()->json([
+                'courses' => view('homeComponents.home.course-card', compact('courses'))->render(),
+            ]);
+        }
+
+        return view('all-courses', compact('courses', 'page', 'limit'));
     }
 
     public function allStudentsSections()

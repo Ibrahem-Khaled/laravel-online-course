@@ -72,7 +72,7 @@ class CourseController extends Controller
         $course->videos()->update(['device' => $validated['device']]);
 
         return redirect()->back()->with('success', 'تم تعديل الدورة بنجاح!');
-    } 
+    }
 
     public function destroy($id)
     {
@@ -97,5 +97,27 @@ class CourseController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'تم إضافة القسم بنجاح!');
+    }
+
+    public function updatePart(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $part = Part::findOrFail($id);
+        $part->update([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->back()->with('success', 'تم تعديل القسم بنجاح!');
+    }
+
+    public function deletePart($id)
+    {
+        $part = Part::findOrFail($id);
+        $part->delete();
+
+        return redirect()->back()->with('success', 'تم حذف القسم بنجاح!');
     }
 }

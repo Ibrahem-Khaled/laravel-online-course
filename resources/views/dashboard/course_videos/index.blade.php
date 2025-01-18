@@ -80,6 +80,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
+
                                         <div class="mb-3">
                                             <label for="title" class="form-label">العنوان</label>
                                             <input type="text" name="title" class="form-control"
@@ -165,6 +166,55 @@
             </div>
         </div>
 
+        <!-- Edit Part Modal -->
+        <div class="modal fade" id="editPartModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="editPartForm" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-header">
+                            <h5 class="modal-title">تعديل القسم</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="edit_part_name" class="form-label">اسم القسم</label>
+                                <input type="text" name="name" class="form-control" id="edit_part_name" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                            <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Part Modal -->
+        <div class="modal fade" id="deletePartModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="deletePartForm" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <div class="modal-header">
+                            <h5 class="modal-title">حذف القسم</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>هل أنت متأكد من حذف هذا القسم؟</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                            <button type="submit" class="btn btn-danger">حذف</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <!-- Add Video Modal -->
         <div class="modal fade" id="addVideoModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
@@ -180,11 +230,22 @@
                             <div class="mb-3">
                                 <label for="part_id" class="form-label">اسم القسم</label>
                                 <select name="part_id" class="form-select">
-                                    <option value="">-- اختر القسم --</option>
+                                    <option value="{{ $video?->part_id }}" selected>{{ $video?->part?->name }}</option>
                                     @foreach ($parts as $part)
                                         <option value="{{ $part->id }}">{{ $part->name }}</option>
                                     @endforeach
                                 </select>
+                                @foreach ($parts as $part)
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>{{ $part->name }}</span>
+                                        <div>
+                                            <button type="button" class="btn btn-sm btn-primary"
+                                                onclick="openEditPartModal({{ $part->id }}, '{{ $part->name }}')">تعديل</button>
+                                            <button type="button" class="btn btn-sm btn-danger"
+                                                onclick="openDeletePartModal({{ $part->id }})">حذف</button>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                             <div class="mb-3">
                                 <label for="title" class="form-label">العنوان</label>
@@ -269,5 +330,16 @@
                 }
             });
         });
+
+        function openEditPartModal(partId, partName) {
+            document.getElementById('edit_part_name').value = partName;
+            document.getElementById('editPartForm').action = `/dashboard/course_parts/${partId}`;
+            new bootstrap.Modal(document.getElementById('editPartModal')).show();
+        }
+
+        function openDeletePartModal(partId) {
+            document.getElementById('deletePartForm').action = `/dashboard/course_parts/${partId}`;
+            new bootstrap.Modal(document.getElementById('deletePartModal')).show();
+        }
     </script>
 @endsection

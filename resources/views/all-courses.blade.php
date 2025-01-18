@@ -19,7 +19,6 @@
             margin: 0;
             padding-top: 100px;
             justify-content: space-between;
-
         }
 
         .sort-section {
@@ -52,6 +51,21 @@
         .dropdown-toggle-sort-sort:hover {
             background-color: #FDE8CE;
         }
+
+        .load-more-btn {
+            background-color: #ed6b2f;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .load-more-btn:hover {
+            background-color: #d45a1f;
+        }
     </style>
 </head>
 
@@ -64,8 +78,7 @@
         <h5>الدورات</h5>
         <div class="dropdown" style="flex-direction: row-reverse; display: flex; align-items: center;">
             <h3 class="sort-title">ترتيب حسب</h3>
-            <button class="dropdown-toggle-sort" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-expanded="false">
+            <button class="dropdown-toggle-sort" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
                 المضاف حديثاً
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -78,7 +91,7 @@
 
     <!-- Courses Section -->
     <div class="container my-4">
-        <div class="row" style="direction: rtl;">
+        <div class="row" style="direction: rtl;" id="courses-container">
             @if ($courses->count() > 0)
                 @foreach ($courses as $course)
                     @include('homeComponents.home.course-card')
@@ -87,18 +100,18 @@
                 <div class="text-center mt-5">
                     <h3 style="color: #fed8b1;">لا توجد دورات متاحة حالياً</h3>
                     <p style="color: #ffffff;">يمكنك التحقق لاحقاً أو التواصل معنا للحصول على المزيد من التفاصيل.</p>
-                    <button class="btn mt-3 w-50" style="background-color: #ed6b2f; color: #ffffff;" onclick="window.location.href='#'">
+                    <button class="btn mt-3 w-50 text-white" style="background-color: #ed6b2f;"
+                        onclick="window.location.href='#'">
                         تواصل معنا
                     </button>
                 </div>
             @endif
         </div>
 
-        <!-- Pagination -->
+        <!-- Load More Button -->
         @if ($courses->count() > 0)
-            <div class="pagination">
-                {{ $courses->links() }}
-            </div>
+            <button id="load-more-btn" class="load-more-btn w-50 text-white" style="background-color: #ed6b2f;"
+                data-page="2">المزيد</button>
         @endif
     </div>
 
@@ -108,6 +121,36 @@
     <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
+    <script>
+        $(document).ready(function() {
+            $('#load-more-btn').click(function() {
+                var page = $(this).data('page'); // الصفحة التالية
+                var url = "{{ route('all-courses') }}?page=" + page; // الرابط مع الصفحة
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(response) {
+                        if (response.courses.length > 0) {
+                            $('#courses-container').append(response
+                                .courses); // إضافة الدورات الجديدة
+                            $('#load-more-btn').data('page', page + 1); // تحديث الصفحة التالية
+                        } else {
+                            $('#load-more-btn')
+                                .hide(); // إخفاء الزر إذا لم يكن هناك المزيد من الدورات
+                        }
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+        });
+
+        if (response.courses.length === 0) {
+            $('#load-more-btn').hide();
+        }
+    </script>
 </body>
 
 </html>
