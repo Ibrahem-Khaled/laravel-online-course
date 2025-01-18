@@ -230,7 +230,6 @@
                             <div class="mb-3">
                                 <label for="part_id" class="form-label">اسم القسم</label>
                                 <select name="part_id" class="form-select">
-                                    <option value="{{ $video?->part_id }}" selected>{{ $video?->part?->name }}</option>
                                     @foreach ($parts as $part)
                                         <option value="{{ $part->id }}">{{ $part->name }}</option>
                                     @endforeach
