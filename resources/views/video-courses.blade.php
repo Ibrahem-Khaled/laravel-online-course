@@ -194,10 +194,10 @@
                         </span>
 
                         <h6>|</h6>
-                        <span>عدد الساعات:
+                        <span>الوقت:
                             {{ $course->duration_in_hours }}</span>
                         <h6>|</h6>
-                        <span>عدد الفيديوهات:
+                        <span>الدروس:
                             {{ $course->videos->count() }}</span>
                         <h6>|</h6>
                         <span>مستوى الدورة:
@@ -261,7 +261,7 @@
                             @endif
                         </button>
                     </li>
-                    
+
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="discussion-tab" data-toggle="tab" data-target="#discussion"
                             type="button" role="tab" aria-controls="discussion"

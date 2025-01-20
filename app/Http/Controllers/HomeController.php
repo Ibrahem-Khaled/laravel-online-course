@@ -26,7 +26,9 @@ class HomeController extends Controller
 
         $coursesHours = 0;
         foreach ($courses as $key => $course) {
-            $coursesHours += $course->duration_in_hours;
+            if (is_numeric($course->duration_in_hours)) {
+                $coursesHours += $course->duration_in_hours;
+            }
         }
 
         return view('home', compact(
