@@ -55,10 +55,6 @@ class Course extends Model
         return $this->belongsToMany(Section::class, 'section_courses', 'course_id', 'section_id');
     }
 
-    public function getDurationInHoursAttribute()
-    {
-        return $this->videos()->sum('duration');
-    }
 
     public function sectionCalendars()
     {
@@ -70,4 +66,26 @@ class Course extends Model
         return $this->hasMany(inVideoUsage::class, 'course_video_id')
             ->where('type', 'software');
     }
+
+
+
+
+
+
+    public function getDurationInHoursAttribute()
+    {
+        $totalSeconds = $this->videos()->get()->reduce(function ($carry, $video) {
+            $startOfDay = \Carbon\Carbon::today(); // بداية اليوم الحالي
+            $durationInSeconds = \Carbon\Carbon::parse($video->duration)->diffInSeconds($startOfDay);
+
+            return $carry + $durationInSeconds;
+        }, 0);
+
+        $hours = floor($totalSeconds / 3600);
+        $minutes = floor(($totalSeconds % 3600) / 60);
+        $seconds = $totalSeconds % 60;
+
+        return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
+    }
+
 }

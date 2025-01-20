@@ -24,7 +24,7 @@
                     <th>رابط الفيديو</th>
                     <th>الوصف</th>
                     <th>الصورة</th>
-                    <th>المدة (ساعات)</th>
+                    <th>المدة (ساعات:دقائق:ثواني)</th>
                     <th>الجهاز المستخدم</th>
                     <th>الإجراءات</th>
                 </tr>
@@ -60,79 +60,15 @@
                     <div class="modal fade" id="editVideoModal{{ $video->id }}" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="{{ route('course_videos.update', $video->id) }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">تعديل الفيديو</h5>
-                                        <button type="button" class="btn-close" data-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="mb-3">
-                                            <label for="part_id" class="form-label">اسم القسم</label>
-                                            <select name="part_id" class="form-select">
-                                                <option value="{{ $video?->part_id }}" selected>{{ $video?->part?->name }}
-                                                </option>
-                                                @foreach ($parts as $part)
-                                                    <option value="{{ $part->id }}">{{ $part->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="title" class="form-label">العنوان</label>
-                                            <input type="text" name="title" class="form-control"
-                                                value="{{ $video->title }}" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="video" class="form-label">رابط الفيديو</label>
-                                            <input type="text" name="video" class="form-control"
-                                                value="{{ $video->video }}" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="description" class="form-label">الوصف</label>
-                                            <textarea name="description" class="form-control" rows="3" required>{{ $video->description }}</textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="question" class="form-label">سوال الواجب</label>
-                                            <input type="text" name="question" class="form-control"
-                                                value="{{ $video->question }}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="duration" class="form-label">المدة (ساعات)</label>
-                                            <input type="text" name="duration" class="form-control"
-                                                value="{{ $video->duration }}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="image" class="form-label">الصورة</label>
-                                            <input type="file" name="image" class="form-control">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="device" class="form-label">جهاز التشغيل</label>
-                                            <select name="device" class="form-select" required>
-                                                <option value="all" {{ $video->device == 'all' ? 'selected' : '' }}>
-                                                    جميع الأجهزة
-                                                </option>
-                                                <option value="web" {{ $video->device == 'web' ? 'selected' : '' }}>ويب
-                                                </option>
-                                                <option value="mobile" {{ $video->device == 'mobile' ? 'selected' : '' }}>
-                                                    جوال</option>
-                                                <option value="desktop"
-                                                    {{ $video->device == 'desktop' ? 'selected' : '' }}>كمبيوتر
-                                                </option>
-                                                <option value="tablet" {{ $video->device == 'tablet' ? 'selected' : '' }}>
-                                                    تابلت
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
-                                        <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
-                                    </div>
-                                </form>
+                                @include('dashboard.course_videos.form', [
+                                    'action' => route('course_videos.update', $video->id),
+                                    'method' => 'PUT',
+                                    'title' => 'تعديل الفيديو',
+                                    'buttonText' => 'حفظ التعديلات',
+                                    'video' => $video,
+                                    'parts' => $parts,
+                                    'course' => $course,
+                                ])
                             </div>
                         </div>
                     </div>
@@ -219,78 +155,15 @@
         <div class="modal fade" id="addVideoModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="{{ route('course_videos.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" name="course_id" value="{{ $course->id }}">
-                        <div class="modal-header">
-                            <h5 class="modal-title">إضافة فيديو جديد</h5>
-                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="part_id" class="form-label">اسم القسم</label>
-                                <select name="part_id" class="form-select">
-                                    @foreach ($parts as $part)
-                                        <option value="{{ $part->id }}">{{ $part->name }}</option>
-                                    @endforeach
-                                </select>
-                                @foreach ($parts as $part)
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span>{{ $part->name }}</span>
-                                        <div>
-                                            <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="openEditPartModal({{ $part->id }}, '{{ $part->name }}')">تعديل</button>
-                                            <button type="button" class="btn btn-sm btn-danger"
-                                                onclick="openDeletePartModal({{ $part->id }})">حذف</button>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="mb-3">
-                                <label for="title" class="form-label">العنوان</label>
-                                <input type="text" name="title" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="video" class="form-label">رابط الفيديو</label>
-                                <input type="text" name="video" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="description" class="form-label">الوصف</label>
-                                <textarea name="description" class="form-control" rows="3" required></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="question" class="form-label">سوال الواجب</label>
-                                <input type="text" name="question" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label for="duration" class="form-label">المدة (ساعات)</label>
-                                <input type="number" name="duration" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="image" class="form-label">الصورة</label>
-                                <input type="file" name="image" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label for="device" class="form-label">جهاز التشغيل</label>
-                                <select name="device" class="form-select" required>
-                                    <option value="web" {{ old('device') == 'web' ? 'selected' : '' }}>ويب</option>
-                                    <option value="mobile" {{ old('device') == 'mobile' ? 'selected' : '' }}>جوال</option>
-                                    <option value="desktop" {{ old('device') == 'desktop' ? 'selected' : '' }}>كمبيوتر
-                                    </option>
-                                    <option value="tablet" {{ old('device') == 'tablet' ? 'selected' : '' }}>تابلت
-                                    </option>
-                                    <option value="tv" {{ old('device') == 'tv' ? 'selected' : '' }}>تلفزيون</option>
-                                    <option value="other" {{ old('device') == 'other' ? 'selected' : '' }}>أخرى</option>
-                                    <option value="all" {{ old('device') == 'all' ? 'selected' : '' }}>جميع الأجهزة
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
-                            <button type="submit" class="btn btn-primary">إضافة</button>
-                        </div>
-                    </form>
+                    @include('dashboard.course_videos.form', [
+                        'action' => route('course_videos.store'),
+                        'method' => 'POST',
+                        'title' => 'إضافة فيديو جديد',
+                        'buttonText' => 'إضافة',
+                        'video' => null,
+                        'parts' => $parts,
+                        'course' => $course,
+                    ])
                 </div>
             </div>
         </div>

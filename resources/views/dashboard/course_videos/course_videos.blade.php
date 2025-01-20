@@ -14,7 +14,7 @@
                     <th>العنوان</th>
                     <th>الفيديو</th>
                     <th>الوصف</th>
-                    <th>المدة (ساعات)</th>
+                    <th>المدة (ساعات:دقائق:ثواني)</th>
                     <th>الجهاز المستخدم</th>
                     <th>الصورة</th>
                     <th>الإجراءات</th>
@@ -96,7 +96,7 @@
                                             <label for="image" class="form-label">الصورة</label>
                                             <input type="file" name="image" class="form-control">
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="mb-3" hidden>
                                             <label for="device" class="form-label">جهاز التشغيل</label>
                                             <select name="device" class="form-select" required>
                                                 <option value="all" {{ $video->device == 'all' ? 'selected' : '' }}>
@@ -170,7 +170,7 @@
                                 <label for="image" class="form-label">الصورة</label>
                                 <input type="file" name="image" class="form-control">
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3" hidden>
                                 <label for="device" class="form-label">جهاز التشغيل</label>
                                 <select name="device" class="form-select" required>
                                     <option value="web" {{ old('device') == 'web' ? 'selected' : '' }}>ويب</option>

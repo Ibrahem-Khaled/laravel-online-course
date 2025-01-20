@@ -28,8 +28,8 @@ class CourseVideoController extends Controller
             'description' => 'required|string',
             'image' => 'nullable|image|max:2048',
             'question' => 'nullable|string',
-            'duration' => 'required|numeric|min:0',
-        ]); 
+            'duration' => 'required|date_format:H:i:s', // التحقق من التنسيق
+        ]);
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('course_videos', 'public');
@@ -51,7 +51,7 @@ class CourseVideoController extends Controller
             'description' => 'required|string',
             'image' => 'nullable|image|max:2048',
             'question' => 'nullable|string',
-            'duration' => 'required|numeric|min:0',
+            'duration' => 'required|date_format:H:i:s', // التحقق من التنسيق
         ]);
 
         if ($request->hasFile('image')) {

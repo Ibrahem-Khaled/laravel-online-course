@@ -172,11 +172,7 @@
                                 <span>{{ $loop->index + 1 }}. {{ $otherVideo->title }}</span>
                                 <span class="video-duration">
                                     (<i class="fas fa-clock"></i>
-                                    @php
-                                        $hours = floor($otherVideo->duration / 60);
-                                        $minutes = $otherVideo->duration % 60;
-                                        echo $hours > 0 ? "{$hours} ساعات و {$minutes} دقائق" : "{$minutes} دقائق";
-                                    @endphp)
+                                    {{ $otherVideo->duration }} دقيقة)
                                 </span>
                             </div>
                         </a>
@@ -215,11 +211,7 @@
                         <span>{{ $loop->index + 1 }}. {{ $otherVideo->title }}</span>
                         <span class="video-duration">
                             (<i class="fas fa-clock"></i>
-                            @php
-                                $hours = floor($otherVideo->duration / 60);
-                                $minutes = $otherVideo->duration % 60;
-                                echo $hours > 0 ? "{$hours} ساعات و {$minutes} دقائق" : "{$minutes} دقائق";
-                            @endphp)
+                            {{ $otherVideo->duration }} دقيقة)
                         </span>
                     </div>
                 </a>

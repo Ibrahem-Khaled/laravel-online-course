@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->text('description');
             $table->text('question')->nullable();
             $table->string('image')->nullable();
-            $table->integer('duration')->default(0);
+            $table->time('duration')->default(0);
             $table->enum('device', ['web', 'mobile', 'desktop', 'tablet', 'tv', 'other', 'all'])->default('web');
             $table->timestamps();
         });

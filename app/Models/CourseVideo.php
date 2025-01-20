@@ -20,6 +20,16 @@ class CourseVideo extends Model
         'device',
     ];
 
+    protected $casts = [
+        'duration' => 'datetime:H:i:s', // للتأكد من التخزين بصيغة صحيحة
+    ];
+
+    // إنشاء Accessor للحصول على الوقت فقط
+    public function getDurationAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('H:i:s');
+    }
+    
     public function course()
     {
         return $this->belongsTo(Course::class, 'course_id');
