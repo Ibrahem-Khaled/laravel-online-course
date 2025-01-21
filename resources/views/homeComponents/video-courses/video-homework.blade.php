@@ -87,12 +87,12 @@
             </form>
         </div>
     @endif
- 
+
     <!-- عرض واجبات الطلاب -->
     <h5 class="mt-4 mb-3">واجبات الطلاب ({{ $video->homeWorks->count() }})</h5>
     @foreach ($video->homeWorks as $homework)
-        <div class="p-3 mb-3" style="background-color: #004051; border-radius: 10px;">
-            @if (Auth::check() && (Auth::user()->role != 'student' || Auth::id() == $homework->user_id))
+        @if (Auth::check() && (Auth::user()->role != 'student' || Auth::id() == $homework->user_id))
+            <div class="p-3 mb-3" style="background-color: #004051; border-radius: 10px;">
                 <!-- معلومات الطالب -->
                 <div class="d-flex align-items-center mb-2">
                     <img src="{{ $homework->user->image
@@ -109,7 +109,9 @@
 
                 <!-- محتوى الواجب -->
                 <div class="p-2 rounded text-white" style="background-color: #035971;">
-                    <p class="mb-1">{{ $homework->text ?? 'لا يوجد نص مكتوب' }}</p>
+                    <p class="mb-1">
+                        {!! formatTextWithLinks($homework->text) ?? 'لا يوجد نص مكتوب' !!}
+                    </p>
                     @if ($homework->file)
                         <a href="{{ asset('uploads/' . $homework->file) }}" target="_blank"
                             class="btn btn-sm btn-light">
@@ -117,91 +119,156 @@
                         </a>
                     @endif
                 </div>
-            @endif
 
+                <!-- أزرار التعديل والحذف للطالب -->
+                @if (Auth::check() && Auth::id() == $homework->user_id)
+                    <div class="mt-3 d-flex gap-2">
+                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal"
+                            data-target="#editHomeworkModal{{ $homework->id }}">
+                            تعديل
+                        </button>
+                        <form action="{{ route('delete-homework', $homework->id) }}" method="POST"
+                            onsubmit="return confirm('هل أنت متأكد من حذف هذا الواجب؟');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                        </form>
+                    </div>
 
-            <!-- رد الأستاذ أو تقييمه -->
-            @if ($homework->reply || $homework->rating)
-                <div class="mt-3 p-2 rounded" style="background-color: #022c34; border: 1px solid #035971;">
-                    <h6 class="text-warning mb-2">رد الأستاذ:</h6>
-                    <p class="text-white mb-1">
-                        {{ $homework->reply ?? 'لم يتم إضافة رد بعد.' }}
-                    </p>
-                    @if ($homework->rating)
-                        <p class="text-info mb-0">
-                            <i class="bi bi-star-fill text-warning"></i>
-                            تقييم: {{ $homework->rating }}/5
+                    <!-- Modal لتعديل الواجب -->
+                    <div class="modal fade" id="editHomeworkModal{{ $homework->id }}" tabindex="-1"
+                        aria-labelledby="editHomeworkModalLabel{{ $homework->id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #02475E; color: #fff;">
+                                    <h5 class="modal-title" id="editHomeworkModalLabel{{ $homework->id }}">تعديل
+                                        الواجب</h5>
+                                    <button type="button" class="btn-close" data-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" style="background-color: #02475E; color: #fff;">
+                                    <form action="{{ route('update-homework', $homework->id) }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="mb-3">
+                                            <label for="editHomeworkText{{ $homework->id }}" class="form-label">نص
+                                                الواجب:</label>
+                                            <textarea id="editHomeworkText{{ $homework->id }}" name="text" class="form-control" rows="4">{{ $homework->text }}</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editHomeworkFile{{ $homework->id }}" class="form-label">تغيير
+                                                الملف (اختياري):</label>
+                                            <input type="file" id="editHomeworkFile{{ $homework->id }}"
+                                                name="file" class="form-control">
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-primary w-100"
+                                                style="background-color: #ed6b2f; border: none;">تحديث الواجب</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- زر الحذف للأستاذ -->
+                @if (
+                    (Auth::check() && Auth::user()->role == 'teacher') ||
+                        Auth::user()->role == 'supervisor' ||
+                        Auth::user()->role == 'admin')
+                    <form action="{{ route('delete-homework', $homework->id) }}" method="POST"
+                        onsubmit="return confirm('هل أنت متأكد من حذف هذا الواجب؟');" class="mt-3">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger w-100">حذف الواجب</button>
+                    </form>
+                @endif
+
+                <!-- رد الأستاذ أو تقييمه -->
+                @if ($homework->reply || $homework->rating)
+                    <div class="mt-3 p-2 rounded" style="background-color: #022c34; border: 1px solid #035971;">
+                        <h6 class="text-warning mb-2">رد الأستاذ:</h6>
+                        <p class="text-white mb-1">
+                            {{ $homework->reply ?? 'لم يتم إضافة رد بعد.' }}
                         </p>
-                    @endif
-                </div>
-            @endif
+                        @if ($homework->rating)
+                            <p class="text-info mb-0">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                تقييم: {{ $homework->rating }}/5
+                            </p>
+                        @endif
+                    </div>
+                @endif
 
-            <!-- نموذج تقييم ورد الأستاذ -->
-            @if (
-                (Auth::check() && Auth::user()->role == 'teacher') ||
-                    Auth::user()->role == 'supervisor' ||
-                    Auth::user()->role == 'admin')
-                <form action="{{ route('homework.reply', $homework->id) }}" method="POST"
-                    class="homework-reply-form mt-3" data-id="{{ $homework->id }}">
-                    @csrf
-                    <div class="form-group mb-2">
-                        <label for="reply_{{ $homework->id }}" class="text-white">رد الأستاذ:</label>
-                        <textarea name="reply" id="reply_{{ $homework->id }}" class="form-control" rows="2" style="resize: none;"></textarea>
-                    </div>
-                    <div class="form-group mb-2">
-                        <label for="rating_{{ $homework->id }}" class="text-white">تقييم:</label>
-                        <select name="rating" id="rating_{{ $homework->id }}" class="form-control">
-                            <option value="" disabled selected>اختر التقييم</option>
-                            @for ($i = 1; $i <= 5; $i++)
-                                <option value="{{ $i }}">{{ $i }}/5</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-sm w-100 btn-success submit-reply"
-                        data-id="{{ $homework->id }}">إرسال</button>
-                    <span class="text-info d-none" id="success-message-{{ $homework->id }}">تم إرسال التقييم
-                        بنجاح</span>
-                </form>
-            @endif
-        </div>
+                <!-- نموذج تقييم ورد الأستاذ -->
+                @if (
+                    (Auth::check() && Auth::user()->role == 'teacher') ||
+                        Auth::user()->role == 'supervisor' ||
+                        Auth::user()->role == 'admin')
+                    <form action="{{ route('homework.reply', $homework->id) }}" method="POST"
+                        class="homework-reply-form mt-3" data-id="{{ $homework->id }}">
+                        @csrf
+                        <div class="form-group mb-2">
+                            <label for="reply_{{ $homework->id }}" class="text-white">رد الأستاذ:</label>
+                            <textarea name="reply" id="reply_{{ $homework->id }}" class="form-control" rows="2" style="resize: none;"></textarea>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="rating_{{ $homework->id }}" class="text-white">تقييم:</label>
+                            <select name="rating" id="rating_{{ $homework->id }}" class="form-control">
+                                <option value="" disabled selected>اختر التقييم</option>
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <option value="{{ $i }}">{{ $i }}/5</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-sm w-100 btn-success submit-reply"
+                            data-id="{{ $homework->id }}">إرسال</button>
+                        <span class="text-info d-none" id="success-message-{{ $homework->id }}">تم إرسال التقييم
+                            بنجاح</span>
+                    </form>
+                @endif
+            </div>
+        @endif
     @endforeach
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll('.submit-reply').forEach(button => {
-                button.addEventListener('click', function() {
-                    const homeworkId = this.getAttribute('data-id');
-                    const form = document.querySelector(
-                        `.homework-reply-form[data-id="${homeworkId}"]`);
-                    const reply = form.querySelector(`#reply_${homeworkId}`).value;
-                    const rating = form.querySelector(`#rating_${homeworkId}`).value;
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.submit-reply').forEach(button => {
+            button.addEventListener('click', function() {
+                const homeworkId = this.getAttribute('data-id');
+                const form = document.querySelector(
+                    `.homework-reply-form[data-id="${homeworkId}"]`);
+                const reply = form.querySelector(`#reply_${homeworkId}`).value;
+                const rating = form.querySelector(`#rating_${homeworkId}`).value;
 
-                    // إعداد طلب AJAX
-                    fetch(`{{ url('homework/reply') }}/${homeworkId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                reply: reply,
-                                rating: rating
-                            })
+                // إعداد طلب AJAX
+                fetch(`{{ url('homework/reply') }}/${homeworkId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            reply: reply,
+                            rating: rating
                         })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // عرض رسالة النجاح
-                                document.getElementById(`success-message-${homeworkId}`)
-                                    .classList.remove('d-none');
-                            } else {
-                                alert('حدث خطأ أثناء إرسال التقييم.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                        });
-                });
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // عرض رسالة النجاح
+                            document.getElementById(`success-message-${homeworkId}`)
+                                .classList.remove('d-none');
+                        } else {
+                            alert('حدث خطأ أثناء إرسال التقييم.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             });
         });
-    </script>
-</div>
+    });
+</script>

@@ -8,17 +8,6 @@
                     style="background-color: #004051; color: #ffffff; border-radius: 12px; margin-bottom: 15px; padding: 20px;">
                     <!-- العنوان -->
                     <h6 style="font-weight: bold; color: #ed6b2f; margin-bottom: 10px;">{{ $item->title }}</h6>
-
-                    @php
-                        function formatTextWithLinks($text)
-                        {
-                            return preg_replace(
-                                '~(http[s]?:\/\/[^\s]+)~i',
-                                '<a href="$1" target="_blank" style="color: #ed6b2f; text-decoration: underline;">$1</a>',
-                                e($text), // لضمان سلامة النص
-                            );
-                        }
-                    @endphp
                     <!-- الوصف -->
                     @if ($item->description)
                         <p style="font-size: 14px; margin-bottom: 10px; color: #e0e0e0;">

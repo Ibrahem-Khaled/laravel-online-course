@@ -142,7 +142,7 @@
                     </span>
                 </div>
                 <div id="part-{{ $part->id }}" class="collapse video-group {{ $loop->first ? 'show' : '' }}">
-                    @foreach ($part->videos as $otherVideo)
+                    @foreach ($part->videos->sortBy('ranking') as $otherVideo)
                         @php
                             $history = $videoHistories->get($otherVideo->id);
                             $isCompleted = $history && $history->pivot->completed;
@@ -181,7 +181,7 @@
             @endforeach
         @else
             <!-- إذا لم تكن الدورة تحتوي على أجزاء -->
-            @foreach ($course->videos as $otherVideo)
+            @foreach ($course->videos->sortBy('ranking') as $otherVideo)
                 @php
                     $history = $videoHistories->get($otherVideo->id);
                     $isCompleted = $history && $history->pivot->completed;

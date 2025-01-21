@@ -26,6 +26,7 @@
                     <th>الصورة</th>
                     <th>المدة (ساعات:دقائق:ثواني)</th>
                     <th>الجهاز المستخدم</th>
+                    <th>القسم</th>
                     <th>الإجراءات</th>
                 </tr>
             </thead>
@@ -44,6 +45,7 @@
                         </td>
                         <td>{{ $video->duration }}</td>
                         <td>{{ $video->device }}</td>
+                        <td>{{ $video?->part?->name ?? 'لا يوجد' }}</td>
                         <td>
                             <button class="btn btn-warning" data-toggle="modal"
                                 data-target="#editVideoModal{{ $video->id }}">تعديل</button>

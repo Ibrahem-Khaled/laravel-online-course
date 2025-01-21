@@ -34,9 +34,14 @@ Route::group(['middleware' => ['auth', 'isActive']], function () {
     //this routes for video-courses with home works and comments and rating
     Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos');
 
+    //this routes for video-courses with home works and comments and rating
     Route::post('add-homework', [videoCourseController::class, 'addHomework'])->name('add-homework');
     Route::post('add-comment', [videoCourseController::class, 'videoDiscssion'])->name('add-comment');
     Route::post('homework/reply/{id}', [videoCourseController::class, 'homeworkReply'])->name('homework.reply');
+    Route::put('/homework/update/{id}', [videoCourseController::class, 'updateHomework'])->name('update-homework');
+    Route::delete('/homework/delete/{id}', [videoCourseController::class, 'deleteHomework'])->name('delete-homework');
+
+    //this routes for video-usage
     Route::post('/video-usage/add', [videoCourseController::class, 'addVideoUsage'])->name('addVideoUsage');
     Route::delete('/video-usage/{id}', [videoCourseController::class, 'destroyVideoUsage'])->name('videoUsage.destroy');
     Route::put('/videos/{id}/update-description', [videoCourseController::class, 'updateDescription'])->name('videos.updateDescription');
@@ -74,7 +79,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     Route::post('/course-parts', [CourseController::class, 'addPart'])->name('course_parts.store');
     Route::put('/course_parts/{id}', [CourseController::class, 'updatePart'])->name('course_parts.update');
     Route::delete('/course_parts/{id}', [CourseController::class, 'deletePart'])->name('course_parts.destroy');
-    
+
     //this contact-us controller for dashboard
     Route::resource('contact_us', ContactUsController::class);
 
@@ -85,7 +90,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     Route::resource('course_videos', CourseVideoController::class);
     Route::get('/courses/{course}/videos', [CourseVideoController::class, 'showByCourse'])->name('course_videos.by_course');
     Route::post('/course-videos/reorder', [CourseVideoController::class, 'reorder'])->name('course_videos.reorder');
-    
+
     //this routes sectios 
     Route::resource('sections', SectionsController::class);
     Route::get('section/{id}', [SectionsController::class, 'showUsers'])->name('sections.show');

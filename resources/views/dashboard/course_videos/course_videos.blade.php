@@ -16,6 +16,7 @@
                     <th>الوصف</th>
                     <th>المدة (ساعات:دقائق:ثواني)</th>
                     <th>الجهاز المستخدم</th>
+                    <th>القسم</th>
                     <th>الصورة</th>
                     <th>الإجراءات</th>
                 </tr>
@@ -36,6 +37,7 @@
                                 لا توجد صورة
                             @endif
                         </td>
+                        <td>{{ $video?->part?->name ?? 'لا يوجد' }}</td>
                         <td>
                             <button class="btn btn-warning" data-toggle="modal"
                                 data-target="#editVideoModal{{ $video->id }}">تعديل</button>

@@ -76,6 +76,35 @@ class videoCourseController extends Controller
         return response()->json(['success' => true, 'message' => 'تم إرسال التقييم بنجاح!']);
     }
 
+    public function updateHomework(Request $request, $id)
+    {
+        $request->validate([
+            'text' => 'required|string',
+            'file' => 'nullable|file',
+        ]);
+
+        $homework = VideoHomeWork::findOrFail($id);
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads'), $filename);
+            $homework->file = $filename;
+        }
+
+        $homework->text = $request->input('text');
+        $homework->save();
+
+        return redirect()->back()->with('success', 'تم تحديث الواجب بنجاح');
+    }
+
+    public function deleteHomework($id)
+    {
+        $homework = VideoHomeWork::findOrFail($id);
+        $homework->delete();
+
+        return redirect()->back()->with('success', 'تم حذف الواجب بنجاح');
+    }
     public function addVideoUsage(Request $request)
     {
         $request->validate([
