@@ -105,18 +105,6 @@
             margin-bottom: 20px;
         }
 
-        .trainer-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .trainer-info img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-left: 10px;
-        }
-
         .nav-tabs {
             border-bottom: 2px solid #02475E;
             justify-content: space-around;
@@ -143,6 +131,30 @@
             border-radius: 10px;
             margin-top: 10px;
         }
+
+        .description-content {
+            line-height: 2;
+            padding: 15px;
+        }
+
+        .description-content a {
+            color: #ed6b2f;
+            text-decoration: underline;
+        }
+
+        .edit-description-btn {
+            background-color: #ed6b2f;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .edit-description-btn:hover {
+            background-color: #d45a1f;
+        }
     </style>
 </head>
 
@@ -164,15 +176,6 @@
                 <div class="course-info">
                     <h2 class="course-title">{{ $course->title }}</h2>
                     <div class="course-meta">
-                        {{-- <div class="trainer-info">
-                            <img src="{{ $course->user->image ? asset('storage/' . $course->user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
-                                alt="Trainer Image">
-                            <div>
-                                <p class="m-0">{{ $course->user->name }}</p>
-                                <small>خبير ومدرب</small>
-                            </div>
-                        </div>
-                        <h6>|</h6> --}}
                         <span> المتطلبات:
                             @php
                                 $deviceTranslations = [
@@ -226,9 +229,6 @@
                                 @endfor
                             </div>
                         </div>
-
-                        {{-- <h6>|</h6>
-                        <span>السعر: ${{ $course->price }}</span> --}}
                     </div>
                 </div>
 
@@ -270,21 +270,29 @@
                 </ul>
                 <div class="tab-content" id="videoTabsContent">
                     <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                        <!-- زر التعديل -->
                         @if (Auth::check() && in_array(Auth::user()->role, ['admin', 'supervisor', 'teacher']))
-                            <!-- محرر النصوص -->
+                            <button class="edit-description-btn" onclick="toggleDescriptionEditor()">تعديل
+                                الوصف</button>
+                        @endif
+
+                        <!-- الوصف العادي -->
+                        <div id="description-content" class="description-content">
+                            {!! nl2br(e($video->description)) !!}
+                        </div>
+
+                        <!-- محرر النصوص -->
+                        @if (Auth::check() && in_array(Auth::user()->role, ['admin', 'supervisor', 'teacher']))
                             <form action="{{ route('videos.updateDescription', $video->id) }}" method="POST"
-                                id="description-form">
+                                id="description-form" style="display: none;">
                                 @csrf
                                 @method('PUT')
                                 <div id="description-editor" style="height: 300px;">{!! $video->description !!}</div>
                                 <input type="hidden" name="description" id="description-input">
                                 <button type="submit" class="btn btn-primary mt-3">حفظ التعديلات</button>
+                                <button type="button" class="btn btn-secondary mt-3"
+                                    onclick="toggleDescriptionEditor()">إلغاء</button>
                             </form>
-                        @else
-                            <!-- عرض الوصف فقط -->
-                            <h6 class="text-white text-right mt-3 p-3" style="line-height: 2;">
-                                {{ $video->description }}
-                            </h6>
                         @endif
                     </div>
                     <div class="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
@@ -308,7 +316,31 @@
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
+    <!-- Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
     <script>
+        // تبديل بين الوصف العادي ومحرر النصوص
+        function toggleDescriptionEditor() {
+            const descriptionContent = document.getElementById('description-content');
+            const descriptionForm = document.getElementById('description-form');
+            const editButton = document.querySelector('.edit-description-btn');
+
+            if (descriptionForm.style.display === 'none') {
+                descriptionContent.style.display = 'none';
+                descriptionForm.style.display = 'block';
+                editButton.textContent = 'إلغاء التعديل';
+            } else {
+                descriptionContent.style.display = 'block';
+                descriptionForm.style.display = 'none';
+                editButton.textContent = 'تعديل الوصف';
+            }
+        }
+
+        // تهيئة Quill.js
         document.addEventListener('DOMContentLoaded', function() {
             if (document.getElementById('description-editor')) {
                 var quill = new Quill('#description-editor', {
@@ -333,12 +365,6 @@
             }
         });
     </script>
-    <!-- Quill CSS -->
-    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-
-    <!-- Quill JS -->
-    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-
 </body>
 
 </html>

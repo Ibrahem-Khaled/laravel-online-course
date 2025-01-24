@@ -66,6 +66,12 @@
             <span>إدارة الفيديو للدورات</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('routes.index') }}">
+            <i class="fas fa-fw fa-road"></i>
+            <span>إدارة المسارات</span>
+        </a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

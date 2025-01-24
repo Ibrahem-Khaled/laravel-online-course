@@ -5,6 +5,8 @@ use App\Http\Controllers\dashboard\ContactUsController;
 use App\Http\Controllers\dashboard\CourseController;
 use App\Http\Controllers\dashboard\CourseRatingController;
 use App\Http\Controllers\dashboard\CourseVideoController;
+use App\Http\Controllers\dashboard\RouteController;
+use App\Http\Controllers\dashboard\RouteCourseController;
 use App\Http\Controllers\dashboard\SectionCalendarController;
 use App\Http\Controllers\dashboard\SectionsController;
 use App\Http\Controllers\dashboard\UserController;
@@ -98,7 +100,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     Route::delete('sections/{section}/users/{user}', [SectionsController::class, 'removeUser'])->name('sections.removeUser');
     Route::resource('section-calendars', SectionCalendarController::class);
 
+    //this routes route
+    Route::resource('routes', RouteController::class);
 
+    Route::get('/routes/{route}/courses', [RouteCourseController::class, 'index'])->name('route_courses.index');
+    Route::post('/route-courses', [RouteCourseController::class, 'store'])->name('route_courses.store');
+    Route::put('/route-courses/{routeCourse}', [RouteCourseController::class, 'update'])->name('route_courses.update');
+    Route::delete('/route-courses/{routeCourse}', [RouteCourseController::class, 'destroy'])->name('route_courses.destroy');
 });
 
 

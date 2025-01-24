@@ -6,6 +6,8 @@
 
         <!-- زر إضافة دورة جديدة -->
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addCourseModal">إضافة دورة جديدة</button>
+        <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addExcelModal">اضافة مجموعة من الدورات من خلال
+            ملف اكسيل</button>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -26,8 +28,8 @@
                     role="tab" aria-controls="inactive" aria-selected="false">غير نشطة</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="draft-tab" data-toggle="tab" data-target="#draft" type="button"
-                    role="tab" aria-controls="draft" aria-selected="false">دورات برنامج طموح</button>
+                <button class="nav-link" id="draft-tab" data-toggle="tab" data-target="#draft" type="button" role="tab"
+                    aria-controls="draft" aria-selected="false">دورات برنامج طموح</button>
             </li>
         </ul>
         <div class="tab-content" id="courseStatusTabsContent">
@@ -129,6 +131,27 @@
                 </div>
             </div>
         </div>
+        <!-- Add Excel Modal -->
 
+    </div>
+    <div class="modal fade" id="addExcelModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title">Import Excel</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="file" name="file" class="form-control" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 @endsection
