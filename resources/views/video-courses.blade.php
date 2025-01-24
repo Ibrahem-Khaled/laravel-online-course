@@ -278,7 +278,7 @@
 
                         <!-- الوصف العادي -->
                         <div id="description-content" class="description-content">
-                            {!! nl2br(e($video->description)) !!}
+                            {!! $video->description !!}
                         </div>
 
                         <!-- محرر النصوص -->

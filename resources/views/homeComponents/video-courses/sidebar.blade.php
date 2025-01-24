@@ -171,8 +171,7 @@
                                 @endif
                                 <span>{{ $loop->index + 1 }}. {{ $otherVideo->title }}</span>
                                 <span class="video-duration">
-                                    (<i class="fas fa-clock"></i>
-                                    {{ $otherVideo->duration }} دقيقة)
+                                    {{ $otherVideo->duration }} 
                                 </span>
                             </div>
                         </a>
@@ -210,8 +209,7 @@
                         @endif
                         <span>{{ $loop->index + 1 }}. {{ $otherVideo->title }}</span>
                         <span class="video-duration">
-                            (<i class="fas fa-clock"></i>
-                            {{ $otherVideo->duration }} دقيقة)
+                            {{ $otherVideo->duration }}
                         </span>
                     </div>
                 </a>
