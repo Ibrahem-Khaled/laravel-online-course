@@ -119,7 +119,7 @@ class HomeController extends Controller
 
     public function allCourses($category_id = null)
     {
-        $limit = 8; // عدد الدورات التي يتم تحميلها في كل مرة
+        $limit = 12; // عدد الدورات التي يتم تحميلها في كل مرة
         $page = request()->get('page', 1); // الصفحة الحالية
 
         if ($category_id) {
