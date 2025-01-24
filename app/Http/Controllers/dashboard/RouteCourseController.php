@@ -12,7 +12,7 @@ class RouteCourseController extends Controller
 {
     public function index(Route $route)
     {
-        $courses = Course::all();
+        $courses = Course::where('status', 'active')->get();
 
         return view('dashboard.routes.routes_courses', compact('route', 'courses'));
     }
