@@ -31,7 +31,7 @@
                             <form action="{{ route('course_parts.destroy', $part->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">
+                                <button type="submit" class="btn btn-sm btn-danger">
                                     حذف
                                 </button>
                             </form>
