@@ -23,10 +23,50 @@
                 <li class="list-group-item" data-part-id="{{ $part->id }}">
                     <div class="d-flex justify-content-between align-items-center">
                         <span>{{ $part->name }}</span>
-                        <button class="btn btn-sm btn-info" data-toggle="modal"
-                            data-target="#reorderVideosModal{{ $part->id }}">إعادة ترتيب الفيديوهات</button>
+                        <div>
+                            <button class="btn btn-sm btn-warning" data-toggle="modal"
+                                data-target="#editPartModal{{ $part->id }}">تعديل</button>
+                            <button class="btn btn-sm btn-info" data-toggle="modal"
+                                data-target="#reorderVideosModal{{ $part->id }}">إعادة ترتيب الفيديوهات</button>
+                        </div>
                     </div>
                 </li>
+
+                <form action="{{ route('course_parts.destroy', $part->id) }}" method="POST" class="d-none">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">
+                        حذف
+                    </button>
+                </form>
+
+                <!-- مودال تعديل القسم -->
+                <div class="modal fade" id="editPartModal{{ $part->id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="{{ route('course_parts.update', $part->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="modal-header">
+                                    <h5 class="modal-title">تعديل القسم: {{ $part->name }}</h5>
+                                    <button type="button" class="btn-close" data-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">اسم القسم</label>
+                                        <input type="text" name="name" class="form-control"
+                                            value="{{ $part->name }}" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                                    <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             @endforeach
         </ul>
 
@@ -36,8 +76,12 @@
                 <div class="card-header d-flex justify-content-between align-items-center" data-toggle="collapse"
                     data-target="#part-{{ $part->id }}">
                     <span>{{ $part->name }}</span>
-                    <button class="btn btn-sm btn-info" data-toggle="modal"
-                        data-target="#reorderVideosModal{{ $part->id }}">إعادة ترتيب الفيديوهات</button>
+                    <div>
+                        <button class="btn btn-sm btn-warning" data-toggle="modal"
+                            data-target="#editPartModal{{ $part->id }}">تعديل</button>
+                        <button class="btn btn-sm btn-info" data-toggle="modal"
+                            data-target="#reorderVideosModal{{ $part->id }}">إعادة ترتيب الفيديوهات</button>
+                    </div>
                 </div>
                 <div id="part-{{ $part->id }}" class="collapse">
                     <div class="card-body">
@@ -185,7 +229,8 @@
             new Sortable(sortableParts, {
                 animation: 150,
                 onEnd: function(event) {
-                    const order = Array.from(sortableParts.children).map(item => item.getAttribute('data-part-id'));
+                    const order = Array.from(sortableParts.children).map(item => item.getAttribute(
+                        'data-part-id'));
                     savePartsOrder(order);
                 }
             });
