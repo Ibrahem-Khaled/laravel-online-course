@@ -180,7 +180,7 @@
             @endforeach
         @else
             <!-- إذا لم تكن الدورة تحتوي على أجزاء -->
-            @foreach ($course->videos->sortBy('ranking') as $otherVideo)
+            @foreach ($course->videos->sortBy('created_at') as $otherVideo)
                 @php
                     $history = $videoHistories->get($otherVideo->id);
                     $isCompleted = $history && $history->pivot->completed;

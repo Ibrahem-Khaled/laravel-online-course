@@ -17,6 +17,56 @@
             </div>
         @endif
 
+        <!-- عرض الأقسام -->
+        @foreach ($course->parts as $part)
+            <div class="card mb-3">
+                <div class="card-header d-flex justify-content-between align-items-center" data-toggle="collapse"
+                    data-target="#part-{{ $part->id }}">
+                    <span>{{ $part->name }}</span>
+                    <button class="btn btn-sm btn-info" data-toggle="modal"
+                        data-target="#reorderVideosModal{{ $part->id }}">إعادة ترتيب الفيديوهات</button>
+                </div>
+                <div id="part-{{ $part->id }}" class="collapse">
+                    <div class="card-body">
+                        <ul class="list-group sortable-part" data-part-id="{{ $part->id }}">
+                            @foreach ($part->videos->sortBy('ranking') as $video)
+                                <li class="list-group-item" data-video-id="{{ $video->id }}">
+                                    {{ $video->title }}
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مودال إعادة ترتيب الفيديوهات داخل القسم -->
+            <div class="modal fade" id="reorderVideosModal{{ $part->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">إعادة ترتيب الفيديوهات في قسم: {{ $part->name }}</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-group sortable-part-modal" data-part-id="{{ $part->id }}">
+                                @foreach ($part->videos->sortBy('ranking') as $video)
+                                    <li class="list-group-item" data-video-id="{{ $video->id }}">
+                                        {{ $video->title }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                            <button type="button" class="btn btn-primary" onclick="saveOrder({{ $part->id }})">حفظ
+                                الترتيب</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+
+        <!-- باقي الكود الخاص بإضافة الفيديوهات والأقسام -->
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -104,55 +154,6 @@
             </div>
         </div>
 
-        <!-- Edit Part Modal -->
-        <div class="modal fade" id="editPartModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form id="editPartForm" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-header">
-                            <h5 class="modal-title">تعديل القسم</h5>
-                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="edit_part_name" class="form-label">اسم القسم</label>
-                                <input type="text" name="name" class="form-control" id="edit_part_name" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
-                            <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Delete Part Modal -->
-        <div class="modal fade" id="deletePartModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form id="deletePartForm" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <div class="modal-header">
-                            <h5 class="modal-title">حذف القسم</h5>
-                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>هل أنت متأكد من حذف هذا القسم؟</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
-                            <button type="submit" class="btn btn-danger">حذف</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
         <!-- Add Video Modal -->
         <div class="modal fade" id="addVideoModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
@@ -172,48 +173,55 @@
     </div>
 
     <!-- SortableJS Script -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const sortable = document.getElementById('sortable');
+            // تفعيل إعادة الترتيب داخل المودال
+            document.querySelectorAll('.sortable-part-modal').forEach(sortableElement => {
+                new Sortable(sortableElement, {
+                    animation: 150,
+                    onEnd: function(event) {
+                        // يمكنك إضافة أي كود إضافي هنا إذا لزم الأمر
+                    }
+                });
+            });
 
-            new Sortable(sortable, {
-                animation: 150, // سرعة الحركة
-                onEnd: function(event) {
-                    const rows = Array.from(sortable.querySelectorAll('tr'));
-                    const order = rows.map(row => row.getAttribute('data-id'));
-
-                    // إرسال الترتيب الجديد إلى الخادم
-                    fetch("{{ route('course_videos.reorder') }}", {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                            },
-                            body: JSON.stringify({
-                                order
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // alert('تم تحديث الترتيب بنجاح!');
-                            } else {
-                                alert('حدث خطأ أثناء تحديث الترتيب.');
-                            }
-                        });
-                }
+            // تفعيل إعادة الترتيب داخل القسم نفسه
+            document.querySelectorAll('.sortable-part').forEach(sortableElement => {
+                new Sortable(sortableElement, {
+                    animation: 150,
+                    onEnd: function(event) {
+                        // يمكنك إضافة أي كود إضافي هنا إذا لزم الأمر
+                    }
+                });
             });
         });
 
-        function openEditPartModal(partId, partName) {
-            document.getElementById('edit_part_name').value = partName;
-            document.getElementById('editPartForm').action = `/dashboard/course_parts/${partId}`;
-            new bootstrap.Modal(document.getElementById('editPartModal')).show();
-        }
+        // دالة لحفظ الترتيب الجديد
+        function saveOrder(partId) {
+            const order = Array.from(document.querySelector(`.sortable-part-modal[data-part-id="${partId}"]`).children).map(
+                item => item.getAttribute('data-video-id'));
 
-        function openDeletePartModal(partId) {
-            document.getElementById('deletePartForm').action = `/dashboard/course_parts/${partId}`;
-            new bootstrap.Modal(document.getElementById('deletePartModal')).show();
+            fetch("{{ route('course_videos.reorder') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        part_id: partId,
+                        order
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('تم تحديث الترتيب بنجاح!');
+                        location.reload(); // إعادة تحميل الصفحة لتحديث العرض
+                    } else {
+                        alert('حدث خطأ أثناء تحديث الترتيب.');
+                    }
+                });
         }
     </script>
 @endsection
