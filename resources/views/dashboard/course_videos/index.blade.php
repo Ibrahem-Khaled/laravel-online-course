@@ -28,17 +28,16 @@
                                 data-target="#editPartModal{{ $part->id }}">تعديل</button>
                             <button class="btn btn-sm btn-info" data-toggle="modal"
                                 data-target="#reorderVideosModal{{ $part->id }}">إعادة ترتيب الفيديوهات</button>
+                            <form action="{{ route('course_parts.destroy', $part->id) }}" method="POST" class="d-none">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">
+                                    حذف
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </li>
-
-                <form action="{{ route('course_parts.destroy', $part->id) }}" method="POST" class="d-none">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">
-                        حذف
-                    </button>
-                </form>
 
                 <!-- مودال تعديل القسم -->
                 <div class="modal fade" id="editPartModal{{ $part->id }}" tabindex="-1" aria-hidden="true">
@@ -77,8 +76,15 @@
                     data-target="#part-{{ $part->id }}">
                     <span>{{ $part->name }}</span>
                     <div>
-                        <button class="btn btn-sm btn-warning" data-toggle="modal"
-                            data-target="#editPartModal{{ $part->id }}">تعديل</button>
+                        {{-- <form action="{{ route('course_parts.destroy', $part->id) }}" method="POST" class="d-none">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">
+                                حذف
+                            </button>
+                        </form> --}}
+                        {{-- <button class="btn btn-sm btn-warning" data-toggle="modal"
+                            data-target="#editPartModal{{ $part->id }}">تعديل</button> --}}
                         <button class="btn btn-sm btn-info" data-toggle="modal"
                             data-target="#reorderVideosModal{{ $part->id }}">إعادة ترتيب الفيديوهات</button>
                     </div>
