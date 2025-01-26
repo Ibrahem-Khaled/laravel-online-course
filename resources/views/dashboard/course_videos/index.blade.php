@@ -17,7 +17,20 @@
             </div>
         @endif
 
-        <!-- عرض الأقسام -->
+        <!-- عرض الأقسام مع إمكانية إعادة الترتيب -->
+        <ul class="list-group sortable-parts mb-4">
+            @foreach ($course->parts->sortBy('ranking') as $part)
+                <li class="list-group-item" data-part-id="{{ $part->id }}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span>{{ $part->name }}</span>
+                        <button class="btn btn-sm btn-info" data-toggle="modal"
+                            data-target="#reorderVideosModal{{ $part->id }}">إعادة ترتيب الفيديوهات</button>
+                    </div>
+                </li>
+            @endforeach
+        </ul>
+
+        <!-- عرض الفيديوهات داخل كل قسم -->
         @foreach ($course->parts as $part)
             <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between align-items-center" data-toggle="collapse"
@@ -28,13 +41,66 @@
                 </div>
                 <div id="part-{{ $part->id }}" class="collapse">
                     <div class="card-body">
-                        <ul class="list-group sortable-part" data-part-id="{{ $part->id }}">
-                            @foreach ($part->videos->sortBy('ranking') as $video)
-                                <li class="list-group-item" data-video-id="{{ $video->id }}">
-                                    {{ $video->title }}
-                                </li>
-                            @endforeach
-                        </ul>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>العنوان</th>
+                                    <th>رابط الفيديو</th>
+                                    <th>الوصف</th>
+                                    <th>الصورة</th>
+                                    <th>المدة (ساعات:دقائق:ثواني)</th>
+                                    <th>الجهاز المستخدم</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($part->videos->sortBy('ranking') as $video)
+                                    <tr data-id="{{ $video->id }}">
+                                        <td>{{ $video->title }}</td>
+                                        <td>{!! $video->video !!}</td>
+                                        <td>{{ \Illuminate\Support\Str::limit($video->description, 50, '...') }}</td>
+                                        <td>
+                                            @if ($video->image)
+                                                <img src="{{ asset('storage/' . $video->image) }}" alt="صورة الفيديو"
+                                                    width="100">
+                                            @else
+                                                لا توجد صورة
+                                            @endif
+                                        </td>
+                                        <td>{{ $video->duration }}</td>
+                                        <td>{{ $video->device }}</td>
+                                        <td>
+                                            <button class="btn btn-warning" data-toggle="modal"
+                                                data-target="#editVideoModal{{ $video->id }}">تعديل</button>
+                                            <form action="{{ route('course_videos.destroy', $video->id) }}" method="POST"
+                                                style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">حذف</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Edit Video Modal -->
+                                    <div class="modal fade" id="editVideoModal{{ $video->id }}" tabindex="-1"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                @include('dashboard.course_videos.form', [
+                                                    'action' => route('course_videos.update', $video->id),
+                                                    'method' => 'PUT',
+                                                    'title' => 'تعديل الفيديو',
+                                                    'buttonText' => 'حفظ التعديلات',
+                                                    'video' => $video,
+                                                    'parts' => $parts,
+                                                    'course' => $course,
+                                                ])
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -65,68 +131,6 @@
                 </div>
             </div>
         @endforeach
-
-        <!-- باقي الكود الخاص بإضافة الفيديوهات والأقسام -->
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>العنوان</th>
-                    <th>رابط الفيديو</th>
-                    <th>الوصف</th>
-                    <th>الصورة</th>
-                    <th>المدة (ساعات:دقائق:ثواني)</th>
-                    <th>الجهاز المستخدم</th>
-                    <th>القسم</th>
-                    <th>الإجراءات</th>
-                </tr>
-            </thead>
-            <tbody id="sortable">
-                @foreach ($course->videos as $video)
-                    <tr data-id="{{ $video->id }}">
-                        <td>{{ $video->title }}</td>
-                        <td>{!! $video->video !!}</td>
-                        <td>{{ \Illuminate\Support\Str::limit($video->description, 50, '...') }}</td>
-                        <td>
-                            @if ($video->image)
-                                <img src="{{ asset('storage/' . $video->image) }}" alt="صورة الفيديو" width="100">
-                            @else
-                                لا توجد صورة
-                            @endif
-                        </td>
-                        <td>{{ $video->duration }}</td>
-                        <td>{{ $video->device }}</td>
-                        <td>{{ $video?->part?->name ?? 'لا يوجد' }}</td>
-                        <td>
-                            <button class="btn btn-warning" data-toggle="modal"
-                                data-target="#editVideoModal{{ $video->id }}">تعديل</button>
-                            <form action="{{ route('course_videos.destroy', $video->id) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">حذف</button>
-                            </form>
-                        </td>
-                    </tr>
-
-                    <!-- Edit Video Modal -->
-                    <div class="modal fade" id="editVideoModal{{ $video->id }}" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                @include('dashboard.course_videos.form', [
-                                    'action' => route('course_videos.update', $video->id),
-                                    'method' => 'PUT',
-                                    'title' => 'تعديل الفيديو',
-                                    'buttonText' => 'حفظ التعديلات',
-                                    'video' => $video,
-                                    'parts' => $parts,
-                                    'course' => $course,
-                                ])
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </tbody>
-        </table>
 
         <!-- Add Part Modal -->
         <div class="modal fade" id="addPartModal" tabindex="-1" aria-hidden="true">
@@ -176,6 +180,16 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // تفعيل إعادة الترتيب للأقسام
+            const sortableParts = document.querySelector('.sortable-parts');
+            new Sortable(sortableParts, {
+                animation: 150,
+                onEnd: function(event) {
+                    const order = Array.from(sortableParts.children).map(item => item.getAttribute('data-part-id'));
+                    savePartsOrder(order);
+                }
+            });
+
             // تفعيل إعادة الترتيب داخل المودال
             document.querySelectorAll('.sortable-part-modal').forEach(sortableElement => {
                 new Sortable(sortableElement, {
@@ -197,7 +211,30 @@
             });
         });
 
-        // دالة لحفظ الترتيب الجديد
+        // دالة لحفظ ترتيب الأقسام
+        function savePartsOrder(order) {
+            fetch("{{ route('course_parts.reorder') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({
+                        order
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('تم تحديث ترتيب الأقسام بنجاح!');
+                        location.reload(); // إعادة تحميل الصفحة لتحديث العرض
+                    } else {
+                        alert('حدث خطأ أثناء تحديث ترتيب الأقسام.');
+                    }
+                });
+        }
+
+        // دالة لحفظ ترتيب الفيديوهات داخل القسم
         function saveOrder(partId) {
             const order = Array.from(document.querySelector(`.sortable-part-modal[data-part-id="${partId}"]`).children).map(
                 item => item.getAttribute('data-video-id'));

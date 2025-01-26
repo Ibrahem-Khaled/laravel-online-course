@@ -75,11 +75,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     Route::delete('/user-reports/{id}', [UserController::class, 'destroyReport'])->name('userReports.destroy');
     //this category controller for dashboard
     Route::resource('categories', CategoryController::class);
-
+ 
     //this course controller for dashboard
     Route::resource('courses', CourseController::class);
     Route::post('/course-parts', [CourseController::class, 'addPart'])->name('course_parts.store');
     Route::put('/course_parts/{id}', [CourseController::class, 'updatePart'])->name('course_parts.update');
+    Route::post('/course-parts/reorder', [CourseController::class, 'reorderParts'])->name('course_parts.reorder');
     Route::delete('/course_parts/{id}', [CourseController::class, 'deletePart'])->name('course_parts.destroy');
 
     //this contact-us controller for dashboard

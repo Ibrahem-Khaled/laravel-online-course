@@ -112,6 +112,16 @@ class CourseController extends Controller
 
         return redirect()->back()->with('success', 'تم تعديل القسم بنجاح!');
     }
+    public function reorderParts(Request $request)
+    {
+        $order = $request->input('order');
+
+        foreach ($order as $index => $partId) {
+            Part::where('id', $partId)->update(['ranking' => $index + 1]);
+        }
+
+        return response()->json(['success' => true]);
+    }
 
     public function deletePart($id)
     {
