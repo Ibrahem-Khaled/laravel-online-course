@@ -23,7 +23,7 @@
                 <li class="list-group-item" data-part-id="{{ $part->id }}">
                     <div class="d-flex justify-content-between align-items-center">
                         <span>{{ $part->name }}</span>
-                        <div>
+                        <div class="d-flex row">
                             <button class="btn btn-sm btn-warning" data-toggle="modal"
                                 data-target="#editPartModal{{ $part->id }}">تعديل</button>
                             <button class="btn btn-sm btn-info" data-toggle="modal"
