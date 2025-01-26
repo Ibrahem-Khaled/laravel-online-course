@@ -134,7 +134,7 @@
     <div class="video-list" style="max-height: 470px; overflow-y: auto;">
         @if ($course->parts->count() > 0)
             <!-- إذا كانت الدورة تحتوي على أجزاء -->
-            @foreach ($course->parts as $part)
+            @foreach ($course->parts->sortBy('ranking') as $part)
                 <div class="part-header" data-toggle="collapse" data-target="#part-{{ $part->id }}">
                     <span>{{ $part->name }}</span>
                     <span class="icon">
