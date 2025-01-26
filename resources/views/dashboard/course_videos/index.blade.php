@@ -28,7 +28,7 @@
                                 data-target="#editPartModal{{ $part->id }}">تعديل</button>
                             <button class="btn btn-sm btn-info" data-toggle="modal"
                                 data-target="#reorderVideosModal{{ $part->id }}">إعادة ترتيب الفيديوهات</button>
-                            <form action="{{ route('course_parts.destroy', $part->id) }}" method="POST" class="d-none">
+                            <form action="{{ route('course_parts.destroy', $part->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">
