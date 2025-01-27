@@ -11,7 +11,6 @@
         transition: transform 0.3s;
         text-align: right;
         margin: 10px;
-        /* مسافة حول كل كارد */
     }
 
     .course-card:hover {
@@ -39,15 +38,6 @@
         margin-bottom: -10px;
     }
 
-    .course-card .price {
-        color: #ed6b2f;
-        font-weight: bold;
-        margin-top: 5px;
-        background-color: #0B495B;
-        padding: 5px 10px;
-        border-radius: 5px;
-    }
-
     .favorite-btn {
         position: absolute;
         top: 10px;
@@ -68,6 +58,24 @@
         background: rgba(255, 255, 255, 1);
     }
 
+    .course-details {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .course-details .detail {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+    }
+
+    .course-details .detail i {
+        color: #ed6b2f;
+    }
+
     .trainer-info {
         display: flex;
         align-items: center;
@@ -82,67 +90,69 @@
         margin-left: 5px;
     }
 
-    .pagination {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
-
     /* Responsive Design */
     @media (max-width: 768px) {
-        .sort-section {
-            flex-direction: column;
-            align-items: flex-end;
-        }
-
         .course-card {
             width: 100%;
             max-width: 100%;
             margin: 15px 0;
         }
-
-        .trainer-info {
-            flex-direction: column;
-            align-items: flex-start;
-        }
     }
 </style>
-<div class="col-lg-3 col-md-4 col-sm-6" style=" gap: 20px;">
+
+<div class="col-lg-3 col-md-4 col-sm-6">
     <a href="{{ route('courses.videos', $course->id) }}" class="text-decoration-none">
         <div class="course-card">
+            <!-- زر الإعجاب -->
             <button class="favorite-btn">
-                <i class="fas {{ $course?->is_favorite ? 'fa-heart' : 'fa-heart-o' }}"></i>
+                <i class="fas {{ $course?->is_favorite ? 'fa-heart' : 'fa-heart' }}"></i>
             </button>
+
+            <!-- صورة الكورس -->
             <img class="card-img-top" src="{{ asset('storage/' . $course->image) }}" alt="Course Image">
+
+            <!-- محتوى الكارد -->
             <div class="card-body">
+                <!-- عنوان الكورس -->
                 <h5 class="course-card-title">{{ $course->title }}</h5>
-                <div class="trainer-info">
-                    @if ($course->ratings->count() == 0)
-                        <p class="rating">
-                            لا يوجد تقييمات
-                        </p>
-                    @else
-                        <p class="rating">
-                            @for ($i = 1; $i <= $course->ratings->avg('rating'); $i++)
-                                <i class="fas fa-star"></i>
-                            @endfor
-                            ({{ $course->ratings->count() }})
-                        </p>
-                    @endif
-                    <div class="trainer-info">
-                        <span style="font-size: 11px">{{ $course->user->name }}</span>
-                        <img src="{{ $course->user->image
-                            ? asset('storage/' . $course->user->image)
-                            : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
-                            alt="Trainer Image">
+
+                <!-- وصف الكورس -->
+                <p class="text-muted" style="font-size: 0.8rem;">
+                    {{ Str::limit($course->description, 60) }}
+                </p>
+
+                <!-- تفاصيل الكورس -->
+                <div class="course-details">
+                    <!-- المدة -->
+                    <div class="detail">
+                        <i class="fas fa-clock"></i>
+                        <span>المدة: {{ $course->duration_in_hours ?? 'غير محدد' }} ساعة</span>
+                    </div>
+
+                    <!-- الفئة المستهدفة -->
+                    <div class="detail">
+                        <i class="fas fa-users"></i>
+                        <span>الفئة: {{ $course->target_audience ?? 'غير محدد' }}</span>
+                    </div>
+
+                    <!-- عدد الدروس -->
+                    <div class="detail">
+                        <i class="fas fa-book"></i>
+                        <span>الدروس: {{ $course->videos->count() ?? 'غير محدد' }}</span>
+                    </div>
+
+                    <!-- المستوى -->
+                    <div class="detail">
+                        <i class="fas fa-signal"></i>
+                        <span>المستوى: {{ $course->difficulty_level ?? 'غير محدد' }}</span>
                     </div>
                 </div>
 
+                <!-- معلومات المدرب -->
                 <div class="trainer-info">
-                    <p style="color: #ed6b2f">{{ $course->user->count() ?? 0 }}
-                        <i class="fas fa-user"></i>
-                    </p>
-                    <p class="price">{{ $course->price }} ريال</p>
+                    <span style="font-size: 11px">{{ $course->user->name }}</span>
+                    <img src="{{ $course->user->image ? asset('storage/' . $course->user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
+                        alt="Trainer Image">
                 </div>
             </div>
         </div>
