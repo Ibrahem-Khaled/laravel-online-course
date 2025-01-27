@@ -32,12 +32,9 @@
         font-weight: bold;
         margin-bottom: 8px;
     }
-
-    .course-card .rating {
-        color: gold;
-        margin-bottom: -10px;
+    .course-card span {
+        font-size: 0.65rem;
     }
-
     .favorite-btn {
         position: absolute;
         top: 10px;
@@ -60,8 +57,8 @@
 
     .course-details {
         display: flex;
-        flex-direction: column;
-        gap: 8px;
+        flex-wrap: wrap;
+        gap: 10px;
         margin-top: 10px;
     }
 
@@ -70,6 +67,8 @@
         align-items: center;
         gap: 8px;
         font-size: 0.9rem;
+        flex: 1 1 calc(50% - 10px);
+        /* يجعل كل عنصرين في صف واحد */
     }
 
     .course-details .detail i {
@@ -97,6 +96,11 @@
             max-width: 100%;
             margin: 15px 0;
         }
+
+        .course-details .detail {
+            flex: 1 1 100%;
+            /* يجعل كل عنصر في سطر منفصل على الشاشات الصغيرة */
+        }
     }
 </style>
 
@@ -109,7 +113,9 @@
             </button>
 
             <!-- صورة الكورس -->
-            <img class="card-img-top" src="{{ asset('storage/' . $course->image) }}" alt="Course Image">
+            <img class="card-img-top"
+                src="{{ $course->image ? asset('storage/' . $course->image) : asset('assets/img/logo-ct.png') }}"
+                alt="Course Image">
 
             <!-- محتوى الكارد -->
             <div class="card-body">
@@ -117,18 +123,16 @@
                 <h5 class="course-card-title">{{ $course->title }}</h5>
 
                 <!-- وصف الكورس -->
-                <p class="text-muted" style="font-size: 0.8rem;">
+                <p class="" style="font-size: 0.8rem; color: aliceblue;">
                     {{ Str::limit($course->description, 60) }}
                 </p>
 
                 <!-- تفاصيل الكورس -->
                 <div class="course-details">
-                    <!-- المدة -->
                     <div class="detail">
                         <i class="fas fa-clock"></i>
                         <span>المدة: {{ $course->duration_in_hours ?? 'غير محدد' }} ساعة</span>
                     </div>
-
                     <!-- الفئة المستهدفة -->
                     <div class="detail">
                         <i class="fas fa-users"></i>
@@ -144,7 +148,15 @@
                     <!-- المستوى -->
                     <div class="detail">
                         <i class="fas fa-signal"></i>
-                        <span>المستوى: {{ $course->difficulty_level ?? 'غير محدد' }}</span>
+                        <span>المستوى:
+                            @if ($course->difficulty_level == 'beginner')
+                                للمبتدئين
+                            @elseif ($course->difficulty_level == 'intermediate')
+                                للمتوسطين
+                            @elseif ($course->difficulty_level == 'advanced')
+                                للمتقدمين
+                            @endif
+                        </span>
                     </div>
                 </div>
 
