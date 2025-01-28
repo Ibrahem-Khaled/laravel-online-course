@@ -2,7 +2,7 @@
     .course-card {
         width: 100%;
         max-width: 286px;
-        height: 300px;
+        height: 450px;
         background-color: #035971;
         border-radius: 10px;
         position: relative;
