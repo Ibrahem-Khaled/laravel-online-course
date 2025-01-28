@@ -26,6 +26,9 @@
 
     .course-card .card-body {
         padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .course-card-title {
