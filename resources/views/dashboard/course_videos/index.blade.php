@@ -76,15 +76,6 @@
                     data-target="#part-{{ $part->id }}">
                     <span>{{ $part->name }}</span>
                     <div>
-                        {{-- <form action="{{ route('course_parts.destroy', $part->id) }}" method="POST" class="d-none">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">
-                                حذف
-                            </button>
-                        </form> --}}
-                        {{-- <button class="btn btn-sm btn-warning" data-toggle="modal"
-                            data-target="#editPartModal{{ $part->id }}">تعديل</button> --}}
                         <button class="btn btn-sm btn-info" data-toggle="modal"
                             data-target="#reorderVideosModal{{ $part->id }}">إعادة ترتيب الفيديوهات</button>
                     </div>
@@ -181,6 +172,75 @@
                 </div>
             </div>
         @endforeach
+
+        <!-- عرض الفيديوهات بدون قسم -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>فيديوهات بدون قسم</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>العنوان</th>
+                            <th>رابط الفيديو</th>
+                            <th>الوصف</th>
+                            <th>الصورة</th>
+                            <th>المدة (ساعات:دقائق:ثواني)</th>
+                            <th>الجهاز المستخدم</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($videosWithoutPart as $video)
+                            <tr data-id="{{ $video->id }}">
+                                <td>{{ $video->title }}</td>
+                                <td>{!! $video->video !!}</td>
+                                <td>{{ \Illuminate\Support\Str::limit($video->description, 50, '...') }}</td>
+                                <td>
+                                    @if ($video->image)
+                                        <img src="{{ asset('storage/' . $video->image) }}" alt="صورة الفيديو"
+                                            width="100">
+                                    @else
+                                        لا توجد صورة
+                                    @endif
+                                </td>
+                                <td>{{ $video->duration }}</td>
+                                <td>{{ $video->device }}</td>
+                                <td>
+                                    <button class="btn btn-warning" data-toggle="modal"
+                                        data-target="#editVideoModal{{ $video->id }}">تعديل</button>
+                                    <form action="{{ route('course_videos.destroy', $video->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">حذف</button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                            <!-- Edit Video Modal -->
+                            <div class="modal fade" id="editVideoModal{{ $video->id }}" tabindex="-1"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        @include('dashboard.course_videos.form', [
+                                            'action' => route('course_videos.update', $video->id),
+                                            'method' => 'PUT',
+                                            'title' => 'تعديل الفيديو',
+                                            'buttonText' => 'حفظ التعديلات',
+                                            'video' => $video,
+                                            'parts' => $parts,
+                                            'course' => $course,
+                                        ])
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <!-- Add Part Modal -->
         <div class="modal fade" id="addPartModal" tabindex="-1" aria-hidden="true">
