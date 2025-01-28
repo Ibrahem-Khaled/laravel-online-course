@@ -32,9 +32,11 @@
         font-weight: bold;
         margin-bottom: 8px;
     }
+
     .course-card span {
         font-size: 0.65rem;
     }
+
     .favorite-btn {
         position: absolute;
         top: 10px;
@@ -124,31 +126,31 @@
 
                 <!-- وصف الكورس -->
                 <p class="" style="font-size: 0.8rem; color: aliceblue;">
-                    {{ Str::limit($course->description, 60) }}
+                    {{ Str::limit($course->description, 170) }}
                 </p>
 
                 <!-- تفاصيل الكورس -->
                 <div class="course-details">
                     <div class="detail">
                         <i class="fas fa-clock"></i>
-                        <span>المدة: {{ $course->duration_in_hours ?? 'غير محدد' }} ساعة</span>
+                        <span>{{ $course->duration_in_hours ?? 'غير محدد' }} ساعة</span>
                     </div>
                     <!-- الفئة المستهدفة -->
                     <div class="detail">
                         <i class="fas fa-users"></i>
-                        <span>الفئة: {{ $course->target_audience ?? 'غير محدد' }}</span>
+                        <span>{{ $course->target_audience ?? 'غير محدد' }}</span>
                     </div>
 
                     <!-- عدد الدروس -->
                     <div class="detail">
                         <i class="fas fa-book"></i>
-                        <span>الدروس: {{ $course->videos->count() ?? 'غير محدد' }}</span>
+                        <span>{{ $course->videos->count() ?? 'غير محدد' }}</span>
                     </div>
 
                     <!-- المستوى -->
                     <div class="detail">
                         <i class="fas fa-signal"></i>
-                        <span>المستوى:
+                        <span>
                             @if ($course->difficulty_level == 'beginner')
                                 للمبتدئين
                             @elseif ($course->difficulty_level == 'intermediate')
@@ -161,11 +163,11 @@
                 </div>
 
                 <!-- معلومات المدرب -->
-                <div class="trainer-info">
+                {{-- <div class="trainer-info">
                     <span style="font-size: 11px">{{ $course->user->name }}</span>
                     <img src="{{ $course->user->image ? asset('storage/' . $course->user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
                         alt="Trainer Image">
-                </div>
+                </div> --}}
             </div>
         </div>
     </a>
