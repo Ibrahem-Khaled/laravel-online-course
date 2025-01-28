@@ -130,7 +130,7 @@
 
                 <!-- وصف الكورس -->
                 <p class="" style="font-size: 0.8rem; color: aliceblue;">
-                    {{ Str::limit($course->description, 200) }}
+                    {{ Str::limit($course->description, 196) }}
                 </p>
 
                 <!-- تفاصيل الكورس -->
