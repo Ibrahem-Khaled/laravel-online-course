@@ -25,7 +25,7 @@
     }
 
     .course-card .card-body {
-        padding: 15px;
+        padding: 10px 15px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
