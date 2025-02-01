@@ -9,6 +9,7 @@ use App\Models\Section;
 use App\Models\User;
 use App\Models\VideoHistory;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class HomeController extends Controller
 {
@@ -63,58 +64,28 @@ class HomeController extends Controller
         );
     }
 
-    public function showVideos(Course $course, CourseVideo $video = null)
+    public function showVideos(Course $course)
     {
+        // تحميل العلاقة قبل التحقق من `isEmpty()`
+        $course->load('videos', 'parts.videos', 'user', 'ratings');
+
+        // التحقق مما إذا كان هناك فيديوهات
         if ($course->videos->isEmpty()) {
             return redirect()->back()->with('warning', 'قريباً سيتم إضافة فيديوهات.');
         }
-        // إذا لم يتم تحديد فيديو معين، نعرض أول فيديو
-        $video = $video ?? $course->videos->first();
 
-        // حساب ترتيب الفيديو الحالي في قائمة الفيديوهات
-        $currentVideoIndex = $course->videos->search(function ($v) use ($video) {
-            return $v->id === $video->id;
-        }) + 1;
+        // return response()->json([
+        //     'course' => $course,
+        // ]);
 
-        $completedVideosCount = auth()->user()
-            ->videoHistories()
-            ->whereIn('course_video_id', $course->videos->pluck('id'))
-            ->where('completed', true)
-            ->count();
-
-        // إجمالي عدد الفيديوهات
-        $totalVideos = $course->videos->count();
-
-        // حساب نسبة الإنجاز
-        $progress = $totalVideos > 0 ? ($completedVideosCount / $totalVideos) * 100 : 0;
-
-        VideoHistory::updateOrCreate(
-            ['user_id' => auth()->id(), 'course_video_id' => $video->id],
-            [
-                'last_viewed_time' => now(), // تحديث آخر وقت مشاهدة
-            ]
-        );
-
-        $videoHistories = auth()->user()
-            ->videoHistories()
-            ->whereIn('course_video_id', $course->videos->pluck('id'))
-            ->get()
-            ->keyBy('id');
-
-        $unresolvedHomeworksCount = $video->homeWorks()
-            ->whereNull('reply')
-            ->WhereNull('rating')
-            ->count();
-
-        return view('video-courses', compact(
-            'course',
-            'video',
-            'progress',
-            'currentVideoIndex',
-            'totalVideos',
-            'videoHistories',
-            'unresolvedHomeworksCount'
-        ));
+        // إرسال البيانات إلى Inertia
+        return Inertia::render('Video', [
+            'course' => $course,
+            'userRole' => auth()->user()->role,
+            'duration_in_hours' => $course->duration_in_hours,
+            'user' => auth()->user(),
+            'rating' => $course->ratings->avg('rating'),
+        ]);
     }
 
     public function allCourses($category_id = null)

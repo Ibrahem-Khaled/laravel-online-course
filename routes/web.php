@@ -34,7 +34,7 @@ Route::group(['middleware' => ['auth', 'isActive']], function () {
     Route::get('all-students-sections', [HomeController::class, 'allStudentsSections'])->name('all-students-sections');
 
     //this routes for video-courses with home works and comments and rating
-    Route::get('courses/{course}/videos{video?}', [HomeController::class, 'showVideos'])->name('courses.videos');
+    Route::get('courses/{course}', [HomeController::class, 'showVideos'])->name('courses.videos');
 
     //this routes for video-courses with home works and comments and rating
     Route::post('add-homework', [videoCourseController::class, 'addHomework'])->name('add-homework');
@@ -46,9 +46,9 @@ Route::group(['middleware' => ['auth', 'isActive']], function () {
     //this routes for video-usage
     Route::post('/video-usage/add', [videoCourseController::class, 'addVideoUsage'])->name('addVideoUsage');
     Route::delete('/video-usage/{id}', [videoCourseController::class, 'destroyVideoUsage'])->name('videoUsage.destroy');
-    Route::put('/videos/{id}/update-description', [videoCourseController::class, 'updateDescription'])->name('videos.updateDescription');
+    Route::put('/videos/{id?}/update-description', [videoCourseController::class, 'updateDescription'])->name('videos.updateDescription');
 
-    Route::put('/video/{id}/question', [videoCourseController::class, 'updateQuestion'])->name('updateQuestion');
+    Route::put('/video/{id?}/question', [videoCourseController::class, 'updateQuestion'])->name('updateQuestion');
 
     //this route geting all courses
     Route::get('all-courses/{category_id?}', [HomeController::class, 'allCourses'])->name('all-courses');
