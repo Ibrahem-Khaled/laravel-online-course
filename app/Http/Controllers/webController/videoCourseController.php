@@ -34,7 +34,7 @@ class videoCourseController extends Controller
             'text' => $request->input('text'),
         ]);
 
-        return redirect()->back()->with('success', 'تم اضافة المهمة بنجاح');
+        return response()->json(['success' => true, 'message' => 'تمت الإضافة بنجاح!', 'homework' => $homework]);
     }
 
     public function videoDiscssion(Request $request)
@@ -103,7 +103,7 @@ class videoCourseController extends Controller
         $homework = VideoHomeWork::findOrFail($id);
         $homework->delete();
 
-        return redirect()->back()->with('success', 'تم حذف الواجب بنجاح');
+        return response()->json(['success' => true, 'message' => 'تم حذف الواجب بنجاح!']);
     }
     public function addVideoUsage(Request $request)
     {
@@ -170,7 +170,7 @@ class videoCourseController extends Controller
         $video->question = $request->question;
         $video->save();
 
-        return redirect()->back()->with('success', 'تم تحديث سؤال الواجب بنجاح.');
+        return response()->json(['success' => true, 'message' => 'تم تحديث السؤال بنجاح!']);
     }
 
 

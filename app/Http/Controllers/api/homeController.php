@@ -12,6 +12,7 @@ class homeController extends Controller
 {
     public function getVideoData(Course $course, CourseVideo $video)
     {
+        $video->load('homeWorks.user.userInfo', 'videoDiscussions.user.userInfo', 'videoUsage', 'histories');
         // حساب ترتيب الفيديو الحالي في قائمة الفيديوهات
         $currentVideoIndex = $course->videos->search(function ($v) use ($video) {
             return $v->id === $video->id;
@@ -35,13 +36,17 @@ class homeController extends Controller
             ->WhereNull('rating')
             ->count();
 
+        $videoData = array_merge($video->toArray(), [
+            'unresolvedHomeworksCount' => $unresolvedHomeworksCount
+        ]);
+
+
         // إرجاع البيانات كـ JSON
         return response()->json([
-            'video' => $video,
+            'video' => $videoData,
             'progress' => $progress,
             'currentVideoIndex' => $currentVideoIndex,
             'totalVideos' => $totalVideos,
-            'unresolvedHomeworksCount' => $unresolvedHomeworksCount,
         ]);
     }
 }

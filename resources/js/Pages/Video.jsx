@@ -4,10 +4,13 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'font-awesome/css/font-awesome.min.css';
 import '../styles/video.css';
 import Sidebar from '../components/video/SideBar';
+import DiscussionSection from '../components/video/DiscussionSection';
+import HomeworkSection from '../components/video/HomeworkSection';
 
 const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
   const [showEditor, setShowEditor] = useState(false);
   const [video, setVideo] = useState(course.videos[0]);
+  console.log('unresolvedHomeworksCount', video);
 
   useEffect(() => {
     if (showEditor && document.getElementById('description-editor')) {
@@ -108,9 +111,9 @@ const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
             <li className="nav-item" role="presentation">
               <button className="nav-link" id="homework-tab" data-bs-toggle="tab" data-bs-target="#homework" type="button" role="tab" aria-controls="homework" aria-selected="false">
                 الواجبات
-                {0 > 0 && (
+                {video?.unresolvedHomeworksCount > 0 && (
                   <span id="homework-counter" className="badge bg-danger">
-                    {0}
+                    {video?.unresolvedHomeworksCount}
                   </span>
                 )}
               </button>
@@ -148,10 +151,10 @@ const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
               {/* Include your sources component here */}
             </div>
             <div className="tab-pane fade" id="homework" role="tabpanel" aria-labelledby="homework-tab">
-              {/* Include your homework component here */}
+              <HomeworkSection video={video} user={user} />
             </div>
             <div className="tab-pane fade" id="discussion" role="tabpanel" aria-labelledby="discussion-tab">
-              {/* Include your discussion component here */}
+              <DiscussionSection video={video} user={user} />
             </div>
           </div>
         </div>
