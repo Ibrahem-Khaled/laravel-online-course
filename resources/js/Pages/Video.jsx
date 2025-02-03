@@ -6,6 +6,7 @@ import '../styles/video.css';
 import Sidebar from '../components/video/SideBar';
 import DiscussionSection from '../components/video/DiscussionSection';
 import HomeworkSection from '../components/video/HomeworkSection';
+import AttachmentsSection from '../components/video/AttachmentsSection';
 
 const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
   const [showEditor, setShowEditor] = useState(false);
@@ -148,7 +149,7 @@ const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
               )}
             </div>
             <div className="tab-pane fade" id="sources" role="tabpanel" aria-labelledby="sources-tab">
-              {/* Include your sources component here */}
+              <AttachmentsSection video={video} user={user} />
             </div>
             <div className="tab-pane fade" id="homework" role="tabpanel" aria-labelledby="homework-tab">
               <HomeworkSection video={video} user={user} />

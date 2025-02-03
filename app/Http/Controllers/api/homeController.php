@@ -24,20 +24,17 @@ class homeController extends Controller
         $totalVideos = $course->videos->count();
         $progress = $totalVideos > 0 ? ($completedVideosCount / $totalVideos) * 100 : 0;
 
-        // تحديث تاريخ مشاهدة الفيديو
-        // VideoHistory::updateOrCreate(
-        //     ['user_id' => auth()->id(), 'course_video_id' => $video->id],
-        //     ['last_viewed_time' => now()]
-        // );
-
         // حساب عدد الواجبات غير المكتملة
         $unresolvedHomeworksCount = $video->homeWorks()
             ->whereNull('reply')
             ->WhereNull('rating')
             ->count();
 
+        $userCanUploadHomework = !$video->homeWorks()->where('user_id', auth()->id())->exists();
+
         $videoData = array_merge($video->toArray(), [
-            'unresolvedHomeworksCount' => $unresolvedHomeworksCount
+            'unresolvedHomeworksCount' => $unresolvedHomeworksCount,
+            'userCanUploadHomework' => $userCanUploadHomework,
         ]);
 
 

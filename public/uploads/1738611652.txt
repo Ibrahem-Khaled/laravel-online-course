@@ -1,0 +1,70 @@
+1- Get User Plan in the application start by calling /setup/getuserplan/{device-ID}
+
+Request:
+===============
+GET https://api.photobox.website/setup/getuserplan/2151533423
+
+Response :
+================ 
+{
+    "DailyUsage": 5,
+    "MaxImagesPerDay": 10
+}
+
+2- Display user  Balance and Daily usage in the top right corner of the App  [DailyUsage / MaxImagesPerDay]
+
+3- FaceSwap and text2Image requests will return DailyUsage and MaxImagesPerDay in each response 
+   Update User balance in the top of the app with the returned new DailyUsage and MaxImagesPerDay
+
+A- FaceSwap [https://api.photobox.website/images/text2image] Response : 
+=======================
+Case Susccess :
+================== 
+{
+    "id": "b75e5481-662b-4bce-9427-9f773ee3901e",
+    "status": "completed",
+    "outputUrls": [
+        "https://localhost:3010/public/user_images/21515/generated/b75e5481-662b-4bce-9427-9f773ee3901e.jpg"
+    ],
+    "Message": "Success to generate faceswap image",
+    "DailyUsage": 1,
+    "MaxImagesPerDay": 10
+}
+
+Case Failed :
+============== 
+{
+    "id": "",
+    "status": "failed",
+    "outputUrls": [],
+    "Message": "Daily Generation Limit Exceeded",
+    "DailyUsage": 10,
+    "MaxImagesPerDay": 10
+}
+
+
+text2image [https://api.photobox.website/images/text2image] Response 
+====================
+Case Susccess :
+================== 
+{
+    "id": "1g9v9phaghrm80cmrdwb3626wr",
+    "status": "starting",
+    "DailyUsage": "5",
+    "MaxImagesPerDay": "10",
+    "Message": ""
+}
+
+
+Case Failed :
+============== 
+{
+    "id": "",
+    "status": "failed",
+    "DailyUsage": "3",
+    "MaxImagesPerDay": "3",
+    "Message": "Daily Generation Limit Exceeded"
+}
+
+
+

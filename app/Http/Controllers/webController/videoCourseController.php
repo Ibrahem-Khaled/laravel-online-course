@@ -34,7 +34,7 @@ class videoCourseController extends Controller
             'text' => $request->input('text'),
         ]);
 
-        return response()->json(['success' => true, 'message' => 'تمت الإضافة بنجاح!', 'homework' => $homework]);
+        return response()->json($homework);
     }
 
     public function videoDiscssion(Request $request)
@@ -73,7 +73,7 @@ class videoCourseController extends Controller
             'rating' => $request->rating,
         ]);
 
-        return response()->json(['success' => true, 'message' => 'تم إرسال التقييم بنجاح!']);
+        return response()->json(['success' => true, 'message' => 'تم الرد على الواجب بنجاح!']);
     }
 
     public function updateHomework(Request $request, $id)
@@ -121,7 +121,7 @@ class videoCourseController extends Controller
             $filePath = isset($usage['file']) ? $usage['file']->store('files', 'public') : null;
 
 
-            inVideoUsage::create([
+            $usage = inVideoUsage::create([
                 'user_id' => auth()->id(),
                 'course_video_id' => $request->course_video_id,
                 'type' => $usage['type'],
@@ -132,7 +132,7 @@ class videoCourseController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'تمت الإضافة بنجاح!');
+        return response()->json($usage);
     }
 
     public function destroyVideoUsage($id)
@@ -144,7 +144,7 @@ class videoCourseController extends Controller
         }
         $videoUsage->delete();
 
-        return redirect()->back()->with('success', 'تم حذف المرفق بنجاح.');
+        return response()->json(['success' => true, 'message' => 'تم حذف العنصر بنجاح!']);
     }
 
     public function updateDescription(Request $request, $id)

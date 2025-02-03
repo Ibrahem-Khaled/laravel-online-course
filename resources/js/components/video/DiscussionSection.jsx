@@ -27,13 +27,9 @@ const DiscussionSection = ({ video, user }) => {
                 },
             });
 
-            if (response.data.success) {
-                setComments([...comments, response.data.comment]);
-                setNewComment('');
-                setErrors([]);
-            } else {
-                setErrors(response.data.errors || ['حدث خطأ أثناء إرسال التعليق.']);
-            }
+            setComments([...comments, response.data.comment]);
+            setNewComment('');
+            setErrors([]);
         } catch (error) {
             console.error('Error:', error);
             setErrors(['حدث خطأ أثناء إرسال التعليق.']);
