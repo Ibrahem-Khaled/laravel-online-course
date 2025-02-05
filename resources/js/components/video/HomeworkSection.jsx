@@ -230,10 +230,12 @@ const HomeworkSection = ({ video, user }) => {
                         </div>
 
                         {/* Student Actions */}
-                        {(user?.id === homework.user_id ||
-                            (user?.role !== 'student' && user?.role !== 'teacher')) && (
+                        {((user?.id === homework.user_id && user?.role === 'student') ||
+                            user?.role === 'teacher' ||
+                            user?.role === 'admin') && (
                                 <div className="mt-3 d-flex gap-2">
-                                    {user?.id === homework.user_id && (
+                                    {/* للطالب المالك فقط - أزرار التعديل والحذف */}
+                                    {user?.id === homework.user_id && user?.role === 'student' && (
                                         <>
                                             <Button
                                                 variant="warning"
@@ -255,8 +257,8 @@ const HomeworkSection = ({ video, user }) => {
                                         </>
                                     )}
 
-                                    {/* Allow teachers to delete any homework */}
-                                    {user?.role === 'teacher' && user?.id !== homework.user_id && (
+                                    {/* للمعلمين والمديرين - زر حذف فقط */}
+                                    {(user?.role === 'teacher' || user?.role === 'admin') && (
                                         <Button
                                             variant="danger"
                                             size="sm"
@@ -267,7 +269,6 @@ const HomeworkSection = ({ video, user }) => {
                                     )}
                                 </div>
                             )}
-
                         {/* Edit Homework Modal */}
                         <Modal
                             show={editingHomework?.id === homework.id}
