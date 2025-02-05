@@ -18,8 +18,6 @@
 
     .footer-section {
         margin-bottom: 2.5rem;
-        align-items: center;
-        display: flex;
     }
 
     .footer h6 {
