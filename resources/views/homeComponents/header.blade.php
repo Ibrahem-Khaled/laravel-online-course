@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
     /* تخصيصات عامة */
     body {
@@ -163,9 +165,6 @@
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    @php
-        $sections = App\Models\Section::all();
-    @endphp
     <div class="container-fluid">
         <div class="navbar-content">
             <!-- الجزء الأيسر (المستخدم) -->
@@ -221,6 +220,7 @@
             <!-- القائمة الرئيسية -->
             <div class="collapse navbar-collapse main-menu">
                 <ul class="navbar-nav">
+
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'all-courses' ? 'active' : '' }}"
                             href="{{ route('all-courses') }}">الدورات</a>
@@ -230,20 +230,29 @@
                             (Auth::check() && Auth::user()->sections->count() > 1) ||
                                 Auth::user()?->role === 'admin' ||
                                 Auth::user()?->role === 'supervisor')
-                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userSections" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
                                 برنامج طموح
                             </a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu" aria-labelledby="userSections">
+                                @php
+                                    $sections =
+                                        Auth::user()?->role === 'admin' || Auth::user()?->role === 'supervisor'
+                                            ? \App\Models\Section::all()
+                                            : Auth::user()->sections;
+                                @endphp
                                 @foreach ($sections as $section)
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('user-section', $section->id) }}">
+                                        <a class="dropdown-item"
+                                            href="{{ route('user-section', ['section_id' => $section->id]) }}">
                                             {{ $section->name }}
                                         </a>
                                     </li>
                                 @endforeach
                             </ul>
                         @else
-                            <a class="nav-link" href="{{ route('user-section') }}">
+                            <a class="nav-link {{ Route::currentRouteName() == 'user-section' ? 'active' : '' }}"
+                                href="{{ route('user-section') }}">
                                 برنامج طموح
                             </a>
                         @endif
