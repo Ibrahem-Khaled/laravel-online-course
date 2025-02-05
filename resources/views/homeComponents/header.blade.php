@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 <style>
     /* تخصيصات عامة */
     body {
@@ -165,6 +163,9 @@
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    @php
+        $sections = App\Models\Section::all();
+    @endphp
     <div class="container-fluid">
         <div class="navbar-content">
             <!-- الجزء الأيسر (المستخدم) -->
@@ -221,10 +222,6 @@
             <div class="collapse navbar-collapse main-menu">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::currentRouteName() == 'home' ? 'active' : '' }}"
-                            href="{{ route('home') }}">الرئيسية</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'all-courses' ? 'active' : '' }}"
                             href="{{ route('all-courses') }}">الدورات</a>
                     </li>
@@ -264,6 +261,10 @@
                                 </li>
                             @endforeach
                         </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ Route::currentRouteName() == 'home' ? 'active' : '' }}"
+                            href="{{ route('home') }}">الرئيسية</a>
                     </li>
                 </ul>
             </div>
