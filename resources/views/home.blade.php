@@ -20,7 +20,7 @@
             color: #fff;
             margin: 0;
             padding-top: 100px;
-
+            overflow-x: hidden;
         }
 
         h4 {
