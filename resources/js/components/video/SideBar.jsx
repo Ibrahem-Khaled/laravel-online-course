@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // استخدم axios للتعامل مع الطلبات HTTP
+import axios from 'axios';
 import '../../styles/video.css';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Sidebar = ({ course, video, setVideo }) => {
     const [openParts, setOpenParts] = useState({});
@@ -45,14 +45,25 @@ const Sidebar = ({ course, video, setVideo }) => {
     return (
         <div className="col-lg-4" style={{ marginTop: '1.5%' }}>
             {/* قائمة الفيديوهات مع شريط التقدم المدمج */}
-            <div className="progress-container">
+            <motion.div
+                className="progress-container"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
                 <h5>نسبة الإنجاز: {Math.round(progress, 2)}%</h5>
                 <div className="progress">
                     <div className="progress-bar" style={{ width: `${progress}%` }}></div>
                 </div>
-            </div>
+            </motion.div>
 
-            <div className="video-list" style={{ maxHeight: '470px', overflowY: 'auto' }}>
+            <motion.div
+                className="video-list"
+                style={{ maxHeight: '470px', overflowY: 'auto' }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
                 {course.parts?.length > 0 ? (
                     course.parts.sort((a, b) => a.ranking - b.ranking).map((part) => (
                         <div key={part.id}>
@@ -63,41 +74,47 @@ const Sidebar = ({ course, video, setVideo }) => {
                                 </span>
                             </div>
 
-                            <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{
-                                    height: openParts[part.id] ? "auto" : 0,
-                                    opacity: openParts[part.id] ? 1 : 0
-                                }}
-                                transition={{ duration: 0.4, ease: "easeInOut" }}
-                                className="video-group"
-                            >
-                                {part.videos.sort((a, b) => a.ranking - b.ranking).map((otherVideo, index) => {
-                                    const history = videoHistories?.[otherVideo.id] || null;
-                                    const isCompleted = history?.pivot?.completed ?? false;
-                                    const isViewed = history && !history.pivot?.completed;
+                            <AnimatePresence>
+                                {openParts[part.id] && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                                        className="video-group"
+                                    >
+                                        {part.videos.sort((a, b) => a.ranking - b.ranking).map((otherVideo, index) => {
+                                            const history = videoHistories?.[otherVideo.id] || null;
+                                            const isCompleted = history?.pivot?.completed ?? false;
+                                            const isViewed = history && !history.pivot?.completed;
 
-                                    return (
-                                        <a
-                                            key={otherVideo.id}
-                                            href="#"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setVideo(otherVideo);
-                                            }}
-                                            className={`video-list-item ${video.id === otherVideo.id ? 'active' : ''}`}
-                                        >
-                                            <div className="d-flex align-items-center">
-                                                {getVideoStatusIcon(otherVideo, video.id, isCompleted, isViewed)}
-                                                <span>
-                                                    {index + 1}. {otherVideo.title}
-                                                </span>
-                                                <span className="video-duration">{otherVideo.duration}</span>
-                                            </div>
-                                        </a>
-                                    );
-                                })}
-                            </motion.div>
+                                            return (
+                                                <motion.a
+                                                    key={otherVideo.id}
+                                                    href="#"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setVideo(otherVideo);
+                                                    }}
+                                                    className={`video-list-item ${video.id === otherVideo.id ? 'active' : ''}`}
+                                                    whileHover={{ scale: 1.02 }}
+                                                    whileTap={{ scale: 0.98 }}
+                                                >
+                                                    <div className="content-wrapper">
+                                                        <span className="video-title">
+                                                            {index + 1}. {otherVideo.title}
+                                                        </span>
+                                                        <span className="video-duration">
+                                                            <i className="fas fa-clock"></i>
+                                                            {otherVideo.duration}
+                                                        </span>
+                                                    </div>
+                                                </motion.a>
+                                            );
+                                        })}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
                     ))
                 ) : (
@@ -107,7 +124,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                         const isViewed = history && !history.pivot?.completed;
 
                         return (
-                            <a
+                            <motion.a
                                 key={otherVideo.id}
                                 href="#"
                                 onClick={(e) => {
@@ -115,22 +132,31 @@ const Sidebar = ({ course, video, setVideo }) => {
                                     setVideo(otherVideo);
                                 }}
                                 className={`video-list-item ${video.id === otherVideo.id ? 'active' : ''}`}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
                             >
-                                <div className="d-flex align-items-center">
-                                    {getVideoStatusIcon(otherVideo, video.id, isCompleted, isViewed)}
-                                    <span>
+                                <div className="content-wrapper">
+                                    <span className="video-title">
                                         {index + 1}. {otherVideo.title}
                                     </span>
-                                    <span className="video-duration">{otherVideo.duration}</span>
+                                    <span className="video-duration">
+                                        <i className="fas fa-clock"></i>
+                                        {otherVideo.duration}
+                                    </span>
                                 </div>
-                            </a>
+                            </motion.a>
                         );
                     })
                 )}
-            </div>
+            </motion.div>
 
             {/* قسم المدرب */}
-            <div className="trainer-section text-white p-3 rounded mt-3">
+            <motion.div
+                className="trainer-section text-white p-3 rounded mt-3"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+            >
                 <h5 className="mb-3">المدربين</h5>
                 <div className="d-flex align-items-start mb-3 justify-content-around">
                     <img
@@ -161,10 +187,16 @@ const Sidebar = ({ course, video, setVideo }) => {
                         </a>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             {/* قسم الملحقات / البرامج المستخدمة */}
-            <div className="attachments-section" style={{ margin: '20px 0' }}>
+            <motion.div
+                className="attachments-section"
+                style={{ margin: '20px 0' }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+            >
                 {video.videoUsage?.filter((item) => item.type === 'software').length > 0 ? (
                     <>
                         <h5 className="text-white" style={{ fontWeight: 'bold', marginBottom: '15px' }}>
@@ -200,7 +232,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                 ) : (
                     <h5 className="text-white text-center">لا يوجد برامج مستخدمة</h5>
                 )}
-            </div>
+            </motion.div>
         </div>
     );
 };

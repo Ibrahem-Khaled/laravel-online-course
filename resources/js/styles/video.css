@@ -144,6 +144,7 @@ body {
 }
 
 
+/* sidebar */
 .video-list {
     background-color: #035971;
     border-radius: 10px;
@@ -161,17 +162,38 @@ a {
 
 .video-list-item {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 10px;
-    transition: background-color 0.3s;
-    cursor: pointer;
+    align-items: flex-start;
+    /* تغيير المحاذاة إلى الأعلى */
+    margin-bottom: 8px;
+    padding: 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
     background-color: #007b8f;
     color: #fff;
-    text-decoration: none;
+    gap: 12px;
+    /* إضافة مسافة بين العناصر */
 }
+
+.video-list-item .content-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.video-status-icon {
+    font-size: 1.4rem;
+    margin-top: 2px;
+}
+
+.video-duration {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 
 .video-list-item.active {
     background-color: #024e66;
@@ -181,26 +203,9 @@ a {
 .video-list-item:hover {
     background-color: #024e66;
     color: #fff;
+    transform: scale(1.02);
 }
 
-.video-status-icon {
-    font-size: 1.2rem;
-    margin: 0 10px 0 10px;
-}
-
-.video-duration {
-    font-size: 0.5rem;
-    color: #fff;
-    align-items: center;
-    display: flex;
-    gap: 5px;
-    width: 100px;
-}
-
-.video-duration i {
-    font-size: 0.5rem;
-    color: #fff;
-}
 
 .part-header {
     display: flex;
