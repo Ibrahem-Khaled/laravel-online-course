@@ -95,6 +95,29 @@ const HomeworkSection = ({ video, user }) => {
         }
     };
 
+    const ExtractAndShortenLink = ({ text }) => {
+        if (!text) {
+            return <p>لا يوجد نص مكتوب</p>;
+        }
+
+        const extractAndShortenLinks = (inputText) => {
+            return inputText.split(/\s+/).map((word, index) => {
+                if (word.match(/(https?:\/\/[^\s]+)/g)) {
+                    const shortUrl = word.length > 30 ? word.slice(0, 30) + "..." : word;
+                    return (
+                        <a key={index} href={word} target="_blank" rel="noopener noreferrer">
+                            {shortUrl}
+                        </a>
+                    );
+                }
+                return word + " ";
+            });
+        };
+
+        return <p>{extractAndShortenLinks(text)}</p>;
+    };
+
+
     const defaultAvatar = (user) => {
         return user?.userInfo?.gender === 'female'
             ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
@@ -216,7 +239,7 @@ const HomeworkSection = ({ video, user }) => {
 
                         {/* Homework Content */}
                         <div className="p-2 rounded text-white" style={{ backgroundColor: '#035971' }}>
-                            <p dangerouslySetInnerHTML={{ __html: homework.text || 'لا يوجد نص مكتوب' }} />
+                            <ExtractAndShortenLink text={homework.text} />
                             {homework.file && (
                                 <a
                                     href={`/uploads/${homework.file}`}
