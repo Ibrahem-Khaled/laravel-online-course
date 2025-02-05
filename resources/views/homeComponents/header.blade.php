@@ -165,6 +165,9 @@
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    @php
+        $sections = App\Models\Section::all();
+    @endphp
     <div class="container-fluid">
         <div class="navbar-content">
             <!-- الجزء الأيسر (المستخدم) -->
@@ -230,11 +233,10 @@
                             (Auth::check() && Auth::user()->sections->count() > 1) ||
                                 Auth::user()?->role === 'admin' ||
                                 Auth::user()?->role === 'supervisor')
-                            <a class="nav-link dropdown-toggle" href="#" id="userSections" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
                                 برنامج طموح
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="userSections">
+                            <ul class="dropdown-menu">
                                 @php
                                     $sections =
                                         Auth::user()?->role === 'admin' || Auth::user()?->role === 'supervisor'
