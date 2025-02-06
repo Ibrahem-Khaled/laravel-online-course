@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth', 'isActive']], function () {
     Route::delete('/homework/delete/{id}', [videoCourseController::class, 'deleteHomework'])->name('delete-homework');
 
     //this routes for video-usage
+    Route::get('api/courses/{course}/videos/{video}', [\App\Http\Controllers\api\homeController::class, 'getVideoData'])->name('api.courses.videos');
     Route::post('/video-usage/add', [videoCourseController::class, 'addVideoUsage'])->name('addVideoUsage');
     Route::delete('/video-usage/{id}', [videoCourseController::class, 'destroyVideoUsage'])->name('videoUsage.destroy');
     Route::put('/videos/{id?}/update-description', [videoCourseController::class, 'updateDescription'])->name('videos.updateDescription');

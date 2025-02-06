@@ -11,8 +11,8 @@ const AttachmentsSection = ({ video, user }) => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (video?.videoUsage) {
-            setAttachments(video.videoUsage.filter(u => u.type === 'attachment'));
+        if (video?.video_usage) {
+            setAttachments(video.video_usage.filter(u => u.type === 'attachment'));
         }
     }, [video]);
 

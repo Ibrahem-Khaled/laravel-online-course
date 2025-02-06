@@ -11,7 +11,6 @@ import AttachmentsSection from '../components/video/AttachmentsSection';
 const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
   const [showEditor, setShowEditor] = useState(false);
   const [video, setVideo] = useState(course.videos[0]);
-  console.log('unresolvedHomeworksCount', video);
 
   useEffect(() => {
     if (showEditor && document.getElementById('description-editor')) {
@@ -107,6 +106,11 @@ const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
             <li className="nav-item" role="presentation">
               <button className="nav-link" id="sources-tab" data-bs-toggle="tab" data-bs-target="#sources" type="button" role="tab" aria-controls="sources" aria-selected="false">
                 المرفقات
+                {video?.videoInUsageCount > 0 && (
+                  <span id="homework-counter" className="badge bg-danger">
+                    {video?.videoInUsageCount}
+                  </span>
+                )}
               </button>
             </li>
             <li className="nav-item" role="presentation">

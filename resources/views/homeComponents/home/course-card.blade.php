@@ -95,6 +95,43 @@
         margin-left: 5px;
     }
 
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .new-badge {
+        position: absolute;
+        top: 10px;
+        left: -20px;
+        background: linear-gradient(45deg, #ed6b2f, #ed6b2f);
+        color: white;
+        padding: 8px 30px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        transform: rotate(-45deg);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 2;
+        animation: pulse 1.5s infinite;
+        clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .new-badge::before {
+        font-size: 0.9rem;
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
         .course-card {
@@ -107,6 +144,12 @@
             flex: 1 1 100%;
             /* يجعل كل عنصر في سطر منفصل على الشاشات الصغيرة */
         }
+
+        .new-badge {
+            left: -20px;
+            padding: 6px 25px;
+            font-size: 0.7rem;
+        }
     }
 </style>
 
@@ -114,6 +157,16 @@
     <a href="{{ route('courses.videos', $course->id) }}" class="text-decoration-none">
         <div class="course-card">
             <!-- زر الإعجاب -->
+            @if ($course->updated_at->diffInDays() <= 25)
+                <div class="new-badge">
+                    جديد
+                </div>
+            @endif
+            @if ($course?->videos()?->latest()?->first()?->updated_at?->diffInDays() <= 25)
+                <div class="new-badge">
+                    محدثة
+                </div>
+            @endif
             <button class="favorite-btn">
                 <i class="fas {{ $course?->is_favorite ? 'fa-heart' : 'fa-heart' }}"></i>
             </button>
@@ -142,7 +195,7 @@
                     <!-- الفئة المستهدفة -->
                     <div class="detail">
                         <i class="fas fa-users"></i>
-                        <span>{{ $course->target_audience ?? 'غير محدد' }}</span>
+                        <span>{{ $course->target_audience ?? 'الكل' }}</span>
                     </div>
 
                     <!-- عدد الدروس -->

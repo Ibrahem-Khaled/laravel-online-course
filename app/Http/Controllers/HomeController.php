@@ -67,7 +67,7 @@ class HomeController extends Controller
     public function showVideos(Course $course)
     {
         // تحميل العلاقة قبل التحقق من `isEmpty()`
-        $course->load('videos', 'parts.videos', 'user', 'ratings',);
+        $course->load('videos', 'parts.videos', 'user', 'ratings', );
 
         // التحقق مما إذا كان هناك فيديوهات
         if ($course->videos->isEmpty()) {
@@ -88,33 +88,24 @@ class HomeController extends Controller
         ]);
     }
 
-    public function allCourses($category_id = null)
+    public function allCourses(Request $request, $category_id = null)
     {
-        $limit = 12; // عدد الدورات التي يتم تحميلها في كل مرة
-        $page = request()->get('page', 1); // الصفحة الحالية
+        $courses = Course::where('status', 'active')
+            ->when($category_id, function ($query, $category_id) {
+                return $query->where('category_id', $category_id);
+            })
+            ->paginate(12);
 
-        if ($category_id) {
-            $courses = Course::where('status', 'active')
-                ->where('category_id', $category_id)
-                ->skip(($page - 1) * $limit)
-                ->take($limit)
-                ->get();
-        } else {
-            $courses = Course::where('status', 'active')
-                ->skip(($page - 1) * $limit)
-                ->take($limit)
-                ->get();
-        }
-
-        if (request()->ajax()) {
-            // إذا كان الطلب عبر AJAX، نرجع البيانات كـ JSON
+        if ($request->ajax()) {
             return response()->json([
-                'courses' => view('homeComponents.home.course-card', compact('courses'))->render(),
+                'html' => view('homeComponents.home.course-card', ['courses' => $courses])->render(),
+                'hasMore' => $courses->hasMorePages()
             ]);
         }
 
-        return view('all-courses', compact('courses', 'page', 'limit'));
+        return view('all-courses', compact('courses'));
     }
+
 
     public function allStudentsSections()
     {

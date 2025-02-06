@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('courses/{course}/videos/{video}', [HomeController::class, 'getVideoData'])->name('api.courses.videos');
+// Route::get('courses/{course}/videos/{video}', [HomeController::class, 'getVideoData'])->name('api.courses.videos');

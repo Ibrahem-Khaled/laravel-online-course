@@ -25,7 +25,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            max-width: 85%;
+            max-width: 66%;
             padding: 10px 20px;
             border-radius: 10px;
             margin: auto;
@@ -39,8 +39,8 @@
         }
 
         .dropdown-toggle-sort {
-            background-color: #fed8b1;
-            color: #a84907;
+            background-color: #ed6b2f;
+            color: #fff;
             border: none;
             padding: 8px 15px;
             border-radius: 5px;
@@ -76,6 +76,7 @@
     <!-- Sort Section -->
     <div class="sort-section">
         <h5>الدورات</h5>
+        
         <div class="dropdown" style="flex-direction: row-reverse; display: flex; align-items: center;">
             <h3 class="sort-title">ترتيب حسب</h3>
             <button class="dropdown-toggle-sort" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
@@ -109,7 +110,7 @@
         </div>
 
         <!-- Load More Button -->
-        @if ($courses->count() > 0)
+        @if ($courses->hasMorePages())
             <button id="load-more-btn" class="load-more-btn w-50 text-white" style="background-color: #ed6b2f;"
                 data-page="2">المزيد</button>
         @endif
@@ -124,20 +125,25 @@
     <script>
         $(document).ready(function() {
             $('#load-more-btn').click(function() {
-                var page = $(this).data('page'); // الصفحة التالية
-                var url = "{{ route('all-courses') }}?page=" + page; // الرابط مع الصفحة
+                var $button = $(this);
+                var page = $button.data('page');
+                var url = "{{ route('all-courses') }}?page=" + page;
 
                 $.ajax({
                     url: url,
                     type: 'GET',
+                    beforeSend: function() {
+                        $button.prop('disabled', true).html('جاري التحميل...');
+                    },
+                    complete: function() {
+                        $button.prop('disabled', false).html('المزيد');
+                    },
                     success: function(response) {
-                        if (response.courses.length > 0) {
-                            $('#courses-container').append(response
-                                .courses); // إضافة الدورات الجديدة
-                            $('#load-more-btn').data('page', page + 1); // تحديث الصفحة التالية
+                        if (response.html.trim().length) {
+                            $('#courses-container').append(response.html);
+                            $button.data('page', page + 1);
                         } else {
-                            $('#load-more-btn')
-                                .hide(); // إخفاء الزر إذا لم يكن هناك المزيد من الدورات
+                            $button.hide(); // إخفاء الزر إذا لم يكن هناك المزيد
                         }
                     },
                     error: function(xhr) {
@@ -146,10 +152,6 @@
                 });
             });
         });
-
-        if (response.courses.length === 0) {
-            $('#load-more-btn').hide();
-        }
     </script>
 </body>
 

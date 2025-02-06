@@ -7,7 +7,7 @@ const Sidebar = ({ course, video, setVideo }) => {
     const [openParts, setOpenParts] = useState({});
     const [progress, setProgress] = useState(0);
     const [videoHistories, setVideoHistories] = useState([]);
-
+    console.log(`api/courses/${course.id}/videos/${video.id}`);
     useEffect(() => {
         const fetchVideoData = async () => {
             try {
@@ -30,16 +30,21 @@ const Sidebar = ({ course, video, setVideo }) => {
         }));
     };
 
-    const getVideoStatusIcon = (otherVideo, currentVideoId, isCompleted, isViewed) => {
+    const getVideoStatusIcon = (otherVideo, currentVideoId, history) => {
         if (otherVideo.id === currentVideoId) {
             return <i className="fas fa-play-circle" style={{ color: '#fff' }} />;
-        } else if (isCompleted) {
-            return <i className="fas fa-check-circle" style={{ color: '#28a745' }} />;
-        } else if (isViewed) {
-            return <i className="fas fa-clock" style={{ color: '#fff' }} />;
-        } else {
-            return <i className="fas fa-lock" style={{ color: '#fff' }} />;
         }
+
+        if (history) {
+            if (history.completed) {
+                return <i className="fas fa-check-circle" style={{ color: '#28a745' }} />;
+            }
+            if (history.last_viewed_time) {
+                return <i className="fas fa-clock" style={{ color: '#ffc107' }} />;
+            }
+        }
+
+        return <i className="fas fa-lock" style={{ color: '#fff' }} />;
     };
 
     return (
@@ -85,9 +90,6 @@ const Sidebar = ({ course, video, setVideo }) => {
                                     >
                                         {part.videos.sort((a, b) => a.ranking - b.ranking).map((otherVideo, index) => {
                                             const history = videoHistories?.[otherVideo.id] || null;
-                                            const isCompleted = history?.pivot?.completed ?? false;
-                                            const isViewed = history && !history.pivot?.completed;
-
                                             return (
                                                 <motion.a
                                                     key={otherVideo.id}
@@ -100,6 +102,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                                                     whileHover={{ scale: 1.02 }}
                                                     whileTap={{ scale: 0.98 }}
                                                 >
+                                                    {getVideoStatusIcon(otherVideo, video.id, history)}
                                                     <div className="content-wrapper">
                                                         <span className="video-title">
                                                             {index + 1}. {otherVideo.title}
@@ -119,10 +122,6 @@ const Sidebar = ({ course, video, setVideo }) => {
                     ))
                 ) : (
                     course.videos.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).map((otherVideo, index) => {
-                        const history = videoHistories?.[otherVideo.id] || null;
-                        const isCompleted = history?.pivot?.completed ?? false;
-                        const isViewed = history && !history.pivot?.completed;
-
                         return (
                             <motion.a
                                 key={otherVideo.id}
@@ -135,6 +134,8 @@ const Sidebar = ({ course, video, setVideo }) => {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                             >
+                                {getVideoStatusIcon(otherVideo, video.id, history)}
+
                                 <div className="content-wrapper">
                                     <span className="video-title">
                                         {index + 1}. {otherVideo.title}
