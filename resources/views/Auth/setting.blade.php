@@ -8,10 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        :root {
+            --main-color: #F39C12;
+            --dark-bg: #072D38;
+            --secondary-bg: rgba(7, 45, 56, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --text-color: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+        }
+
         body {
             font-family: "Cairo", sans-serif;
-            background-color: #072D38;
-            color: white;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
             margin: 0;
             padding-top: 80px;
         }
@@ -21,58 +30,134 @@
             height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #F8C471;
+            border: 4px solid var(--main-color);
+            box-shadow: 0 0 20px rgba(243, 156, 18, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-picture:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(243, 156, 18, 0.5);
         }
 
         .form-label {
-            color: rgb(175, 175, 175);
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
         .section-title {
-            color: #F8C471;
-            font-size: 1.3rem;
+            color: var(--main-color);
+            font-size: 1.5rem;
             margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: var(--main-color);
+            border-radius: 2px;
         }
 
         .card {
-            background-color: #035971;
+            background: var(--secondary-bg);
             border: none;
-            text-align: right;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .form-control,
-        .btn {
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-control {
+            background: var(--glass-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
             border-radius: 10px;
+            padding: 10px 15px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--main-color);
+            box-shadow: 0 0 10px rgba(243, 156, 18, 0.3);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .btn {
-            background-color: #F39C12;
-            color: black;
-            margin: 5px 0 20px 0;
+            background: var(--main-color);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
 
         .btn:hover {
-            background-color: #F8C471;
-            color: white;
+            background: #F8C471;
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        .alert {
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            background: var(--glass-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
         }
     </style>
 </head>
 
 <body>
     @include('homeComponents.header')
-    <div class="container">
-        <div class="text-center mb-5">
+    <div class="container" dir="rtl">
+        <div class="text-center mb-5 fade-in">
             <img src="{{ $user->image ? asset('storage/' . $user->image) : ($user->gender == 'female' ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png' : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
-                alt="صورة المستخدم" class="profile-picture">
+                alt="صورة المستخدم" class="profile-picture" id="profilePreview">
             <h3 class="mt-3">{{ $user->name }}</h3>
-            <p class="text-white">{{ $user->email }}</p>
+            <p class="text-muted">{{ $user->email }}</p>
         </div>
 
         @include('homeComponents.alerts')
 
-        <form action="{{ route('user.update') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('user.update') }}" method="POST" enctype="multipart/form-data" class="fade-in">
             @csrf
 
+            <!-- تغيير الصورة الشخصية -->
             <div class="card p-4 mb-4">
                 <h5 class="section-title">تغيير الصورة الشخصية</h5>
                 <div class="mb-3">
@@ -118,7 +203,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">النبذة</label>
-                    <textarea name="bio" class="form-control">{{ $user?->userInfo?->bio }}</textarea>
+                    <textarea name="bio" class="form-control" rows="3">{{ $user?->userInfo?->bio }}</textarea>
                 </div>
             </div>
 

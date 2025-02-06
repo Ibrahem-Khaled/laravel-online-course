@@ -273,6 +273,20 @@
                             @endforeach
                         </ul>
                     </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">المسارات</a>
+                        <ul class="dropdown-menu">
+                            @foreach (App\Models\Route::all() as $path)
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('all-courses', $path->id) }}">
+                                        {{ $path->name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link {{ Route::currentRouteName() == 'home' ? 'active' : '' }}"
                             href="{{ route('home') }}">الرئيسية</a>

@@ -4,171 +4,190 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الملف الشخصي للمحامي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
-    <link rel="icon" type="image/png" href="{{ asset('assets/img/logo-ct.png') }}">
-
+    <title>الملف الشخصي - أكاديمية السريع</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        :root {
+            --main-color: #ed6b2f;
+            --dark-bg: #072D38;
+            --secondary-bg: #06455E;
+        }
+
         body {
-            font-family: "Cairo", sans-serif;
-            background-color: #072D38;
-            color: white;
-            margin: 0;
-            padding-top: 100px;
-            text-align: right;
+            font-family: 'Cairo', sans-serif;
+            background: var(--dark-bg);
+            color: #fff;
+            min-height: 100vh;
         }
 
-        .modal-header {
-            border-bottom: none;
+        .profile-header {
+            background: linear-gradient(45deg, var(--dark-bg) 30%, var(--secondary-bg) 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
-        .modal-content {
-            animation: fadeIn 0.5s;
+        .user-avatar {
+            width: 120px;
+            height: 120px;
+            border: 3px solid var(--main-color);
+            box-shadow: 0 0 20px rgba(237, 107, 47, 0.3);
+        }
+
+        .stats-card {
+            background: var(--secondary-bg);
+            border-radius: 15px;
+            transition: transform 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .skill-meter {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--main-color), #ff9f6f);
+            transition: width 1s ease-in-out;
+        }
+
+        .rating-badge {
+            background: rgba(237, 107, 47, 0.2);
+            border: 2px solid var(--main-color);
+            border-radius: 10px;
+            padding: 8px 15px;
+        }
+
+        .course-card {
+            background: var(--secondary-bg);
+            border: none;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: scale(0.9);
             }
-
             to {
                 opacity: 1;
-                transform: scale(1);
             }
         }
     </style>
 </head>
 
-<body>
+<body class="pt-5">
     @include('homeComponents.header')
-    @if ($errors->any())
-        <div class="alert alert-danger w-50 mx-auto align-self-center">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+
+    <div class="container py-5" dir="rtl">
+        <!-- Header Section -->
+        <div class="profile-header p-4 mb-5">
+            <div class="row align-items-center">
+                <div class="col-md-3 text-center">
+                    <img src="{{ $user->image ? asset('storage/' . $user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
+                        class="user-avatar rounded-circle shadow">
+                </div>
+                <div class="col-md-6">
+                    <h4 class="fw-bold mb-3">{{ $user->name }}</h4>
+                    <div class="d-flex gap-3 flex-wrap">
+                        @if ($user->userReports->isNotEmpty())
+                            <div class="rating-badge fade-in">
+                                <i class="fas fa-star text-warning"></i>
+                                التقييم العام: <span id="average-rating">{{ round($user->userReports->avg('total'), 1) }}</span>/10
+                            </div>
+                        @else
+                            <div class="rating-badge fade-in">
+                                <i class="fas fa-star text-warning"></i>
+                                التقييم العام: غير متاح
+                            </div>
+                        @endif
+                    </div>
+                    @if ($user->role === 'student')
+                        <div class="mt-3">
+                            <p class="mb-1"><i class="fas fa-info-circle me-2"></i>البايو: {{ $user->bio ?? 'غير متوفر' }}</p>
+                            <p class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>العنوان: {{ $user->address ?? 'غير متوفر' }}</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
         </div>
-    @endif
-    <div class="container mt-5">
-        <div class="row">
-            <!-- القسم الأيمن (الدورات) -->
+
+        <!-- Main Content -->
+        <div class="row g-4">
+            <!-- Courses Section -->
             <div class="col-lg-8">
-                <h3 class="mb-4">دوراتي</h3>
-                <div class="row">
-                    <!-- البطاقة الأولى -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card" style="background-color: #06455E; color: white; border: none;">
-                            <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="تصميم تطوير الويب">
-                            <div class="card-body">
-                                <h5 class="card-title">تصميم تطوير الويب</h5>
-                                <p class="card-text">
-                                    <i class="fas fa-user"></i> إعداد: أحمد الله الستين
-                                </p>
-                                <p class="card-text">
-                                    <i class="fas fa-star"></i> 1347 تقييم
-                                </p>
-                                <p class="card-text">
-                                    <i class="fas fa-money-bill"></i> 77.64 ريال
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- البطاقة الثانية -->
+                <h3 class="mb-4 border-bottom pb-3"><i class="fas fa-book-open me-2"></i>الدورات المسجلة</h3>
 
+                <div class="row g-4">
+                    @foreach ($courses as $course)
+                        @include('homeComponents.home.course-card', ['course' => $course])
+                    @endforeach
                 </div>
             </div>
-            <!-- القسم الأيسر (المعلومات الجانبية) -->
-            <div class="col-lg-4 mt-4">
-                <div class="card" style="background-color: #06455E; color: white; border: none;">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-4" style="flex-direction: row-reverse;">
-                            <img src="{{ $user->image ? asset('storage/' . $user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
-                                class="me-3" alt="صورة المستخدم" width="60" height="60"
-                                style="object-fit: cover; border-radius: 10px; margin: 10px;">
-                            <div>
-                                <h5 class="card-title mb-1">{{ $user->name }}</h5>
-                                <p class="small" style="color: #F1F1F1">{{ $user->email }}</p>
+
+            <!-- Sidebar Section -->
+            <div class="col-lg-4" style="margin-top: 110px">
+                @if ($user->role === 'student' && $user->userReports->isNotEmpty())
+                    <!-- Teacher Ratings -->
+                    <div class="stats-card p-4 mb-4">
+                        <h5 class="mb-4"><i class="fas fa-chart-line me-2"></i>تقييمات المدرسين</h5>
+                        @foreach ($user->userReports as $report)
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="small">{{ $report->teacher->name }}</span>
+                                    <span class="badge bg-warning">{{ $report->created_at->diffForHumans() }}</span>
+                                </div>
+                                @foreach (['attendance', 'reactivity', 'homework', 'completion', 'creativity', 'ethics'] as $field)
+                                    <div class="mb-2">
+                                        <div class="d-flex justify-content-between small mb-1">
+                                            <span>@lang("fields.$field")</span>
+                                            <span>{{ $report->$field }}/10</span>
+                                        </div>
+                                        <div class="skill-meter">
+                                            <div class="skill-progress" style="width: 0" data-width="{{ $report->$field * 10 }}"></div>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
-                        </div>
-                        <button class="btn btn-outline-light w-100 mb-3">إعدادات الحساب</button>
-                        <button type="button" class="btn btn-warning w-100 mb-3 text-white"
-                            style="background-color: #ed6b2f" data-toggle="modal"
-                            data-target="#changePasswordModal">
-                            تغيير كلمة المرور
-                        </button>
-
-                        <hr style="border-top: 1px solid white;">
-                        <ul class="list-unstyled">
-                            <li class="mb-3">
-                                <i class="fas fa-graduation-cap me-2"></i> دوراتي
-                            </li>
-                            <li class="mb-3">
-                                <i class="fas fa-comments me-2"></i> التواصل مع المدربين
-                            </li>
-                            <li class="mb-3">
-                                <i class="fas fa-trophy me-2"></i> شهاداتي
-                            </li>
-                            <li class="mb-3">
-                                <i class="fas fa-heart me-2"></i> المفضلة
-                            </li>
-                        </ul>
+                            <hr class="my-4">
+                        @endforeach
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                @endif
 
-
-    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content"
-                style="border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);">
-                <div class="modal-header" style="background-color: #072D38; color: white;">
-                    <h5 class="modal-title" id="changePasswordModalLabel">تغيير كلمة المرور</h5>
-                    <button type="button" class="btn-close btn-close-white" data-dismiss="modal"
-                        aria-label="إغلاق"></button>
-                </div>
-                <div class="modal-body" style="background-color: #06455E; color: white;">
-                    <form action="{{ route('change-password') }}" method="POST">
-                        @csrf
-
-                        <!-- كلمة المرور القديمة -->
-                        <div class="mb-3">
-                            <label for="currentPassword" class="form-label">كلمة المرور الحالية</label>
-                            <input type="password" name="current_password" id="currentPassword" class="form-control"
-                                placeholder="أدخل كلمة المرور الحالية" required
-                                style="border: 2px solid #072D38; border-radius: 10px;">
-                        </div>
-
-                        <!-- كلمة المرور الجديدة -->
-                        <div class="mb-3">
-                            <label for="newPassword" class="form-label">كلمة المرور الجديدة</label>
-                            <input type="password" name="new_password" id="newPassword" class="form-control"
-                                placeholder="أدخل كلمة المرور الجديدة" required
-                                style="border: 2px solid #072D38; border-radius: 10px;">
-                        </div>
-
-                        <!-- تأكيد كلمة المرور الجديدة -->
-                        <div class="mb-3">
-                            <label for="confirmNewPassword" class="form-label">تأكيد كلمة المرور الجديدة</label>
-                            <input type="password" name="new_password_confirmation" id="confirmNewPassword"
-                                class="form-control" placeholder="أعد إدخال كلمة المرور الجديدة" required
-                                style="border: 2px solid #072D38; border-radius: 10px;">
-                        </div>
-
-                        <!-- زر التحديث -->
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-warning w-100 text-white"
-                                style="background-color: #ed6b2f">تحديث
-                                كلمة المرور</button>
-                        </div>
-                    </form>
+                <!-- Quick Links -->
+                <div class="stats-card p-4">
+                    <div class="list-group">
+                        <a href="{{ route('user.setting') }}"
+                            class="justify-content-between d-flex align-items-center
+                         list-group-item list-group-item-action border-0 bg-transparent text-white">
+                            <i class="fas fa-user-cog me-2"></i>إعدادات الحساب
+                        </a>
+                        <a href="#"
+                            class="justify-content-between d-flex align-items-center
+                         list-group-item list-group-item-action border-0 bg-transparent text-white"
+                            data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                            <i class="fas fa-lock me-2"></i>تغيير كلمة المرور
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -176,7 +195,30 @@
 
     @include('homeComponents.footer')
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // Animate skill progress bars
+            $('.skill-progress').each(function() {
+                $(this).css('width', $(this).data('width') + '%');
+            });
+
+            // Animate average rating
+            const averageRating = parseFloat($('#average-rating').text());
+            if (!isNaN(averageRating)) {
+                let currentRating = 0;
+                const ratingInterval = setInterval(() => {
+                    if (currentRating >= averageRating) {
+                        clearInterval(ratingInterval);
+                    } else {
+                        currentRating += 0.1;
+                        $('#average-rating').text(currentRating.toFixed(1));
+                    }
+                }, 50);
+            }
+        });
+    </script>
 </body>
 
 </html>

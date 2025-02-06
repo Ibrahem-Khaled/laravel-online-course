@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\User;
 use DB;
 use Illuminate\Support\Facades\Hash;
@@ -131,7 +132,8 @@ class AuthController extends Controller
     public function profile()
     {
         $user = auth()->user();
-        return view('Auth.profile', compact('user'));
+        $courses = Course::take(8)->get();
+        return view('Auth.profile', compact('user', 'courses'));
     }
     public function setting()
     {
