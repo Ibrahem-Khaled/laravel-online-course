@@ -10,7 +10,7 @@
     <style>
         :root {
             --primary-color: #2A3F54;
-            --secondary-color: #1ABB9C;
+            --secondary-color: #ED6B2F;
             --accent-color: #ED6B2F;
             --background-dark: #072D38;
             --background-light: #F5F7FA;
@@ -323,7 +323,7 @@
                     const container = document.getElementById('messagesContainer');
                     container.innerHTML = messages.map(msg => `
                         <div class="message ${msg.sender_id == {{ auth()->id() }} ? 'outgoing' : 'incoming'}">
-                            <p class="mb-0">${msg.message}</p>
+                            <p class="mb-0 text-white">${msg.message}</p>
                             <div class="message-time">${new Date(msg.created_at).toLocaleTimeString('ar-EG')}</div>
                         </div>
                     `).join('');
