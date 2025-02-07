@@ -176,8 +176,7 @@
                     <!-- حساب المستخدم -->
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-toggle="dropdown">
-                            <img src="{{ Auth::user()->image ? 'storage/' . Auth::user()->image : asset('assets/img/undraw_profile_2.svg') }}"
-                                class="rounded-circle user-avatar"
+                            <img src="{{ Auth::user()->image }}" class="rounded-circle user-avatar"
                                 style="width:35px;height:35px;object-fit:cover;margin-left:10px;">
                             <span>{{ Auth::user()->name }}</span>
                         </a>

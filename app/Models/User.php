@@ -56,4 +56,16 @@ class User extends Authenticatable
             ->withPivot(['completed', 'completed_at', 'last_viewed_time'])
             ->withTimestamps();
     }
+
+
+    //this accessors functions 
+    public function getProfileImageAttribute()
+    {
+        return $this->image
+            ? asset('storage/' . $this->image) // إذا كان هناك صورة، استخدمها
+            : ($this->gender == 'female'
+                ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
+                : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png'); // إذا لم تكن هناك صورة، اختر الصورة الافتراضية حسب الجنس
+    }
+
 }
