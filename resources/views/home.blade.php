@@ -115,9 +115,8 @@
                             @foreach ($chunk as $item)
                                 <div class="col-md-4">
                                     <div class="card" style="background-color: transparent; height: 100%;">
-                                        <img src="{{ $item->image ? asset('storage/' . $item->image) : 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fjooinn.com%2Fimages%2Fprimary-school-classroom-5.jpg&f=1&nofb=1&ipt=d0a230bf6063cbbccf4406ca3e5e8f535a0110357aea1e44cedb46d9629552dc&ipo=images' }}"
-                                            class="card-img-top" alt="{{ $item->name }}"
-                                            style="height: 200px; object-fit: cover;">
+                                        <img src="{{ $item->profile_image }}" class="card-img-top"
+                                            alt="{{ $item->name }}" style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
                                             <h5 class="card-title" style="color: #fff; font-weight: bold;">
                                                 {{ $item->name }}

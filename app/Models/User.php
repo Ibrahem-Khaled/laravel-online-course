@@ -57,6 +57,12 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
+    public function unreadMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id')
+            ->where('is_read', false); // فقط الرسائل غير المقروءة
+    }
+
 
     //this accessors functions 
     public function getProfileImageAttribute()
@@ -67,5 +73,6 @@ class User extends Authenticatable
                 ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
                 : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png'); // إذا لم تكن هناك صورة، اختر الصورة الافتراضية حسب الجنس
     }
+
 
 }

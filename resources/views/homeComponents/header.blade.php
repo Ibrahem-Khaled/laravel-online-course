@@ -208,7 +208,7 @@
                     </a>
 
                     <!-- الرسائل -->
-                    <a href="#" class="nav-icon position-relative">
+                    <a href="{{ route('chat') }}" class="nav-icon position-relative">
                         <i class="fas fa-envelope"></i>
                         <span class="notification-badge">5</span>
                     </a>

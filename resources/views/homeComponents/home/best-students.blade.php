@@ -109,12 +109,7 @@
                 @foreach ($students as $student)
                     <div class="swiper-slide">
                         <div class="student-card">
-                            <img src="{{ $student->image
-                                ? asset('storage/' . $student->image)
-                                : ($student->userInfo?->gender == 'female'
-                                    ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
-                                    : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png') }}"
-                                alt="Student Image">
+                            <img src="{{ $student->profile_image }}" alt="Student Image">
                         </div>
                         <h4 class="student-name">{{ $student->name }}</h4>
                     </div>

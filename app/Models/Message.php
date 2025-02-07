@@ -13,7 +13,7 @@ class Message extends Model
         'receiver_id',
         'message',
         'file',
-        'read',
+        'is_read',
     ];
 
     public function sender()

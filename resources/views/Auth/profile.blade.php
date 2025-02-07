@@ -88,6 +88,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -103,8 +104,7 @@
         <div class="profile-header p-4 mb-5">
             <div class="row align-items-center">
                 <div class="col-md-3 text-center">
-                    <img src="{{ $user->image ? asset('storage/' . $user->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
-                        class="user-avatar rounded-circle shadow">
+                    <img src="{{ $user->profile_image }}" class="user-avatar rounded-circle shadow">
                 </div>
                 <div class="col-md-6">
                     <h4 class="fw-bold mb-3">{{ $user->name }}</h4>
@@ -112,7 +112,8 @@
                         @if ($user->userReports->isNotEmpty())
                             <div class="rating-badge fade-in">
                                 <i class="fas fa-star text-warning"></i>
-                                التقييم العام: <span id="average-rating">{{ round($user->userReports->avg('total'), 1) }}</span>/10
+                                التقييم العام: <span
+                                    id="average-rating">{{ round($user->userReports->avg('total'), 1) }}</span>/10
                             </div>
                         @else
                             <div class="rating-badge fade-in">
@@ -123,8 +124,10 @@
                     </div>
                     @if ($user->role === 'student')
                         <div class="mt-3">
-                            <p class="mb-1"><i class="fas fa-info-circle me-2"></i>البايو: {{ $user->bio ?? 'غير متوفر' }}</p>
-                            <p class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>العنوان: {{ $user->address ?? 'غير متوفر' }}</p>
+                            <p class="mb-1"><i class="fas fa-info-circle me-2"></i>البايو:
+                                {{ $user->bio ?? 'غير متوفر' }}</p>
+                            <p class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>العنوان:
+                                {{ $user->address ?? 'غير متوفر' }}</p>
                         </div>
                     @endif
                 </div>
@@ -163,7 +166,8 @@
                                             <span>{{ $report->$field }}/10</span>
                                         </div>
                                         <div class="skill-meter">
-                                            <div class="skill-progress" style="width: 0" data-width="{{ $report->$field * 10 }}"></div>
+                                            <div class="skill-progress" style="width: 0"
+                                                data-width="{{ $report->$field * 10 }}"></div>
                                         </div>
                                     </div>
                                 @endforeach

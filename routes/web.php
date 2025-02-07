@@ -11,6 +11,7 @@ use App\Http\Controllers\dashboard\SectionCalendarController;
 use App\Http\Controllers\dashboard\SectionsController;
 use App\Http\Controllers\dashboard\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\webController\messagesController;
 use App\Http\Controllers\webController\UserSectionController;
 use App\Http\Controllers\webController\videoCourseController;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +62,13 @@ Route::group(['middleware' => ['auth', 'isActive']], function () {
     Route::get('/video/{id}', [UserSectionController::class, 'getVideo'])->name('getVideo');
     Route::put('editVideoFromCourse', [UserSectionController::class, 'editVideoFromCourse'])->name('editVideoFromCourse');
 
+    //this routes chat controller
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/chat', [messagesController::class, 'index'])->name('chat');
+        Route::get('/messages/{user}', [messagesController::class, 'getMessages']);
+        Route::post('/messages/start-chat', [messagesController::class, 'startChat']);
+        Route::post('/messages', [messagesController::class, 'sendMessage']);
+    });
 });
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admin,supervisor']], function () {
@@ -76,7 +84,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     Route::delete('/user-reports/{id}', [UserController::class, 'destroyReport'])->name('userReports.destroy');
     //this category controller for dashboard
     Route::resource('categories', CategoryController::class);
- 
+
     //this course controller for dashboard
     Route::resource('courses', CourseController::class);
     Route::post('/course-parts', [CourseController::class, 'addPart'])->name('course_parts.store');
