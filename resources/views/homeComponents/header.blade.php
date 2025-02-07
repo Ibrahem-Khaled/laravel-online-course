@@ -210,7 +210,9 @@
                     <!-- الرسائل -->
                     <a href="{{ route('chat') }}" class="nav-icon position-relative">
                         <i class="fas fa-envelope"></i>
-                        <span class="notification-badge">5</span>
+                        @if (Auth::user()->unreadMessages()->count() > 0)
+                            <span class="notification-badge">{{ Auth::user()->unreadMessages()->count() }}</span>
+                        @endif
                     </a>
                 @else
                     <a class="btn btn-action text-white" style="background-color: #ed6b2f" href="{{ route('login') }}">
