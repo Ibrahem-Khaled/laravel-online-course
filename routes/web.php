@@ -12,6 +12,7 @@ use App\Http\Controllers\dashboard\SectionsController;
 use App\Http\Controllers\dashboard\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\webController\messagesController;
+use App\Http\Controllers\webController\notificationController;
 use App\Http\Controllers\webController\UserSectionController;
 use App\Http\Controllers\webController\videoCourseController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/approved/page', [HomeController::class, 'approvedPage'])->name('approved.page')->middleware('auth');
+
+Route::get('coming-soon', function () {
+    return redirect()->back()->with('warning', 'الصفحة قيد التطوير.');
+})->name('coming-soon');
+
 
 Route::group(['middleware' => ['auth', 'isActive']], function () {
 
@@ -69,6 +75,14 @@ Route::group(['middleware' => ['auth', 'isActive']], function () {
         Route::post('/messages/start-chat', [messagesController::class, 'startChat']);
         Route::post('/messages', [messagesController::class, 'sendMessage']);
     });
+
+    //this routes notification controller
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [notificationController::class, 'index'])->name('notifications.index');
+        Route::post('/{notification}/read', [notificationController::class, 'markAsRead'])->name('notifications.read');
+        Route::delete('/{notification}', [notificationController::class, 'deleteNotification'])->name('notifications.destroy');
+    });
+
 });
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admin,supervisor']], function () {

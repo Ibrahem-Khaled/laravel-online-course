@@ -24,16 +24,20 @@ class AuthController extends Controller
     public function loginPost(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|string|email',
+            'login' => 'required|string', // يمكن أن يكون بريدًا إلكترونيًا أو رقم هاتف
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        // تحديد ما إذا كان الإدخال بريدًا إلكترونيًا أو رقم هاتف
+        $field = filter_var($credentials['login'], FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+
+        // محاولة تسجيل الدخول باستخدام الحقل المحدد
+        if (Auth::attempt([$field => $credentials['login'], 'password' => $credentials['password']])) {
             $request->session()->regenerate(); // لتأمين الجلسة
             return redirect()->route('home')->with('success', 'تم تسجيل الدخول بنجاح');
         }
 
-        return redirect()->back()->with('error', 'البريد الإلكتروني او كلمة المرور غير صحيحة');
+        return redirect()->back()->with('error', 'البريد الإلكتروني/رقم الهاتف أو كلمة المرور غير صحيحة');
     }
 
     // عرض صفحة التسجيل
@@ -106,6 +110,11 @@ class AuthController extends Controller
         $request->validate([
             'current_password' => 'required',
             'new_password' => 'required|min:8|confirmed',
+        ], [
+            'new_password.confirmed' => 'كلمة المرور الجديدة غير متطابقة.',
+            'new_password.min' => 'كلمة المرور الجديدة يجب ان تكون على الاقل 8 حروف.',
+            'current_password.required' => 'يرجى ادخال كلمة المرور الحالية.',
+            
         ]);
 
         if (!Hash::check($request->current_password, $user->password)) {
@@ -132,9 +141,19 @@ class AuthController extends Controller
     public function profile()
     {
         $user = auth()->user();
-        $courses = Course::take(8)->get();
-        return view('Auth.profile', compact('user', 'courses'));
+
+        if ($user->role === 'student') {
+            $latestSection = $user->sections()->latest()->first();
+            $courses = $latestSection ? $latestSection->courses()->get() : collect(); // إرجاع Collection فارغ إذا لم يكن هناك سكشن
+            $sectionCalendars = $latestSection ? $latestSection->calendars()->get() : collect();
+        } else {
+            $courses = $user->courses()->get();
+            $sectionCalendars = collect(); // المدرس قد لا يكون لديه تقاويم مرتبطة بالسكاشن
+        }
+
+        return view('Auth.profile', compact('user', 'courses', 'sectionCalendars'));
     }
+
     public function setting()
     {
         // جلب بيانات المستخدم المصادق عليه

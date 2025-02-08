@@ -91,7 +91,7 @@
 <body>
 
     @include('homeComponents.header')
-
+    @include('homeComponents.alerts')
     <div class="login-container">
         <div class="login-card" style="background-color: #035971;">
             <h3 class="text-center mb-4 text-white">أهلا بعودتك</h3>
@@ -99,13 +99,13 @@
 
             <form action="{{ route('loginPost') }}" method="POST">
                 @csrf
-                <!-- البريد الإلكتروني -->
+                <!-- البريد الإلكتروني أو رقم الهاتف -->
                 <div class="mb-3">
-                    <label for="email" class="form-label text-white">البريد الإلكتروني</label>
+                    <label for="login" class="form-label text-white">البريد الإلكتروني أو رقم الهاتف</label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                        <input type="email" class="form-control" id="email" name="email"
-                            placeholder="أدخل بريدك الإلكتروني" required>
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <input type="text" class="form-control" id="login" name="login"
+                            placeholder="أدخل بريدك الإلكتروني أو رقم الهاتف" required>
                     </div>
                 </div>
                 <!-- كلمة المرور -->

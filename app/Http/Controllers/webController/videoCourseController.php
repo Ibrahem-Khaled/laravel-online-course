@@ -7,6 +7,7 @@ use App\Models\CourseVideo;
 use App\Models\inVideoUsage;
 use App\Models\VideoHomeWork;
 use App\Models\VideoDiscussion;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -34,6 +35,13 @@ class videoCourseController extends Controller
             'text' => $request->input('text'),
         ]);
 
+        NotificationService::createNotification(
+            auth()->user()->id,
+            $homework->courseVideos->course->user_id,
+            'VideoHomeWork',
+            auth()->user()->name . ' قام بتسليم واجب في الفيديو ' . $homework->courseVideos->title
+        );
+
         return response()->json($homework);
     }
 
@@ -48,6 +56,14 @@ class videoCourseController extends Controller
             'user_id' => auth()->user()->id,
             'body' => $request->input('body'),
         ]);
+
+
+        NotificationService::createNotification(
+            auth()->user()->id,
+            $comment->courseVideo->course->user_id,
+            'VideoDiscussion',
+            auth()->user()->name . ' قام بتعليق في الفيديو ' . $comment->courseVideo->title
+        );
 
         return response()->json([
             'success' => true,
@@ -73,6 +89,13 @@ class videoCourseController extends Controller
             'rating' => $request->rating,
         ]);
 
+        NotificationService::createNotification(
+            auth()->user()->id,
+            $homework->user_id,
+            'VideoHomeWork',
+            auth()->user()->name . ' قام برد على واجب في الفيديو ' . $homework->courseVideos->title
+        );
+
         return response()->json(['success' => true, 'message' => 'تم الرد على الواجب بنجاح!']);
     }
 
@@ -94,6 +117,13 @@ class videoCourseController extends Controller
 
         $homework->text = $request->input('text');
         $homework->save();
+
+        NotificationService::createNotification(
+            auth()->user()->id,
+            $homework->courseVideos->course->user_id,
+            'VideoHomeWork',
+            auth()->user()->name . ' قام بتحديث واجب في الفيديو ' . $homework->courseVideos->title
+        );
 
         return redirect()->back()->with('success', 'تم تحديث الواجب بنجاح');
     }

@@ -161,7 +161,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                 <h5 className="mb-3">المدربين</h5>
                 <div className="d-flex align-items-start mb-3 justify-content-around">
                     <img
-                        src={course.user?.image ? `/storage/${course.user.image}` : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png'}
+                        src={course.user?.profile_image}
                         alt="Trainer Image"
                         className="rounded-circle me-3"
                         style={{ width: '60px', height: '60px' }}
@@ -172,7 +172,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                     </div>
                     <div className="d-flex gap-2">
                         <a
-                            href="chat_link_here"
+                            href="/chat"
                             className="d-flex justify-content-center align-items-center text-white"
                             style={{ width: '40px', height: '40px', fontSize: '25px' }}
                         >

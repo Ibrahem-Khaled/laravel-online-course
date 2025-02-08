@@ -76,7 +76,7 @@
     <!-- Sort Section -->
     <div class="sort-section">
         <h5>الدورات</h5>
-        
+
         <div class="dropdown" style="flex-direction: row-reverse; display: flex; align-items: center;">
             <h3 class="sort-title">ترتيب حسب</h3>
             <button class="dropdown-toggle-sort" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
@@ -121,7 +121,6 @@
 
     <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
     <script>
         $(document).ready(function() {
             $('#load-more-btn').click(function() {
@@ -133,17 +132,23 @@
                     url: url,
                     type: 'GET',
                     beforeSend: function() {
-                        $button.prop('disabled', true).html('جاري التحميل...');
+                        $button.prop('disabled', true).text('جاري التحميل...');
                     },
                     complete: function() {
-                        $button.prop('disabled', false).html('المزيد');
+                        $button.prop('disabled', false).text('المزيد');
                     },
                     success: function(response) {
                         if (response.html.trim().length) {
-                            $('#courses-container').append(response.html);
+                            $('#courses-container').append(response
+                            .html); // إضافة الكورسات الجديدة
                             $button.data('page', page + 1);
+
+                            // إذا لم يكن هناك مزيد من الصفحات، نخفي الزر
+                            if (!response.hasMore) {
+                                $button.hide();
+                            }
                         } else {
-                            $button.hide(); // إخفاء الزر إذا لم يكن هناك المزيد
+                            $button.hide(); // إخفاء الزر إذا لم يعد هناك المزيد
                         }
                     },
                     error: function(xhr) {
@@ -153,6 +158,7 @@
             });
         });
     </script>
+
 </body>
 
 </html>

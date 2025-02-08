@@ -8,7 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class UserRepots extends Model
 {
     use HasFactory;
-    protected $guarded = ['id'];
+    protected $filable = [
+        'user_id',
+        'teacher_id',
+        'attendance',
+        'reactivity',
+        'homework',
+        'completion',
+        'creativity',
+        'ethics',
+    ];
 
     public function user()
     {
@@ -18,5 +27,17 @@ class UserRepots extends Model
     public function teacher()
     {
         return $this->belongsTo(User::class, 'teacher_id');
+    }
+
+
+    //this functions accessor
+    public function getTotalAttribute()
+    {
+        return $this->attendance +
+            $this->reactivity +
+            $this->homework +
+            $this->completion +
+            $this->creativity +
+            $this->ethics;
     }
 }

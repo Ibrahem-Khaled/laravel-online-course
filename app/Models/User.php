@@ -63,6 +63,11 @@ class User extends Authenticatable
             ->where('is_read', false); // فقط الرسائل غير المقروءة
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'related_user_id');
+    }
+
 
     //this accessors functions 
     public function getProfileImageAttribute()

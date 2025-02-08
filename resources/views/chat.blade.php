@@ -214,7 +214,8 @@
                         <div class="contact-item" onclick="loadChat({{ $contact->id }})">
                             <div class="d-flex align-items-center">
                                 <div class="contact-avatar">
-                                    <img src="{{ $contact->profile_image }}" alt="{{ $contact->name }}" width="40" height="40">
+                                    <img src="{{ $contact->profile_image }}" alt="{{ $contact->name }}" width="40"
+                                        height="40">
                                 </div>
                                 <div class="contact-info">
                                     <h6 class="mb-0 text-white">{{ $contact->name }}</h6>
@@ -259,11 +260,11 @@
 
                 <div class="message-input-area" style="display: none;" id="messageInputArea">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="messageInput" placeholder="اكتب رسالتك هنا..."
-                            aria-label="Message input">
                         <button class="btn btn-primary" type="button" onclick="sendMessage()">
                             <i class="fas fa-paper-plane"></i>
                         </button>
+                        <input type="text" class="form-control" id="messageInput" placeholder="اكتب رسالتك هنا..."
+                            aria-label="Message input">
                     </div>
                 </div>
             </div>
@@ -310,7 +311,8 @@
 
     @include('homeComponents.footer')
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script>
         let currentChatId = null;
 

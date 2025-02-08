@@ -94,17 +94,18 @@ class HomeController extends Controller
             ->when($category_id, function ($query, $category_id) {
                 return $query->where('category_id', $category_id);
             })
-            ->paginate(12);
+            ->paginate(12); // جلب 12 دورة في كل صفحة
 
         if ($request->ajax()) {
             return response()->json([
-                'html' => view('homeComponents.home.course-card', ['courses' => $courses])->render(),
+                'html' => view('homeComponents.home.courses-list', ['courses' => $courses])->render(),
                 'hasMore' => $courses->hasMorePages()
             ]);
         }
 
         return view('all-courses', compact('courses'));
     }
+
 
 
     public function allStudentsSections()

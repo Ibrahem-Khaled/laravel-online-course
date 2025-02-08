@@ -25,4 +25,12 @@ class SectionCalendar extends Model
     {
         return $this->belongsTo(Course::class, 'course_id');
     }
+
+
+    //this is accessors functions
+    public function getDayNameAttribute()
+    {
+        $days = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+        return $days[$this->day_number];
+    }
 }

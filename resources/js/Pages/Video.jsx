@@ -36,7 +36,7 @@ const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
   }, [showEditor]);
 
   const toggleDescriptionEditor = () => {
-    setShowEditor(!showEditor);
+    setShowEditor(!showEditor); 
   };
 
   const deviceTranslations = {

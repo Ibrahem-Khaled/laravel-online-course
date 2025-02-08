@@ -202,9 +202,12 @@
                         </ul>
                     </div>
                     <!-- الإشعارات -->
-                    <a href="#" class="nav-icon position-relative">
+                    <a href="{{ route('notifications.index') }}" class="nav-icon position-relative">
                         <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
+                        @if (Auth::user()->notifications()->where('is_read', false)->count() > 0)
+                            <span
+                                class="notification-badge">{{ Auth::user()->notifications()->where('is_read', false)->count() }}</span>
+                        @endif
                     </a>
 
                     <!-- الرسائل -->
