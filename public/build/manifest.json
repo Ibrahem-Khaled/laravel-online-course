@@ -20,7 +20,7 @@
     "src": "node_modules/font-awesome/fonts/fontawesome-webfont.woff2"
   },
   "resources/js/app.css": {
-    "file": "assets/app-a1986aca.css",
+    "file": "assets/app-15329f7c.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.jsx": {
@@ -32,9 +32,9 @@
       "assets/fontawesome-webfont-ad615792.svg"
     ],
     "css": [
-      "assets/app-a1986aca.css"
+      "assets/app-15329f7c.css"
     ],
-    "file": "assets/app-eed0f101.js",
+    "file": "assets/app-cee02fa0.js",
     "isEntry": true,
     "src": "resources/js/app.jsx"
   }

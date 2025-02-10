@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'font-awesome/css/font-awesome.min.css';
@@ -7,10 +7,91 @@ import Sidebar from '../components/video/SideBar';
 import DiscussionSection from '../components/video/DiscussionSection';
 import HomeworkSection from '../components/video/HomeworkSection';
 import AttachmentsSection from '../components/video/AttachmentsSection';
+import Player from '@vimeo/player';
+
 
 const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
   const [showEditor, setShowEditor] = useState(false);
   const [video, setVideo] = useState(course.videos[0]);
+  const playerRef = useRef(null);
+
+  useEffect(() => {
+    const fetchLastWatchedVideo = async () => {
+      try {
+        const { data: lastWatchedHistory } = await axios.get(`/api/videos/history/last-watched`);
+
+        if (lastWatchedHistory && course.videos.some(v => v.id === lastWatchedHistory.course_video_id)) {
+          const lastWatchedVideo = course.videos.find(v => v.id === lastWatchedHistory.course_video_id);
+          setVideo(lastWatchedVideo);
+
+          // الانتقال إلى آخر نقطة مشاهدة عند تحميل الفيديو
+          setTimeout(async () => {
+            const iframe = document.querySelector('iframe');
+            if (iframe) {
+              const player = new Player(iframe);
+              await player.setCurrentTime(lastWatchedHistory.last_viewed_time);
+            }
+          }, 1000);
+        }
+      } catch (error) {
+        console.error('Failed to fetch last watched video:', error);
+      }
+    };
+
+    fetchLastWatchedVideo();
+  }, []);
+
+
+  useEffect(() => {
+    const initializePlayer = async () => {
+      const iframe = document.querySelector('iframe');
+      if (!iframe) return;
+
+      const player = new Player(iframe);
+      playerRef.current = player;
+
+      try {
+        // جلب تاريخ المشاهدة
+        const { data: history } = await axios.get(`/api/videos/${video.id}/history`);
+
+        const duration = await player.getDuration();
+        if (history?.completed || (history?.last_viewed_time && (duration - history.last_viewed_time < 10))) {
+          await axios.post(`/api/videos/${video.id}/complete`);
+          return;
+        }
+
+        // الانتقال إلى آخر وقت تمت مشاهدته
+        if (history?.last_viewed_time) {
+          await player.setCurrentTime(history.last_viewed_time);
+        }
+
+        // تحديث الوقت كل 10 ثوانٍ
+        const interval = setInterval(async () => {
+          const currentTime = await player.getCurrentTime();
+          await axios.post(`/api/videos/${video.id}/progress`, { time: currentTime });
+        }, 10000);
+
+        // عند إنهاء الفيديو، وضعه كمكتمل والانتقال إلى الفيديو التالي
+        player.on('ended', async () => {
+          await axios.post(`/api/videos/${video.id}/complete`);
+          return;
+        });
+
+        return () => clearInterval(interval);
+      } catch (error) {
+        console.error('Failed to handle video progress:', error);
+      }
+    };
+
+    initializePlayer();
+
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.destroy();
+      }
+    };
+  }, [video]); // يتم تنفيذ `useEffect` عند تغيير الفيديو
+
 
   useEffect(() => {
     if (showEditor && document.getElementById('description-editor')) {
@@ -36,7 +117,7 @@ const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
   }, [showEditor]);
 
   const toggleDescriptionEditor = () => {
-    setShowEditor(!showEditor); 
+    setShowEditor(!showEditor);
   };
 
   const deviceTranslations = {

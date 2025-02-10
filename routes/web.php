@@ -52,6 +52,11 @@ Route::group(['middleware' => ['auth', 'isActive']], function () {
 
     //this routes for video-usage
     Route::get('api/courses/{course}/videos/{video}', [\App\Http\Controllers\api\homeController::class, 'getVideoData'])->name('api.courses.videos');
+    Route::get('api/videos/{video}/history', [\App\Http\Controllers\api\homeController::class, 'getVideoHistory'])->name('api.videos.history');
+    Route::get('api/videos/history/last-watched', [\App\Http\Controllers\api\homeController::class, 'getLastWatchedVideo'])->name('api.videos.history.last-watched');
+    Route::post('api/videos/{video}/progress', [\App\Http\Controllers\api\homeController::class, 'updateProgress'])->name('api.videos.progress');
+    Route::post('api/videos/{video}/complete', [\App\Http\Controllers\api\homeController::class, 'complete'])->name('api.videos.complete');
+
     Route::post('/video-usage/add', [videoCourseController::class, 'addVideoUsage'])->name('addVideoUsage');
     Route::delete('/video-usage/{id}', [videoCourseController::class, 'destroyVideoUsage'])->name('videoUsage.destroy');
     Route::put('/videos/{id?}/update-description', [videoCourseController::class, 'updateDescription'])->name('videos.updateDescription');

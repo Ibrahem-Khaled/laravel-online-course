@@ -7,6 +7,7 @@ const Sidebar = ({ course, video, setVideo }) => {
     const [openParts, setOpenParts] = useState({});
     const [progress, setProgress] = useState(0);
     const [videoHistories, setVideoHistories] = useState([]);
+
     console.log(`api/courses/${course.id}/videos/${video.id}`);
     useEffect(() => {
         const fetchVideoData = async () => {
@@ -15,6 +16,8 @@ const Sidebar = ({ course, video, setVideo }) => {
                 const { video: newVideo, progress: newProgress } = response.data;
                 setVideo(newVideo);
                 setProgress(newProgress);
+                setVideoHistories(response.data.video.videoHistories);
+                console.log(response.data.video.videoHistories);
             } catch (error) {
                 console.error('Failed to fetch video data:', error);
             }
@@ -30,21 +33,13 @@ const Sidebar = ({ course, video, setVideo }) => {
         }));
     };
 
-    const getVideoStatusIcon = (otherVideo, currentVideoId, history) => {
-        if (otherVideo.id === currentVideoId) {
-            return <i className="fas fa-play-circle" style={{ color: '#fff' }} />;
-        }
+    const getVideoStatusIcon = (otherVideo, currentVideoId) => {
+        const history = videoHistories.find(h => h.course_video_id === otherVideo.id);
 
-        if (history) {
-            if (history.completed) {
-                return <i className="fas fa-check-circle" style={{ color: '#28a745' }} />;
-            }
-            if (history.last_viewed_time) {
-                return <i className="fas fa-clock" style={{ color: '#ffc107' }} />;
-            }
-        }
-
-        return <i className="fas fa-lock" style={{ color: '#fff' }} />;
+        if (otherVideo.id === currentVideoId) return <i className="fas fa-play-circle text-white" />;
+        if (history?.completed) return <i className="fas fa-check-circle" style={{ color: '#4CAF50' }} />;
+        if (history) return <i className="fas fa-clock" style={{ color: '#ed6b2f' }} />;
+        return <i className="fas fa-lock text-white" />;
     };
 
     return (

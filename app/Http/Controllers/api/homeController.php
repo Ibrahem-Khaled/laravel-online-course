@@ -20,24 +20,18 @@ class homeController extends Controller
         }) + 1;
 
         // حساب نسبة الإنجاز
-        $completedVideosCount = 0;
+        $completedVideosCount = VideoHistory::where('user_id', auth()->id())
+            ->whereIn('course_video_id', $course->videos->pluck('id'))
+            ->where('completed', true)
+            ->count();
 
         $totalVideos = $course->videos->count();
         $progress = $totalVideos > 0 ? ($completedVideosCount / $totalVideos) * 100 : 0;
 
-
-        VideoHistory::updateOrCreate(
-            ['user_id' => Auth::user()?->id, 'course_video_id' => $video->id],
-            [
-                'last_viewed_time' => now(), // تحديث آخر وقت مشاهدة
-            ]
-        );
-
-        $videoHistories = auth()->user()
-            ->videoHistories()
-            ->select('video_histories.*') // جلب كل الحقول
-            ->distinct('course_video_id') // تجنب تكرار الفيديو
+        $histories = VideoHistory::where('user_id', auth()->id())
+            ->whereIn('course_video_id', $course->videos->pluck('id'))
             ->get();
+
         // حساب عدد الواجبات غير المكتملة
         $unresolvedHomeworksCount = $video->homeWorks()
             ->whereNull('reply')
@@ -51,7 +45,7 @@ class homeController extends Controller
             'unresolvedHomeworksCount' => $unresolvedHomeworksCount,
             'userCanUploadHomework' => $userCanUploadHomework,
             'videoInUsageCount' => $videoInUsageCount,
-            'videoHistory' => $videoHistories
+            'videoHistories' => $histories
         ]);
 
 
@@ -62,5 +56,50 @@ class homeController extends Controller
             'currentVideoIndex' => $currentVideoIndex,
             'totalVideos' => $totalVideos,
         ]);
+    }
+
+    public function getVideoHistory(CourseVideo $video)
+    {
+        $history = VideoHistory::firstOrCreate([
+            'user_id' => auth()->id(),
+            'course_video_id' => $video->id,
+        ]);
+
+        return response()->json($history);
+    }
+
+    public function getLastWatchedVideo()
+    {
+        $user = auth()->user();
+
+        $lastWatched = VideoHistory::where('user_id', $user->id)
+            ->whereNotNull('last_viewed_time')
+            ->orderBy('updated_at', 'desc')
+            ->first();
+
+        return response()->json($lastWatched);
+    }
+
+    public function updateProgress(CourseVideo $video, Request $request)
+    {
+        $time = $request->input('time');
+
+        $history = VideoHistory::updateOrCreate(
+            ['user_id' => auth()->id(), 'course_video_id' => $video->id],
+            ['last_viewed_time' => gmdate("H:i:s", $time)]
+        );
+
+        return response()->json(['success' => true, 'history' => $history]);
+    }
+
+    public function complete(CourseVideo $video)
+    {
+        $history = VideoHistory::where('user_id', auth()->id())
+            ->where('course_video_id', $video->id)
+            ->update([
+                'completed' => true,
+                'completed_at' => now(),
+            ]);
+        return response()->json(['success' => true]);
     }
 }
