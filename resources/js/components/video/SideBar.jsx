@@ -60,7 +60,7 @@ const Sidebar = ({ course, video, setVideo }) => {
     };
 
     return (
-        <div className="col-lg-4" style={{ marginTop: '1.5%' }}>
+        <div className="col-lg-4" style={{ marginTop: 50 }}>
             {/* قائمة الفيديوهات مع شريط التقدم المدمج */}
             <motion.div
                 className="progress-container"

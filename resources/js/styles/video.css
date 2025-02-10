@@ -251,10 +251,7 @@ a {
 
 .progress {
     background-color: #072D38;
-    height: 5px;
-    border-radius: 3px;
-    overflow: hidden;
-    margin-top: 10px;
+    height: 6px;
 }
 
 .progress-bar {
