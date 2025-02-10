@@ -26,6 +26,23 @@ const Sidebar = ({ course, video, setVideo }) => {
         fetchVideoData();
     }, [video.id, course.id]);
 
+
+    useEffect(() => {
+        if (video && course.parts) {
+            // البحث عن الـ part الذي يحتوي على الفيديو الحالي
+            const foundPart = course.parts.find(part =>
+                part.videos.some(v => v.id === video.id)
+            );
+
+            if (foundPart) {
+                setOpenParts(prev => ({
+                    ...prev,
+                    [foundPart.id]: true, // فتح القسم الذي يحتوي الفيديو
+                }));
+            }
+        }
+    }, [video, course.parts]);
+
     const togglePart = (partId) => {
         setOpenParts((prev) => ({
             ...prev,
