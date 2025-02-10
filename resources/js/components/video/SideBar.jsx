@@ -53,8 +53,8 @@ const Sidebar = ({ course, video, setVideo }) => {
     const getVideoStatusIcon = (otherVideo, currentVideoId) => {
         const history = videoHistories.find(h => h.course_video_id === otherVideo.id);
 
-        if (otherVideo.id === currentVideoId) return <i className="fas fa-play-circle text-white" />;
         if (history?.completed) return <i className="fas fa-check-circle" style={{ color: '#4CAF50' }} />;
+        if (otherVideo.id === currentVideoId) return <i className="fas fa-play-circle text-white" />;
         if (history) return <i className="fas fa-clock" style={{ color: '#ed6b2f' }} />;
         return <i className="fas fa-lock text-white" />;
     };
