@@ -88,6 +88,8 @@ Route::group(['middleware' => ['auth', 'isActive']], function () {
         Route::delete('/{notification}', [notificationController::class, 'deleteNotification'])->name('notifications.destroy');
     });
 
+    //this routes RoutesCourses controller
+    Route::get('/routes/{route}/courses', [HomeController::class, 'showRoutesCourses'])->name('routes.courses');
 });
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admin,supervisor']], function () {

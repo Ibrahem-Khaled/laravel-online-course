@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\CourseVideo;
+use App\Models\Route;
 use App\Models\Section;
 use App\Models\User;
 use App\Models\VideoHistory;
@@ -112,5 +113,11 @@ class HomeController extends Controller
     {
         $students = User::where('role', 'student')->whereHas('sections')->get();
         return view('all_students_section', compact('students'));
+    }
+
+    public function showRoutesCourses(Route $route)
+    {
+        $courses = $route->courses()->get();
+        return view('routes_courses', compact('route', 'courses'));
     }
 }

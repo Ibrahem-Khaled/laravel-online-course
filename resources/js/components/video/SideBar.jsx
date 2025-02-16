@@ -120,7 +120,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                                                             {index + 1}. {otherVideo.title}
                                                         </span>
                                                         <span className="video-duration">
-                                                            <i className="fas fa-clock"></i>
+                                                            {/* <i className="fas fa-clock"></i> */}
                                                             {otherVideo.duration}
                                                         </span>
                                                     </div>
@@ -153,7 +153,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                                         {index + 1}. {otherVideo.title}
                                     </span>
                                     <span className="video-duration">
-                                        <i className="fas fa-clock"></i>
+                                        {/* <i className="fas fa-clock"></i> */}
                                         {otherVideo.duration}
                                     </span>
                                 </div>

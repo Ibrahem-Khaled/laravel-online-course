@@ -283,7 +283,7 @@
                         <ul class="dropdown-menu">
                             @foreach (App\Models\Route::all() as $path)
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('all-courses', $path->id) }}">
+                                    <a class="dropdown-item" href="{{ route('routes.courses', $path->id) }}">
                                         {{ $path->name }}
                                     </a>
                                 </li>
