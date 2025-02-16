@@ -34,7 +34,8 @@
             padding: 1rem;
             margin-bottom: 1rem;
             transition: transform 0.3s ease;
-            height: 100%; /* تثبيت ارتفاع الكارد */
+            height: 100%;
+            /* تثبيت ارتفاع الكارد */
             display: flex;
             flex-direction: column;
         }
@@ -61,9 +62,11 @@
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 3; /* عدد الأسطر المطلوبة */
+            -webkit-line-clamp: 3;
+            /* عدد الأسطر المطلوبة */
             -webkit-box-orient: vertical;
-            flex-grow: 1; /* لجعل الوصف يأخذ المساحة المتبقية */
+            flex-grow: 1;
+            /* لجعل الوصف يأخذ المساحة المتبقية */
         }
 
         .course-price {
@@ -106,7 +109,7 @@
     <div class="container my-5" dir="rtl">
         <!-- تفاصيل المسار -->
         <div class="route-header text-center">
-            <img src="{{ $route->image }}" alt="{{ $route->name }}" class="route-image mb-3">
+            <img src="{{ asset('storage/' . $route->image) }}" alt="{{ $route->name }}" class="route-image mb-3">
             <h1>{{ $route->name }}</h1>
             <p class="lead">{{ $route->target_group }}</p>
             <p>{{ $route->description }}</p>
@@ -124,7 +127,8 @@
                                 <span class="new-badge">جديد</span>
                             @endif
 
-                            <img src="{{ $course->image }}" alt="{{ $course->title }}" class="course-image mb-3">
+                            <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->title }}"
+                                class="course-image mb-3">
                             <h3 class="course-title">{{ $course->title }}</h3>
                             <p class="course-description">
                                 {{ Str::limit($course->description, 150, '...') }} <!-- تحديد طول الوصف -->
