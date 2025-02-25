@@ -45,10 +45,12 @@ Route::group(['middleware' => ['auth', 'isActive']], function () {
 
     //this routes for video-courses with home works and comments and rating
     Route::post('add-homework', [videoCourseController::class, 'addHomework'])->name('add-homework');
-    Route::post('add-comment', [videoCourseController::class, 'videoDiscssion'])->name('add-comment');
     Route::post('homework/reply/{id}', [videoCourseController::class, 'homeworkReply'])->name('homework.reply');
     Route::put('/homework/update/{id}', [videoCourseController::class, 'updateHomework'])->name('update-homework');
     Route::delete('/homework/delete/{id}', [videoCourseController::class, 'deleteHomework'])->name('delete-homework');
+    Route::post('add-comment', [videoCourseController::class, 'videoDiscssion'])->name('add-comment');
+    Route::post('update-comment/{id}', [videoCourseController::class, 'updateVideoDiscssion'])->name('update-comment');
+    Route::delete('delete-comment/{id}', [videoCourseController::class, 'deleteVideoDiscssion'])->name('delete-comment');
 
     //this routes for video-usage
     Route::get('api/courses/{course}/videos/{video}', [\App\Http\Controllers\api\homeController::class, 'getVideoData'])->name('api.courses.videos');
@@ -112,7 +114,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     Route::put('/course_parts/{id}', [CourseController::class, 'updatePart'])->name('course_parts.update');
     Route::post('/course-parts/reorder', [CourseController::class, 'reorderParts'])->name('course_parts.reorder');
     Route::delete('/course_parts/{id}', [CourseController::class, 'deletePart'])->name('course_parts.destroy');
-
+    Route::post('/corse/{course}/add-software', [CourseController::class, 'addSoftware'])->name('courses.addSoftware');
+    
     //this contact-us controller for dashboard
     Route::resource('contact_us', ContactUsController::class);
 

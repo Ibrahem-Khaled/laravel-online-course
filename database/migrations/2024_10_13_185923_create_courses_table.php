@@ -9,7 +9,7 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void
-    {  
+    {
         Schema::create('courses', function (Blueprint $table) {
             $table->id(); // المعرف الأساسي للدورة
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // معرف المستخدم (علاقة مع جدول المستخدمين)
@@ -33,7 +33,7 @@ return new class extends Migration {
             // $table->string('slug')->unique(); // رابط URL صديق لمحركات البحث
             //  $table->string('meta_title')->nullable(); // عنوان SEO
             //  $table->text('meta_description')->nullable(); // وصف SEO
-
+            $table->enum('type', ['open', 'closed', 'question'])->default('open');
             // التواريخ والمتابعة
             $table->timestamp('published_at')->nullable(); // تاريخ النشر
             $table->timestamps(); // حقول created_at و updated_at

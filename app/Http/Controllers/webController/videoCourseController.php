@@ -34,7 +34,7 @@ class videoCourseController extends Controller
             'file' => $filename,
             'text' => $request->input('text'),
         ]);
-
+        $homework->load('user');
         NotificationService::createNotification(
             auth()->user()->id,
             $homework->courseVideos->course->user_id,
@@ -57,6 +57,7 @@ class videoCourseController extends Controller
             'body' => $request->input('body'),
         ]);
 
+        $comment->load('user');
 
         NotificationService::createNotification(
             auth()->user()->id,
@@ -65,19 +66,24 @@ class videoCourseController extends Controller
             auth()->user()->name . ' قام بتعليق في الفيديو ' . $comment->courseVideo->title
         );
 
-        return response()->json([
-            'success' => true,
-            'comment' => [
-                'user_image' => $comment->user->image
-                    ? asset('storage/' . $comment->user->image)
-                    : ($comment->user->userInfo?->gender == 'female'
-                        ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
-                        : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png'),
-                'user_name' => $comment->user->name,
-                'created_at' => $comment->created_at->locale('ar')->diffForHumans(),
-                'body' => $comment->body,
-            ],
-        ]);
+        return response()->json(
+            $comment,
+        );
+    }
+    public function updateVideoDiscssion(Request $request, $id)
+    {
+        $comment = VideoDiscussion::findOrFail($id);
+        $comment->body = $request->body;
+        $comment->save();
+
+        return response()->json(['success' => true, 'message' => 'تم تعديل التعليق بنجاح!']);
+    }
+    public function deleteVideoDiscssion($id)
+    {
+        $comment = VideoDiscussion::findOrFail($id);
+        $comment->delete();
+
+        return response()->json(['success' => true, 'message' => 'تم حذف التعليق بنجاح!']);
     }
 
     public function homeworkReply(Request $request, $id)

@@ -112,6 +112,14 @@
                                 </select>
                             </div>
                             <div class="mb-3">
+                                <label for="type" class="form-label">نوع الدورة</label>
+                                <select name="type" class="form-select" required>
+                                    <option value="open">مفتوحة</option>
+                                    <option value="closed">مغلقة</option>
+                                    <option value="question">يجب ان يجيب علي سوال الواجب</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
                                 <label for="is_featured" class="form-label">مميز</label>
                                 <select name="is_featured" class="form-select" required>
                                     <option value="1">نعم</option>
@@ -155,3 +163,6 @@
         </div>
     </div>
 @endsection
+
+
+@extends('layouts.dashboard')

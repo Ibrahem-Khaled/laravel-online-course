@@ -68,7 +68,7 @@ class HomeController extends Controller
     public function showVideos(Course $course)
     {
         // تحميل العلاقة قبل التحقق من `isEmpty()`
-        $course->load('videos', 'parts.videos', 'user', 'ratings', );
+        $course->load('videos', 'parts.videos', 'user', 'ratings', 'softwaresUsages');
 
         // التحقق مما إذا كان هناك فيديوهات
         if ($course->videos->isEmpty()) {

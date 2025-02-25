@@ -31,6 +31,8 @@
                     <!-- زر تعديل الدورة -->
                     <button class="btn btn-warning" data-toggle="modal"
                         data-target="#editCourseModal{{ $course->id }}">تعديل</button>
+                    <button class="btn btn-warning mb-3" data-toggle="modal" data-target="#addSoftwareModal{{ $course->id }}">اضافة برنامج
+                        جديد</button>
 
                     <!-- نموذج حذف الدورة -->
                     <form action="{{ route('courses.destroy', $course->id) }}" method="POST" style="display:inline;">
@@ -134,6 +136,18 @@
                                     </select>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="type" class="form-label">نوع الدورة</label>
+                                    <select name="type" class="form-select" required>
+                                        <option value="open" {{ $course->type == 'open' ? 'selected' : '' }}>مفتوحة
+                                        </option>
+                                        <option value="closed" {{ $course->type == 'closed' ? 'selected' : '' }}>مغلقة
+                                        </option>
+                                        <option value="question" {{ $course->type == 'question' ? 'selected' : '' }}>
+                                            يجب ان يجيب علي سؤال الواجب
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
                                     <label for="image" class="form-label">صورة الدورة</label>
                                     <input type="file" name="image" class="form-control">
                                 </div>
@@ -160,6 +174,42 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
                                 <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Add Software Modal -->
+            <div class="modal fade" id="addSoftwareModal{{ $course->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="{{ route('courses.addSoftware', $course->id) }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-header">
+                                <h5 class="modal-title">إضافة برنامج للدورة</h5>
+                                <button type="button" class="btn-close" data-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">عنوان البرنامج</label>
+                                    <input type="text" name="title" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">وصف البرنامج</label>
+                                    <textarea name="description" class="form-control" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">صورة البرنامج</label>
+                                    <input type="file" name="image" class="form-control">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
+                                <button type="submit" class="btn btn-primary">إضافة</button>
                             </div>
                         </form>
                     </div>

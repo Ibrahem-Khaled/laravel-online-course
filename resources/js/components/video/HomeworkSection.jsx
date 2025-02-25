@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { ar } from 'date-fns/locale';
+import { extractAndShortenLinks } from '../../utils/helpers';
 
 const HomeworkSection = ({ video, user }) => {
     const [homeworks, setHomeworks] = useState([]);
@@ -86,9 +87,9 @@ const HomeworkSection = ({ video, user }) => {
 
         try {
             const res = await axios.post(`/homework/update/${homeworkId}`, data);
-            setHomeworks(homeworks.map(hw =>
-                hw.id === homeworkId ? { ...hw, text: res.data.text, file: res.data.file } : hw
-            ));
+            // setHomeworks(homeworks.map(hw =>
+            //     hw.id === homeworkId ? { ...hw, text: res.data.text, file: res.data.file } : hw
+            // ));
             setEditingHomework(null);
         } catch (error) {
             console.error('Error updating homework:', error);
@@ -100,28 +101,7 @@ const HomeworkSection = ({ video, user }) => {
             return <p>لا يوجد نص مكتوب</p>;
         }
 
-        const extractAndShortenLinks = (inputText) => {
-            return inputText.split(/\s+/).map((word, index) => {
-                if (word.match(/(https?:\/\/[^\s]+)/g)) {
-                    const shortUrl = word.length > 30 ? word.slice(0, 30) + "..." : word;
-                    return (
-                        <a key={index} href={word} target="_blank" rel="noopener noreferrer">
-                            {shortUrl}
-                        </a>
-                    );
-                }
-                return word + " ";
-            });
-        };
-
         return <p>{extractAndShortenLinks(text)}</p>;
-    };
-
-
-    const defaultAvatar = (user) => {
-        return user?.userInfo?.gender === 'female'
-            ? 'https://cdn-icons-png.flaticon.com/128/2995/2995462.png'
-            : 'https://cdn-icons-png.flaticon.com/128/2641/2641333.png';
     };
 
     return (
@@ -222,7 +202,7 @@ const HomeworkSection = ({ video, user }) => {
                         {/* Student Info */}
                         <div className="d-flex align-items-center mb-2">
                             <img
-                                src={homework.user.image ? `/storage/${homework.user.image}` : defaultAvatar(homework.user)}
+                                src={homework.user.profile_image}
                                 alt="User"
                                 style={{ width: 40, height: 40, borderRadius: '50%' }}
                             />

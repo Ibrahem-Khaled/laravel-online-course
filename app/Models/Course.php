@@ -22,6 +22,7 @@ class Course extends Model
         'is_featured',
         'slug',
         'meta_title',
+        'type',
         'meta_description',
         'published_at',
     ];
@@ -61,7 +62,7 @@ class Course extends Model
         return $this->hasMany(SectionCalendar::class);
     }
 
-    public function requirements()
+    public function softwaresUsages()
     {
         return $this->hasMany(inVideoUsage::class, 'course_video_id')
             ->where('type', 'software');

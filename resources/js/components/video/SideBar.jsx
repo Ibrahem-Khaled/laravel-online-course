@@ -7,8 +7,8 @@ const Sidebar = ({ course, video, setVideo }) => {
     const [openParts, setOpenParts] = useState({});
     const [progress, setProgress] = useState(0);
     const [videoHistories, setVideoHistories] = useState([]);
-
-    console.log(`api/courses/${course.id}/videos/${video.id}`);
+    console.warn(course.softwares_usages);
+    // جلب بيانات الفيديو عند تغيير الفيديو أو الكورس
     useEffect(() => {
         const fetchVideoData = async () => {
             try {
@@ -17,7 +17,6 @@ const Sidebar = ({ course, video, setVideo }) => {
                 setVideo(newVideo);
                 setProgress(newProgress);
                 setVideoHistories(response.data.video.videoHistories);
-                console.log(response.data.video.videoHistories);
             } catch (error) {
                 console.error('Failed to fetch video data:', error);
             }
@@ -26,10 +25,9 @@ const Sidebar = ({ course, video, setVideo }) => {
         fetchVideoData();
     }, [video.id, course.id]);
 
-
+    // فتح القسم الذي يحتوي على الفيديو الحالي
     useEffect(() => {
         if (video && course.parts) {
-            // البحث عن الـ part الذي يحتوي على الفيديو الحالي
             const foundPart = course.parts.find(part =>
                 part.videos.some(v => v.id === video.id)
             );
@@ -37,12 +35,26 @@ const Sidebar = ({ course, video, setVideo }) => {
             if (foundPart) {
                 setOpenParts(prev => ({
                     ...prev,
-                    [foundPart.id]: true, // فتح القسم الذي يحتوي الفيديو
+                    [foundPart.id]: true,
                 }));
             }
         }
     }, [video, course.parts]);
 
+    // ترتيب الفيديوهات حسب الترتيب المحدد
+    const getAllVideosInOrder = () => {
+        if (course.parts?.length > 0) {
+            return course.parts
+                .sort((a, b) => a.ranking - b.ranking)
+                .flatMap(part =>
+                    part.videos.sort((a, b) => a.ranking - b.ranking)
+                );
+        } else {
+            return course.videos?.sort((a, b) => a.ranking - b.ranking) || [];
+        }
+    };
+
+    // تبديل فتح وإغلاق الأقسام
     const togglePart = (partId) => {
         setOpenParts((prev) => ({
             ...prev,
@@ -50,18 +62,70 @@ const Sidebar = ({ course, video, setVideo }) => {
         }));
     };
 
+    // تحديد أيقونة حالة الفيديو
     const getVideoStatusIcon = (otherVideo, currentVideoId) => {
         const history = videoHistories.find(h => h.course_video_id === otherVideo.id);
 
+        // كورس مغلق: قفل الفيديوهات بعد أول فيديو غير مكتمل
+        if (course.type === 'closed') {
+            const allVideos = getAllVideosInOrder();
+            const firstIncompleteIndex = allVideos.findIndex(v => {
+                const h = videoHistories.find(hist => hist.course_video_id === v.id);
+                return !h?.completed;
+            });
+            const targetIndex = allVideos.findIndex(v => v.id === otherVideo.id);
+            if (firstIncompleteIndex !== -1 && targetIndex > firstIncompleteIndex) {
+                return <i className="fas fa-lock text-white" />;
+            }
+        }
+
+        // كورس يحتوي على أسئلة: قفل الفيديوهات إذا كان هناك واجب غير محلول
+        if (course.type === 'question' && video.unresolvedHomeworksCount > 0 && otherVideo.id !== currentVideoId) {
+            return <i className="fas fa-lock text-white" />;
+        }
+
+        // أيقونات الحالة الافتراضية
         if (history?.completed) return <i className="fas fa-check-circle" style={{ color: '#4CAF50' }} />;
         if (otherVideo.id === currentVideoId) return <i className="fas fa-play-circle text-white" />;
         if (history) return <i className="fas fa-clock" style={{ color: '#ed6b2f' }} />;
         return <i className="fas fa-lock text-white" />;
     };
 
+    // التعامل مع النقر على الفيديو
+    const handleVideoClick = (otherVideo) => {
+        if (course.type === 'closed') {
+            const allVideos = getAllVideosInOrder();
+            const firstIncompleteIndex = allVideos.findIndex(v => {
+                const history = videoHistories.find(h => h.course_video_id === v.id);
+                return !history?.completed;
+            });
+
+            if (firstIncompleteIndex === -1) {
+                setVideo(otherVideo);
+            } else {
+                const targetIndex = allVideos.findIndex(v => v.id === otherVideo.id);
+                if (targetIndex > firstIncompleteIndex) {
+                    alert('يجب إكمال الفيديوهات السابقة أولاً');
+                    return;
+                } else {
+                    setVideo(otherVideo);
+                }
+            }
+        } else if (course.type === 'question') {
+            if (video.unresolvedHomeworksCount == 0) {
+                alert('يجب حل واجب الفيديو الحالي قبل الانتقال إلى فيديو آخر');
+                return;
+            } else {
+                setVideo(otherVideo);
+            }
+        } else {
+            setVideo(otherVideo);
+        }
+    };
+
     return (
         <div className="col-lg-4" style={{ marginTop: 50 }}>
-            {/* قائمة الفيديوهات مع شريط التقدم المدمج */}
+            {/* شريط التقدم */}
             <motion.div
                 className="progress-container"
                 initial={{ opacity: 0, y: -20 }}
@@ -74,6 +138,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                 </div>
             </motion.div>
 
+            {/* قائمة الفيديوهات */}
             <motion.div
                 className="video-list"
                 style={{ maxHeight: '470px', overflowY: 'auto' }}
@@ -108,7 +173,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                                                     href="#"
                                                     onClick={(e) => {
                                                         e.preventDefault();
-                                                        setVideo(otherVideo);
+                                                        handleVideoClick(otherVideo);
                                                     }}
                                                     className={`video-list-item ${video.id === otherVideo.id ? 'active' : ''}`}
                                                     whileHover={{ scale: 1.02 }}
@@ -120,7 +185,6 @@ const Sidebar = ({ course, video, setVideo }) => {
                                                             {index + 1}. {otherVideo.title}
                                                         </span>
                                                         <span className="video-duration">
-                                                            {/* <i className="fas fa-clock"></i> */}
                                                             {otherVideo.duration}
                                                         </span>
                                                     </div>
@@ -140,7 +204,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    setVideo(otherVideo);
+                                    handleVideoClick(otherVideo);
                                 }}
                                 className={`video-list-item ${video.id === otherVideo.id ? 'active' : ''}`}
                                 whileHover={{ scale: 1.02 }}
@@ -153,7 +217,6 @@ const Sidebar = ({ course, video, setVideo }) => {
                                         {index + 1}. {otherVideo.title}
                                     </span>
                                     <span className="video-duration">
-                                        {/* <i className="fas fa-clock"></i> */}
                                         {otherVideo.duration}
                                     </span>
                                 </div>
@@ -202,7 +265,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                 </div>
             </motion.div>
 
-            {/* قسم الملحقات / البرامج المستخدمة */}
+            {/* قسم البرامج المستخدمة */}
             <motion.div
                 className="attachments-section"
                 style={{ margin: '20px 0' }}
@@ -210,36 +273,34 @@ const Sidebar = ({ course, video, setVideo }) => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
             >
-                {video.videoUsage?.filter((item) => item.type === 'software').length > 0 ? (
+                {course.softwares_usages.length > 0 ? (
                     <>
                         <h5 className="text-white" style={{ fontWeight: 'bold', marginBottom: '15px' }}>
                             البرامج المستخدمة
                         </h5>
                         <div className="row row-cols-1 row-cols-md-4 g-4">
-                            {video.videoUsage
-                                .filter((item) => item.type === 'software')
-                                .map((item) => (
-                                    <div className="col" key={item.id}>
-                                        <div
-                                            className="card text-center"
-                                            style={{ border: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}
-                                        >
-                                            <a href={item.url} target="_blank" rel="noopener noreferrer">
-                                                <img
-                                                    src={item.image ? `/storage/${item.image}` : 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F2.bp.blogspot.com%2F-dJ9XpH5XOm8%2FU8ZFngrXs2I%2FAAAAAAAAAWw%2FHbIA6HLu7QQ%2Fs1600%2Fred%2Bcircle%2Bexited%2Bicon%2Bfree%2Bicon%2Bexit%2Bbutton.png&f=1&nofb=1&ipt=e2b3f2629cfc19afe7bb74591e0bde4a8bc36c2c81989bc737afcad55c850e46&ipo=images'}
-                                                    alt={item.title}
-                                                    className="card-img-top img-fluid"
-                                                    style={{ borderRadius: '12px', maxHeight: '150px', objectFit: 'cover' }}
-                                                />
-                                            </a>
-                                            <div className="card-body" style={{ padding: '10px 0' }}>
-                                                <h6 className="card-title text-white" style={{ fontWeight: 'bold', fontSize: '14px' }}>
-                                                    {item.title}
-                                                </h6>
-                                            </div>
+                            {course.softwares_usages.map((item) => (
+                                <div className="col" key={item.id}>
+                                    <div
+                                        className="card text-center"
+                                        style={{ border: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}
+                                    >
+                                        <a href={item.url} target="_blank" rel="noopener noreferrer">
+                                            <img
+                                                src={item.image ? `/storage/${item.image}` : 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F2.bp.blogspot.com%2F-dJ9XpH5XOm8%2FU8ZFngrXs2I%2FAAAAAAAAAWw%2FHbIA6HLu7QQ%2Fs1600%2Fred%2Bcircle%2Bexited%2Bicon%2Bfree%2Bicon%2Bexit%2Bbutton.png&f=1&nofb=1&ipt=e2b3f2629cfc19afe7bb74591e0bde4a8bc36c2c81989bc737afcad55c850e46&ipo=images'}
+                                                alt={item.title}
+                                                className="card-img-top img-fluid"
+                                                style={{ borderRadius: '12px', maxHeight: '150px', objectFit: 'cover' }}
+                                            />
+                                        </a>
+                                        <div className="card-body" style={{ padding: '10px 0' }}>
+                                            <h6 className="card-title text-white" style={{ fontWeight: 'bold', fontSize: '14px' }}>
+                                                {item.title}
+                                            </h6>
                                         </div>
                                     </div>
-                                ))}
+                                </div>
+                            ))}
                         </div>
                     </>
                 ) : (

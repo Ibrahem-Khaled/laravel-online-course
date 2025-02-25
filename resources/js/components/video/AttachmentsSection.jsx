@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button, Form, Alert, ListGroup } from 'react-bootstrap';
-import { formatTextWithLinks } from '../../utils/helpers'; // تأكد من وجود هذه الدالة المساعدة
+import { extractAndShortenLinks } from '../../utils/helpers';
 
 const AttachmentsSection = ({ video, user }) => {
     const [showModal, setShowModal] = useState(false);
@@ -85,6 +85,14 @@ const AttachmentsSection = ({ video, user }) => {
                 setError(err.response?.data?.message || 'حدث خطأ أثناء الحذف');
             }
         }
+    };
+
+    const ExtractAndShortenLink = ({ text }) => {
+        if (!text) {
+            return <p>لا يوجد نص مكتوب</p>;
+        }
+
+        return <p>{extractAndShortenLinks(text)}</p>;
     };
 
     return (
@@ -215,9 +223,7 @@ const AttachmentsSection = ({ video, user }) => {
                                 <h6 style={{ color: '#ed6b2f', fontWeight: 'bold' }}>{attachment.title}</h6>
 
                                 {attachment.description && (
-                                    <div className="mb-3" dangerouslySetInnerHTML={{
-                                        __html: formatTextWithLinks(attachment.description)
-                                    }} />
+                                    <ExtractAndShortenLink text={attachment.description} />
                                 )}
 
                                 <div className="d-flex flex-wrap gap-2">

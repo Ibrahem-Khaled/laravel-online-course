@@ -5,6 +5,7 @@ namespace App\Http\Controllers\dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\inVideoUsage;
 use App\Models\Part;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -33,6 +34,7 @@ class CourseController extends Controller
             'language' => 'required|string|max:50',
             'status' => 'required|in:active,inactive,draft',
             'is_featured' => 'boolean',
+            'type' => 'required|in:open,closed,question',
         ]);
 
         if ($request->hasFile('image')) {
@@ -61,7 +63,7 @@ class CourseController extends Controller
             'status' => 'required|in:active,inactive,draft',
             'is_featured' => 'boolean',
             'device' => 'required|in:web,mobile,desktop,tablet,tv,other,all', // التحقق من القيمة
-
+            'type' => 'required|in:open,closed,question',
         ]);
 
         if ($request->hasFile('image')) {
@@ -129,5 +131,29 @@ class CourseController extends Controller
         $part->delete();
 
         return redirect()->back()->with('success', 'تم حذف القسم بنجاح!');
+    }
+
+    public function addSoftware(Course $course, Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images', 'public');
+        }
+
+        inVideoUsage::create([
+            'user_id' => auth()->user()->id,
+            'course_video_id' => $course->id,
+            'type' => 'software',
+            'title' => $request->title,
+            'description' => $request->description,
+            'image' => $path,
+        ]);
+
+        return redirect()->back()->with('success', 'تم إضافة البرنامج بنجاح!');
     }
 }
