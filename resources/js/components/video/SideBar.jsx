@@ -285,7 +285,7 @@ const Sidebar = ({ course, video, setVideo }) => {
                                         className="card text-center"
                                         style={{ border: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}
                                     >
-                                        <a href={item.url} target="_blank" rel="noopener noreferrer">
+                                        <a href={item.file || 'http://127.0.0.1:8000/dashboard/courses'} target="_blank" rel="noopener noreferrer">
                                             <img
                                                 src={item.image ? `/storage/${item.image}` : 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2F2.bp.blogspot.com%2F-dJ9XpH5XOm8%2FU8ZFngrXs2I%2FAAAAAAAAAWw%2FHbIA6HLu7QQ%2Fs1600%2Fred%2Bcircle%2Bexited%2Bicon%2Bfree%2Bicon%2Bexit%2Bbutton.png&f=1&nofb=1&ipt=e2b3f2629cfc19afe7bb74591e0bde4a8bc36c2c81989bc737afcad55c850e46&ipo=images'}
                                                 alt={item.title}

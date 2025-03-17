@@ -137,7 +137,7 @@ class CourseController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'file' => 'required|url',
             'image' => 'nullable|image|max:2048',
         ]);
 
@@ -150,7 +150,7 @@ class CourseController extends Controller
             'course_video_id' => $course->id,
             'type' => 'software',
             'title' => $request->title,
-            'description' => $request->description,
+            'file' => $request->file,
             'image' => $path,
         ]);
 

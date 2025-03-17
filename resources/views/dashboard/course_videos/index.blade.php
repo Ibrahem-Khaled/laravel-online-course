@@ -7,15 +7,7 @@
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addVideoModal">إضافة فيديو جديد</button>
         <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addPartModal">إضافة قسم جديد</button>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('homeComponents.alerts')
 
         <!-- عرض الأقسام مع إمكانية إعادة الترتيب -->
         <ul class="list-group sortable-parts mb-4">
@@ -26,7 +18,7 @@
                         <div class="d-flex row">
                             <button class="btn btn-sm btn-warning" data-toggle="modal"
                                 data-target="#editPartModal{{ $part->id }}">تعديل</button>
-                            <button class="btn btn-sm btn-info" data-toggle="modal"
+                            <button class="btn btn-sm btn-info mr-2 ml-2" data-toggle="modal"
                                 data-target="#reorderVideosModal{{ $part->id }}">إعادة ترتيب الفيديوهات</button>
                             <form action="{{ route('course_parts.destroy', $part->id) }}" method="POST">
                                 @csrf
@@ -82,7 +74,7 @@
                 </div>
                 <div id="part-{{ $part->id }}" class="collapse">
                     <div class="card-body">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered sortable-table">
                             <thead>
                                 <tr>
                                     <th>العنوان</th>
@@ -94,7 +86,7 @@
                                     <th>الإجراءات</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="sortable-videos" data-part-id="{{ $part->id }}">
                                 @foreach ($part->videos->sortBy('ranking') as $video)
                                     <tr data-id="{{ $video->id }}">
                                         <td>{{ $video->title }}</td>
@@ -179,7 +171,7 @@
                 <h5>فيديوهات بدون قسم</h5>
             </div>
             <div class="card-body">
-                <table class="table table-bordered">
+                <table class="table table-bordered sortable-table">
                     <thead>
                         <tr>
                             <th>العنوان</th>
@@ -191,7 +183,7 @@
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="sortable-videos" data-part-id="0">
                         @foreach ($videosWithoutPart as $video)
                             <tr data-id="{{ $video->id }}">
                                 <td>{{ $video->title }}</td>
@@ -301,18 +293,22 @@
                 }
             });
 
-            // تفعيل إعادة الترتيب داخل المودال
-            document.querySelectorAll('.sortable-part-modal').forEach(sortableElement => {
+            // تفعيل إعادة الترتيب للفيديوهات داخل الجداول
+            document.querySelectorAll('.sortable-videos').forEach(sortableElement => {
                 new Sortable(sortableElement, {
                     animation: 150,
+                    handle: 'tr', // السماح بسحب الصفوف
                     onEnd: function(event) {
-                        // يمكنك إضافة أي كود إضافي هنا إذا لزم الأمر
+                        const partId = sortableElement.getAttribute('data-part-id');
+                        const order = Array.from(sortableElement.children).map(item => item
+                            .getAttribute('data-id'));
+                        saveVideoOrder(partId, order);
                     }
                 });
             });
 
-            // تفعيل إعادة الترتيب داخل القسم نفسه
-            document.querySelectorAll('.sortable-part').forEach(sortableElement => {
+            // تفعيل إعادة الترتيب داخل المودال
+            document.querySelectorAll('.sortable-part-modal').forEach(sortableElement => {
                 new Sortable(sortableElement, {
                     animation: 150,
                     onEnd: function(event) {
@@ -337,7 +333,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('تم تحديث ترتيب الأقسام بنجاح!');
+                        // alert('تم تحديث ترتيب الأقسام بنجاح!');
                         location.reload(); // إعادة تحميل الصفحة لتحديث العرض
                     } else {
                         alert('حدث خطأ أثناء تحديث ترتيب الأقسام.');
@@ -346,10 +342,7 @@
         }
 
         // دالة لحفظ ترتيب الفيديوهات داخل القسم
-        function saveOrder(partId) {
-            const order = Array.from(document.querySelector(`.sortable-part-modal[data-part-id="${partId}"]`).children).map(
-                item => item.getAttribute('data-video-id'));
-
+        function saveVideoOrder(partId, order) {
             fetch("{{ route('course_videos.reorder') }}", {
                     method: 'POST',
                     headers: {
@@ -364,10 +357,10 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('تم تحديث الترتيب بنجاح!');
+                        // alert('تم تحديث ترتيب الفيديوهات بنجاح!');
                         location.reload(); // إعادة تحميل الصفحة لتحديث العرض
                     } else {
-                        alert('حدث خطأ أثناء تحديث الترتيب.');
+                        alert('حدث خطأ أثناء تحديث ترتيب الفيديوهات.');
                     }
                 });
         }

@@ -13,6 +13,7 @@
             <label for="part_id" class="form-label">اسم القسم</label>
             <select name="part_id" class="form-select">
                 @foreach ($parts as $part)
+                    <option value="">-- اختر القسم --</option>
                     <option value="{{ $part->id }}"
                         {{ isset($video) && $video->part_id == $part->id ? 'selected' : '' }}>
                         {{ $part->name }}

@@ -40,7 +40,7 @@
                         @csrf
                         @method('PATCH')
                         <button type="submit"
-                            class="btn btn-{{ $user->status !== 'active' ? 'danger' : 'success' }}">{{ $user->status !== 'active' ? 'غير نشط' : 'نشط' }}</button>
+                            class="btn btn-{{ $user->status !== 'active' ? 'danger' : 'success' }} mt-1">{{ $user->status !== 'active' ? 'غير نشط' : 'نشط' }}</button>
                     </form>
                 </td>
             </tr>

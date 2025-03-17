@@ -1,10 +1,9 @@
-<table class="table table-bordered">
-    <thead>
+<table class="table table-hover table-bordered shadow-lg">
+    <thead class="table-dark">
         <tr>
             <th>العنوان</th>
             <th>المستخدم</th>
             <th>الفئة</th>
-            <th>السعر</th>
             <th>المدة (ساعات)</th>
             <th>المستوى</th>
             <th>اللغة</th>
@@ -16,44 +15,69 @@
     </thead>
     <tbody>
         @foreach ($courses as $course)
-            <tr>
-                <td><a href="{{ route('course_videos.by_course', $course->id) }}">{{ $course->title }}</a></td>
+            <tr class="align-middle">
+                <td><a href="{{ route('course_videos.by_course', $course->id) }}"
+                        class="text-decoration-none text-primary fw-bold">{{ $course->title }}</a></td>
                 <td>{{ $course->user->name }}</td>
                 <td>{{ $course->category->name }}</td>
-                <td>{{ $course->price }} $</td>
                 <td>{{ $course->duration_in_hours }}</td>
-                <td>{{ ucfirst($course->difficulty_level) }}</td>
+                <td><span class="badge bg-info text-white">{{ ucfirst($course->difficulty_level) }}</span></td>
                 <td>{{ $course->language }}</td>
-                <td>{{ ucfirst($course->status) }}</td>
-                <td>{{ $course->is_featured ? 'نعم' : 'لا' }}</td>
+                <td class="text-center text-white">
+                    @if ($course->status == 'active')
+                        <span class="badge bg-success">نشطة</span>
+                    @elseif($course->status == 'inactive')
+                        <span class="badge bg-danger">غير نشطة</span>
+                    @else
+                        <span class="badge bg-warning">مسودة</span>
+                    @endif
+                </td>
+                <td class="text-center text-white">
+                    @if ($course->is_featured)
+                        <span class="badge bg-primary">نعم</span>
+                    @else
+                        <span class="badge bg-secondary">لا</span>
+                    @endif
+                </td>
                 <td>{{ $course?->sections?->first()?->name }}</td>
                 <td>
-                    <!-- زر تعديل الدورة -->
-                    <button class="btn btn-warning" data-toggle="modal"
-                        data-target="#editCourseModal{{ $course->id }}">تعديل</button>
-                    <button class="btn btn-warning mb-3" data-toggle="modal" data-target="#addSoftwareModal{{ $course->id }}">اضافة برنامج
-                        جديد</button>
+                    <div class="d-flex flex-wrap gap-2">
+                        <!-- زر تعديل الدورة -->
+                        <button class="btn btn-warning btn-sm mb-2" data-toggle="modal"
+                            data-target="#editCourseModal{{ $course->id }}">
+                            <i class="fas fa-edit"></i> تعديل
+                        </button>
 
-                    <!-- نموذج حذف الدورة -->
-                    <form action="{{ route('courses.destroy', $course->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">حذف</button>
-                    </form>
+                        <!-- زر إضافة برنامج جديد -->
+                        <button class="btn btn-info btn-sm mb-2" data-toggle="modal"
+                            data-target="#addSoftwareModal{{ $course->id }}">
+                            <i class="fas fa-plus"></i> إضافة برنامج
+                        </button>
+
+                        <!-- زر حذف الدورة -->
+                        <form action="{{ route('courses.destroy', $course->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('هل أنت متأكد من الحذف؟')">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </form>
+                    </div>
                 </td>
             </tr>
 
             <!-- Modal تعديل الدورة -->
             <div class="modal fade" id="editCourseModal{{ $course->id }}" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <form action="{{ route('courses.update', $course->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-                            <div class="modal-header">
+                            <div class="modal-header bg-dark text-white">
                                 <h5 class="modal-title">تعديل الدورة</h5>
-                                <button type="button" class="btn-close" data-dismiss="modal"
+                                <button type="button" class="btn-close btn-close-white" data-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -120,7 +144,8 @@
                                     <select name="status" class="form-select" required>
                                         <option value="active" {{ $course->status == 'active' ? 'selected' : '' }}>
                                             نشطة</option>
-                                        <option value="inactive" {{ $course->status == 'inactive' ? 'selected' : '' }}>
+                                        <option value="inactive"
+                                            {{ $course->status == 'inactive' ? 'selected' : '' }}>
                                             غير نشطة</option>
                                         <option value="draft" {{ $course->status == 'draft' ? 'selected' : '' }}>
                                             مسودة</option>
@@ -180,7 +205,6 @@
                 </div>
             </div>
 
-
             <!-- Add Software Modal -->
             <div class="modal fade" id="addSoftwareModal{{ $course->id }}" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
@@ -188,9 +212,9 @@
                         <form action="{{ route('courses.addSoftware', $course->id) }}" method="POST"
                             enctype="multipart/form-data">
                             @csrf
-                            <div class="modal-header">
+                            <div class="modal-header bg-dark text-white">
                                 <h5 class="modal-title">إضافة برنامج للدورة</h5>
-                                <button type="button" class="btn-close" data-dismiss="modal"
+                                <button type="button" class="btn-close btn-close-white" data-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -199,8 +223,8 @@
                                     <input type="text" name="title" class="form-control" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="description" class="form-label">وصف البرنامج</label>
-                                    <textarea name="description" class="form-control" rows="3"></textarea>
+                                    <label for="file" class="form-label">رابط url</label>
+                                    <input type="url" name="file" class="form-control">
                                 </div>
                                 <div class="mb-3">
                                     <label for="image" class="form-label">صورة البرنامج</label>

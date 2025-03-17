@@ -8,15 +8,8 @@
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addCourseModal">إضافة دورة جديدة</button>
         <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addExcelModal">اضافة مجموعة من الدورات من خلال
             ملف اكسيل</button>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+            
+        @include('homeComponents.alerts')
 
         <ul class="nav nav-tabs mb-4" id="courseStatusTabs" role="tablist">
             <li class="nav-item" role="presentation">
@@ -163,6 +156,3 @@
         </div>
     </div>
 @endsection
-
-
-@extends('layouts.dashboard')

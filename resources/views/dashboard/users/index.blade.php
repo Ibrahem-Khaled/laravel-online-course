@@ -24,16 +24,16 @@
         <!-- التبويبات -->
         <ul class="nav nav-tabs mb-4" id="userRolesTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="tab-teachers" data-toggle="tab" data-target="#teachers"
-                    type="button" role="tab" aria-controls="teachers" aria-selected="true">المدرسين</button>
+                <button class="nav-link active" id="tab-teachers" data-toggle="tab" data-target="#teachers" type="button"
+                    role="tab" aria-controls="teachers" aria-selected="true">المدرسين</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="tab-students" data-toggle="tab" data-target="#students" type="button"
                     role="tab" aria-controls="students" aria-selected="false">الطلاب</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tab-supervisors" data-toggle="tab" data-target="#supervisors"
-                    type="button" role="tab" aria-controls="supervisors" aria-selected="false">المشرفين</button>
+                <button class="nav-link" id="tab-supervisors" data-toggle="tab" data-target="#supervisors" type="button"
+                    role="tab" aria-controls="supervisors" aria-selected="false">المشرفين</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="tab-admins" data-toggle="tab" data-target="#admins" type="button"
@@ -42,6 +42,13 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="student-sections" data-toggle="tab" data-target="#studen-section"
                     type="button" role="tab" aria-controls="studen-section" aria-selected="false">طلاب طموح</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab-inactive-students" data-toggle="tab" data-target="#inactive-students"
+                    type="button" role="tab" aria-controls="inactive-students" aria-selected="false">
+                    الطلاب غير النشطين
+                    <span class="badge bg-danger text-white">{{ $inactiveStudents->count() }}</span>
+                </button>
             </li>
         </ul>
 
@@ -54,7 +61,7 @@
 
             <!-- تبويب الطلاب -->
             <div class="tab-pane fade" id="students" role="tabpanel" aria-labelledby="tab-students">
-                @include('dashboard.users.table', ['users' => $users->where('role', 'student')])
+                @include('dashboard.users.table', ['users' => $studentsWithoutSections])
             </div>
 
             <!-- تبويب المشرفين -->
@@ -66,10 +73,15 @@
             <div class="tab-pane fade" id="admins" role="tabpanel" aria-labelledby="tab-admins">
                 @include('dashboard.users.table', ['users' => $users->where('role', 'admin')])
             </div>
+
+            <!-- تبويب طلاب طموح -->
             <div class="tab-pane fade" id="studen-section" role="tabpanel" aria-labelledby="student-sections">
-                @include('dashboard.users.table', [
-                    'users' => $studentsWithSections,
-                ])
+                @include('dashboard.users.table', ['users' => $studentsWithSections])
+            </div>
+
+            <!-- تبويب الطلاب غير النشطين -->
+            <div class="tab-pane fade" id="inactive-students" role="tabpanel" aria-labelledby="tab-inactive-students">
+                @include('dashboard.users.table', ['users' => $inactiveStudents])
             </div>
         </div>
 
@@ -82,8 +94,7 @@
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">إضافة مستخدم جديد</h5>
-                            <button type="button" class="btn-close" data-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             @include('dashboard.users.form', ['user' => null])
