@@ -13,7 +13,7 @@ class homeController extends Controller
 {
     public function getVideoData(Course $course, CourseVideo $video)
     {
-        $video->load('homeWorks.user.userInfo', 'videoDiscussions.user.userInfo',);
+        $video->load('homeWorks.user.userInfo', 'videoDiscussions.user.userInfo', 'videoUsage');
 
         // حساب ترتيب الفيديو الحالي في قائمة الفيديوهات
         $currentVideoIndex = $course->videos->search(function ($v) use ($video) {

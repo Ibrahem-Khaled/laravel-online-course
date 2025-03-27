@@ -9,10 +9,11 @@ const AttachmentsSection = ({ video, user }) => {
     const [attachments, setAttachments] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    console.log('AttachmentsSection' , video);
 
     useEffect(() => {
         if (video?.video_usage) {
-            setAttachments(video.video_usage.filter(u => u.type === 'attachment'));
+            setAttachments(video.video_usage);
         }
     }, [video]);
 
