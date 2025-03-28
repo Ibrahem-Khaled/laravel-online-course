@@ -13,8 +13,10 @@ class RouteCourseController extends Controller
     public function index(Route $route)
     {
         $courses = Course::where('status', 'active')->get();
-
-        return view('dashboard.routes.routes_courses', compact('route', 'courses'));
+        $avgLessonsPerCourse = 0;
+        $latestCourse = $route->courses()->latest()->first();
+        $newCoursesThisMonth = Course::where('created_at', '>=', now()->startOfMonth())->count();
+        return view('dashboard.routes.routes_courses', compact('route', 'courses', 'avgLessonsPerCourse', 'latestCourse', 'newCoursesThisMonth'));
     }
     public function store(Request $request)
     {
@@ -46,7 +48,7 @@ class RouteCourseController extends Controller
 
     public function destroy(RouteCourse $routeCourse)
     {
-        $routeCourse->delete();
+        $routeCourse->delete(); 
 
         return redirect()->back()->with('success', 'Course removed from route successfully.');
     }

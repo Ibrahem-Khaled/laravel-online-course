@@ -13,7 +13,9 @@ class Route extends Model
 
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'route_courses', 'route_id', 'course_id');
+        return $this->belongsToMany(Course::class, 'route_courses', 'route_id', 'course_id')
+            ->withPivot('id')
+            ->withTimestamps();
     }
 
     

@@ -18,13 +18,14 @@ class HomeController extends Controller
     {
         $courses = Course::all();
         $categories = Category::all();
-        $sections = Section::all();
+        $sections = Section::with('users')->get();
 
         $students = User::where('role', 'student')->whereHas('sections')->get();
 
         $teachers = User::where('role', 'teacher')->get();
 
         $allStudentsCount = User::where('role', 'student')->count();
+        $isAuthenticated = auth()->check();
 
         $coursesHours = 0;
         foreach ($courses as $key => $course) {
@@ -33,15 +34,17 @@ class HomeController extends Controller
             }
         }
 
-        return view('home', compact(
-            'courses',
-            'categories',
-            'sections',
-            'allStudentsCount',
-            'coursesHours',
-            'teachers',
-            'students',
-        ));
+        return Inertia::render('Home', [
+            'courses' => $courses,
+            'categories' => $categories,
+            'sections' => $sections,
+            'allStudentsCount' => $allStudentsCount,
+            'coursesHours' => $coursesHours,
+            'teachers' => $teachers,
+            'students' => $students,
+            'isAuthenticated' => $isAuthenticated,
+            'user' => auth()->user(),
+        ]);
     }
 
     public function approvedPage()

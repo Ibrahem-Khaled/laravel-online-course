@@ -12,7 +12,10 @@ class RouteController extends Controller
     public function index()
     {
         $routes = Route::all();
-        return view('dashboard.routes.index', compact('routes',));
+        $activeRoutes = Route::count();
+        $avgCoursesPerRoute = Route::withCount('courses')->get()->avg('courses_count');
+        $latestRoute = Route::latest()->first();
+        return view('dashboard.routes.index', compact('routes', 'activeRoutes', 'avgCoursesPerRoute', 'latestRoute'));
     }
 
     public function store(Request $request)

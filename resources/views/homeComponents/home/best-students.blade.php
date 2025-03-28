@@ -100,7 +100,6 @@
 </style>
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
-
 @if ($students->count() > 0)
     <section class="student-section">
         <h2>{{ $title ?? 'طلاب برنامج طموح' }}</h2>
@@ -119,20 +118,26 @@
             <!-- أزرار التنقل -->
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
-
-
+            <!-- (يمكن إضافة pagination إذا رغبت) -->
+            <div class="swiper-pagination"></div>
         </div>
     </section>
 @else
     <h4 class="text-center mt-5">لا يوجد طلاب برنامج طموح</h4>
 @endif
 
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
+        // ضبط عدد الشرائح التي ستظهر في العرض اعتماداً على عدد الطلاب المتوفر
+        var slidesToShow = {{ $students->count() < 4 ? $students->count() : 4 }};
+        // تعطيل خاصية التكرار (loop) إذا كان عدد الشرائح غير كافٍ
+        var loopSetting = {{ $students->count() >= 4 ? 'true' : 'false' }};
+
         new Swiper('.swiper-container', {
-            slidesPerView: 4, // عدد العناصر في العرض الواحد
+            slidesPerView: slidesToShow, // عدد العناصر في العرض الواحد
             spaceBetween: 30, // المسافة بين العناصر
-            loop: true, // التكرار
+            loop: loopSetting, // التكرار
             navigation: {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
@@ -145,8 +150,6 @@
                 delay: 3000, // المدة بين كل تقليب (بالميلي ثانية)
                 disableOnInteraction: false, // استمرار التشغيل التلقائي حتى بعد التفاعل
             },
-
         });
     });
 </script>
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>

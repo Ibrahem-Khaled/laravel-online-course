@@ -10,134 +10,171 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
     <title>{{ $route->name }}</title>
     <style>
+        :root {
+            --primary-color: #072D38;
+            --secondary-color: #0A3D4A;
+            --accent-color: #4CAF50;
+            --text-color: #FFFFFF;
+            --text-secondary: #CCCCCC;
+        }
+
         body {
-            font-family: "Cairo", serif;
-            background-color: #072D38;
-            color: #fff;
+            font-family: "Cairo", sans-serif;
+            color: var(--text-color);
+            background-color: var(--primary-color);
+            margin: 0;
+            padding: 0;
         }
 
-        .route-header {
-            background-color: #0A3D4A;
-            padding: 2rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
+        /* Hero Section with Gradient Overlay */
+        .route-hero {
+            position: relative;
+            height: 70vh;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #072D38 0%, #0A3D4A 100%);
+        }
+
+        .route-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('{{ $route->image ? asset('storage/' . $route->image) : 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80' }}') no-repeat center center;
+            background-size: cover;
+            opacity: 0.4;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
             text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        .route-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
+        .route-title {
+            font-size: 3rem;
+            font-weight: 800;
             margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to right, #FFFFFF, #E0F7FA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .route-header h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .route-header p {
-            font-size: 1.2rem;
-            color: #ccc;
-        }
-
-        .nav-tabs {
-            border-bottom: 2px solid #0A3D4A;
+        .route-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
             margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* Main Content */
+        .main-content {
+            position: relative;
+            background: linear-gradient(to bottom, var(--primary-color) 0%, #051E26 100%);
+            padding: 4rem 0;
+            margin-top: -50px;
+            border-radius: 30px 30px 0 0;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Tabs */
+        .nav-tabs {
+            border-bottom: none;
+            justify-content: center;
+            margin-bottom: 3rem;
         }
 
         .nav-tabs .nav-link {
-            color: #fff;
+            color: var(--text-secondary);
             border: none;
-            border-radius: 10px 10px 0 0;
-            margin-right: 0.5rem;
+            border-radius: 20px;
+            padding: 12px 25px;
             font-size: 1.1rem;
-            transition: background-color 0.3s ease;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background-color: rgba(10, 61, 74, 0.5);
+            width: 250px;
+            text-align: center;
+            justify-content: space-around;
+            display: flex;
+            align-items: center;
         }
 
         .nav-tabs .nav-link.active {
-            background-color: #0A3D4A;
-            color: #fff;
-            border-bottom: 2px solid #4CAF50;
+            background-color: var(--accent-color);
+            color: #000;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
         }
 
         .nav-tabs .nav-link:hover {
-            background-color: #0A3D4A;
+            background-color: rgba(76, 175, 80, 0.3);
+            color: var(--text-color);
         }
 
-        .course-card {
-            background-color: #0A3D4A;
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            transition: transform 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+        .tab-content {
+            padding: 0 2rem;
         }
 
-        .course-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .course-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .course-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .course-description {
-            font-size: 1rem;
-            color: #ccc;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            flex-grow: 1;
-        }
-
-        .course-price {
+        /* Description Section */
+        .description-content {
             font-size: 1.2rem;
-            color: #4CAF50;
-            font-weight: bold;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
         }
 
-        .course-difficulty {
-            font-size: 0.9rem;
-            color: #FFC107;
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .route-hero {
+                height: 60vh;
+            }
+
+            .route-title {
+                font-size: 2.2rem;
+            }
+
+            .route-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .main-content {
+                padding: 3rem 0;
+            }
+
+            .nav-tabs .nav-link {
+                padding: 10px 15px;
+                font-size: 1rem;
+                margin: 0 5px;
+            }
         }
 
-        .course-language {
-            font-size: 0.9rem;
-            color: #03A9F4;
-        }
-
-        .new-badge {
+        /* Floating Particles Background */
+        .particles {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #FFC107;
-            color: #000;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
         }
 
-        .icon {
-            margin: 0.5rem;
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
         }
     </style>
 </head>
@@ -145,66 +182,51 @@
 <body>
     @include('homeComponents.header')
 
-    <div class="container my-5" dir="rtl">
-        <!-- تفاصيل المسار -->
-        <div class="route-header">
-            <img src="{{ $route->image ? asset('storage/' . $route->image) : 'https://cdn-icons-png.flaticon.com/128/5584/5584877.png' }}"
-                alt="{{ $route->name }}" class="route-image">
-            <h1>{{ $route->name }}</h1>
-            <p class="lead">{{ $route->target_group }}</p>
+    <!-- Hero Section -->
+    <section class="route-hero">
+        <div class="particles" id="particles"></div>
+        <div class="hero-content">
+            <h1 class="route-title">{{ $route->name }}</h1>
+            <p class="route-subtitle">{{ $route->target_group }}</p>
         </div>
+    </section>
 
-        <!-- تبويبات الوصف والدورات -->
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="description-tab" data-toggle="tab" data-target="#description"
-                    type="button" role="tab" aria-controls="description" aria-selected="true">
-                    <i class="fas fa-info-circle icon"></i>الوصف
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="courses-tab" data-toggle="tab" data-target="#courses" type="button"
-                    role="tab" aria-controls="courses" aria-selected="false">
-                    <i class="fas fa-book icon"></i>الدورات
-                </button>
-            </li>
-        </ul>
+    <!-- Main Content -->
+    <div class="main-content" dir="rtl">
+        <div class="container">
+            <!-- Tabs Navigation -->
+            <ul class="nav nav-tabs" id="routeTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="description-tab" data-toggle="tab" data-target="#description"
+                        type="button" role="tab" aria-controls="description" aria-selected="true">
+                        <i class="fas fa-info-circle me-2"></i>وصف المسار
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="courses-tab" data-toggle="tab" data-target="#courses" type="button"
+                        role="tab" aria-controls="courses" aria-selected="false">
+                        <i class="fas fa-book me-2"></i>الدورات التعليمية
+                    </button>
+                </li>
+            </ul>
 
-        <!-- محتوى التبويبات -->
-        <div class="tab-content" id="myTabContent">
-            <!-- تبويب الوصف -->
-            <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-                <div class="p-4 rounded">
-                    <p>{{ $route->description }}</p>
+            <!-- Tabs Content -->
+            <div class="tab-content" id="routeTabsContent">
+                <!-- Description Tab -->
+                <div class="tab-pane fade show active" id="description" role="tabpanel"
+                    aria-labelledby="description-tab">
+                    <div class="description-content">
+                        <p>{{ $route->description }}</p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- تبويب الدورات -->
-            <div class="tab-pane fade" id="courses" role="tabpanel" aria-labelledby="courses-tab">
-                <div class="row">
-                    @foreach ($route->courses as $course)
-                        <div class="col-md-4 mb-4">
-                            <div class="course-card">
-                                @if ($course->created_at->diffInWeeks(now()) < 3)
-                                    <span class="new-badge">جديد</span>
-                                @endif
-
-                                <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->title }}"
-                                    class="course-image">
-                                <h3 class="course-title">{{ $course->title }}</h3>
-                                <p class="course-description">
-                                    {{ Str::limit($course->description, 150, '...') }}
-                                </p>
-                                <p class="course-difficulty">
-                                    <i class="fas fa-tachometer-alt icon"></i>مستوى الصعوبة:
-                                    {{ $course->difficulty_level }}
-                                </p>
-                                <p class="course-language">
-                                    <i class="fas fa-language icon"></i>اللغة: {{ $course->language }}
-                                </p>
-                            </div>
-                        </div>
-                    @endforeach
+                <!-- Courses Tab -->
+                <div class="tab-pane fade" id="courses" role="tabpanel" aria-labelledby="courses-tab">
+                    <div class="row">
+                        @foreach ($route->courses as $course)
+                            @include('homeComponents.home.course-card', ['course' => $course])
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
@@ -214,6 +236,53 @@
 
     <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    <script>
+        // Create floating particles effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+
+                // Random size between 2px and 6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+
+                // Random animation
+                const duration = Math.random() * 20 + 10;
+                particle.style.animation = `float ${duration}s linear infinite`;
+
+                // Random delay
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+
+                particlesContainer.appendChild(particle);
+            }
+
+            // Add animation style
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% {
+                        transform: translateY(0) translateX(0);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translateY(-100vh) translateX(20px);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
 </body>
 
 </html>
