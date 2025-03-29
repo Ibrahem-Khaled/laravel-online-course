@@ -89,6 +89,15 @@
     <script src="{{ asset('assets/js/demo/chart-pie-demo.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/35.3.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('textarea'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
 </body>
 
 </html>

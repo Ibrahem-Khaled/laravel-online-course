@@ -49,7 +49,7 @@ function Home({ isAuthenticated, coursesHours, allStudentsCount, teachers, cours
                 <div className="info-card">
                     <img src="https://cdn-icons-png.flaticon.com/128/7339/7339321.png" alt="Learning" />
                     <h2>{coursesHours}+</h2>
-                    <p>محتوى الساعات</p>
+                    <p>المحتوي بالساعات</p>
                 </div>
 
                 <div className="info-card">
@@ -138,7 +138,7 @@ function Home({ isAuthenticated, coursesHours, allStudentsCount, teachers, cours
                                             <Card className="bg-transparent h-100">
                                                 <Card.Img
                                                     variant="top"
-                                                    src={item.image || '/assets/img/default-course.png'}
+                                                    src={item.image || `https://picsum.photos/200/300?random=${item.id}`}
                                                     alt={item.name}
                                                     style={{ height: '200px', objectFit: 'cover' }}
                                                 />

@@ -14,7 +14,14 @@ class notificationController extends Controller
     {
         $filter = $request->input('filter', 'all');
         if (auth()->user()->role == 'admin') {
-            $notifications = Notification::all();
+            $notifications = Notification::when($filter == 'unread', function ($query) {
+                $query->where('is_read', false);
+            })
+                ->when($filter == 'read', function ($query) {
+                    $query->where('is_read', true);
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
         } else {
             $notifications = NotificationService::getUserNotifications(Auth::id(), $filter);
         }

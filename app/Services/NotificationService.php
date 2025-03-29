@@ -19,6 +19,12 @@ class NotificationService
     public static function getUserNotifications($userId, $filter)
     {
         return Notification::where('related_user_id', $userId)
+            ->when($filter == 'unread', function ($query) {
+                $query->where('is_read', false);
+            })
+            ->when($filter == 'read', function ($query) {
+                $query->where('is_read', true);
+            })
             ->orderBy('created_at', 'desc')
             ->get();
     }

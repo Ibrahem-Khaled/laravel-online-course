@@ -13,17 +13,9 @@
         :root {
             --primary-color: #072D38;
             --secondary-color: #0A3D4A;
-            --accent-color: #4CAF50;
+            --accent-color: #035971;
             --text-color: #FFFFFF;
             --text-secondary: #CCCCCC;
-        }
-
-        body {
-            font-family: "Cairo", sans-serif;
-            color: var(--text-color);
-            background-color: var(--primary-color);
-            margin: 0;
-            padding: 0;
         }
 
         /* Hero Section with Gradient Overlay */
@@ -113,11 +105,11 @@
         .nav-tabs .nav-link.active {
             background-color: var(--accent-color);
             color: #000;
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .nav-tabs .nav-link:hover {
-            background-color: rgba(76, 175, 80, 0.3);
+            background-color: var(--accent-color);
             color: var(--text-color);
         }
 
@@ -132,7 +124,6 @@
             color: var(--text-secondary);
             max-width: 800px;
             margin: 0 auto;
-            text-align: center;
         }
 
         /* Responsive Adjustments */
@@ -216,7 +207,7 @@
                 <div class="tab-pane fade show active" id="description" role="tabpanel"
                     aria-labelledby="description-tab">
                     <div class="description-content">
-                        <p>{{ $route->description }}</p>
+                        <p>{!! $route->description !!}</p>
                     </div>
                 </div>
 
