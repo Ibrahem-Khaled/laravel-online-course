@@ -123,7 +123,7 @@
                                     <td>{{ $route->target_group }}</td>
                                     <td>{!! $route->description !!} </td>
                                     <td class="text-center">
-                                        <img src="{{ $route->image ?? 'https://via.placeholder.com/50' }}"
+                                        <img src="{{ $route->image ? asset('storage/' . $route->image) : 'https://via.placeholder.com/50' }}"
                                             alt="{{ $route->name }}" class="rounded-circle" width="50" height="50">
                                     </td>
                                     <td>
