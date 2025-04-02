@@ -105,7 +105,7 @@
                             البرامج التدريبية
                         </a>
                         <ul class="dropdown-menu">
-                            @foreach (App\Models\Category::all() as $category)
+                            @foreach (App\Models\Category::where('status', 'active')->get() as $category)
                                 <li>
                                     <a class="dropdown-item {{ request()->route('category_id') == $category->id ? 'active' : '' }}"
                                         href="{{ route('all-courses', $category->id) }}">
@@ -117,7 +117,8 @@
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">المسارات</a>
+                        {{-- <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">المسارات</a> --}}
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">برنامج رياده</a>
                         <ul class="dropdown-menu">
                             @foreach (App\Models\Route::all() as $path)
                                 <li>

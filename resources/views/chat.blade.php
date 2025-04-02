@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="contact-info">
                                     <h6 class="mb-0 text-white">{{ $contact->name }}</h6>
-                                    <small class="text-muted">{{ $contact->userInfo->bio ?? 'طالب' }}</small>
+                                    <small class="text-gray">{{ $contact->role == 'student' ? 'طالب' : 'مدرس' }}</small>
                                 </div>
                                 <div class="online-status {{ $contact->is_online ? 'online' : 'offline' }} ms-auto">
                                 </div>
@@ -67,11 +67,11 @@
                             <h5 class="mb-0 text-white">مرحبًا بك في دردشة الفصل</h5>
                             <small class="text-muted">اختر محادثة لبدء الدردشة</small>
                         </div>
-                        <div class="chat-header-actions">
+                        {{-- <div class="chat-header-actions">
                             <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-phone-alt"></i></button>
                             <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-video"></i></button>
                             <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-info-circle"></i></button>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 

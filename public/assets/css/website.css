@@ -335,13 +335,13 @@ body::-webkit-scrollbar-thumb {
     background: var(--message-incoming);
     border: 1px solid rgba(255, 255, 255, 0.1);
     margin-right: auto;
-    border-top-right-radius: 0;
+    border-top-left-radius: 0;
 }
 
 .outgoing {
     background: var(--message-outgoing);
     margin-left: auto;
-    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 .message-time {

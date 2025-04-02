@@ -107,6 +107,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     Route::delete('/user-reports/{id}', [UserController::class, 'destroyReport'])->name('userReports.destroy');
     //this category controller for dashboard
     Route::resource('categories', CategoryController::class);
+    Route::patch('/categories/{category}/toggle-status', [CategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
 
     //this course controller for dashboard
     Route::resource('courses', CourseController::class);

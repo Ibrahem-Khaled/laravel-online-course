@@ -11,8 +11,12 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
-        return view('dashboard.categories.index', compact('categories'));
+        $categories = Category::orderBy('created_at', 'desc')->get();
+        $totalCategories = $categories->count();
+        $activeCategories = $categories->where('status', 'active')->count();
+        $inactiveCategories = $categories->where('status', 'inactive')->count();
+
+        return view('dashboard.categories.index', compact('categories', 'totalCategories', 'activeCategories', 'inactiveCategories'));
     }
 
     public function store(Request $request)
@@ -82,5 +86,13 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect()->back()->with('success', 'تم حذف الفئة بنجاح.');
+    }
+
+    public function toggleStatus(Category $category)
+    {
+        $category->status = $category->status === 'active' ? 'inactive' : 'active';
+        $category->save();
+
+        return redirect()->back()->with('success', 'تم تغيير حالة الفئة بنجاح.');
     }
 }
