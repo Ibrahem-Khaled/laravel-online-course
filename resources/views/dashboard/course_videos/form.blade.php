@@ -31,7 +31,7 @@
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">الوصف</label>
-            <textarea name="description" class="form-control" rows="3" required>{{ $video->description ?? '' }}</textarea>
+            <textarea name="description" class="form-control" rows="3">{{ $video->description ?? '' }}</textarea>
         </div>
         <div class="mb-3">
             <label for="question" class="form-label">سوال الواجب</label>

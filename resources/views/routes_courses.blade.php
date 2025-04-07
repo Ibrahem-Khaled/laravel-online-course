@@ -10,14 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
     <title>{{ $route->name }}</title>
     <style>
-        :root {
-            --primary-color: #072D38;
-            --secondary-color: #0A3D4A;
-            --accent-color: #035971;
-            --text-color: #FFFFFF;
-            --text-secondary: #CCCCCC;
-        }
-
         /* Hero Section with Gradient Overlay */
         .route-hero {
             position: relative;

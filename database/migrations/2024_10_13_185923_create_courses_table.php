@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id(); // المعرف الأساسي للدورة
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // معرف المستخدم (علاقة مع جدول المستخدمين)
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // معرف الفئة (علاقة مع جدول الفئات)
+            $table->foreignId('user_id')->constrained('users')->onDelete('set null'); // معرف المستخدم (علاقة مع جدول المستخدمين)
+            $table->foreignId('category_id')->constrained('categories')->onDelete('set null'); // معرف الفئة (علاقة مع جدول الفئات)
 
             // معلومات الدورة الأساسية
             $table->string('title')->index(); // العنوان (مفهرس لتحسين الأداء)
