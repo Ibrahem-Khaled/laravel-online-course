@@ -126,6 +126,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     //this course-video controller for dashboard
     Route::resource('course_videos', CourseVideoController::class);
     Route::get('/courses/{course}/videos', [CourseVideoController::class, 'showByCourse'])->name('course_videos.by_course');
+    Route::post('/course/{courseId}/upload-csv', [CourseVideoController::class, 'addVideoFromCsvFile'])->name('course.addVideoFromCsvFile');
     Route::post('/course-videos/reorder', [CourseVideoController::class, 'reorder'])->name('course_videos.reorder');
 
     //this routes sectios 

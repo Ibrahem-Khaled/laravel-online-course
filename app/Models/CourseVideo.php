@@ -27,9 +27,26 @@ class CourseVideo extends Model
     // إنشاء Accessor للحصول على الوقت فقط
     public function getDurationAttribute($value)
     {
-        return \Carbon\Carbon::parse($value)->format('H:i:s');
+        // تقسيم السلسلة إلى أجزاء باستخدام الفاصل (:)
+        $parts = explode(':', $value);
+
+        if (count($parts) === 3) {
+            $hours = (int) $parts[0];
+            $minutes = (int) $parts[1];
+            $seconds = (int) $parts[2];
+
+            // إنشاء فترة زمنية باستخدام CarbonInterval
+            $interval = \Carbon\CarbonInterval::hours($hours)
+                ->minutes($minutes)
+                ->seconds($seconds);
+
+            // يمكنك استخدام cascade() لتعديل القيم إلى الشكل المطلوب إذا كانت هناك قيم تتعدى الحدود القياسية
+            return $interval->cascade()->format('%H:%I:%S');
+        }
+
+        return $value;
     }
-    
+
     public function course()
     {
         return $this->belongsTo(Course::class, 'course_id');

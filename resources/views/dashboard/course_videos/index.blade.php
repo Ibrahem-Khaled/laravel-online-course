@@ -6,7 +6,7 @@
 
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addVideoModal">إضافة فيديو جديد</button>
         <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addPartModal">إضافة قسم جديد</button>
-
+        @include('dashboard.course_videos.uploadCSV', ['courseId' => $course->id])
         @include('homeComponents.alerts')
 
         <!-- عرض الأقسام مع إمكانية إعادة الترتيب -->
@@ -260,6 +260,10 @@
             </div>
         </div>
 
+        <!-- this pagenation view -->
+        <div class="d-flex justify-content-center mt-4">
+            {{ $videosWithoutPart->links() }}
+        </div>
         <!-- Add Video Modal -->
         <div class="modal fade" id="addVideoModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">

@@ -75,10 +75,49 @@ class CourseVideoController extends Controller
 
         // احصل على الأجزاء (parts) الخاصة بالدورة
         $parts = $course->parts;
-        $videosWithoutPart = CourseVideo::where('course_id', $courseId)->whereNull('part_id')->get();
+        $videosWithoutPart = CourseVideo::where('course_id', $courseId)->whereNull('part_id')->paginate(10);
 
         // قم بتمرير البيانات إلى العرض
         return view('dashboard.course_videos.index', compact('course', 'parts', 'videosWithoutPart'));
+    }
+
+    public function addVideoFromCsvFile(Request $request, $courseId)
+    {
+        // التحقق من صحة الطلب
+        $request->validate([
+            'csv_file' => 'required|file|mimes:csv,txt|max:2048', // تأكد من أن الملف هو CSV
+        ]);
+        // التحقق من رفع الملف
+        if ($request->hasFile('csv_file')) {
+            $csvFile = $request->file('csv_file');
+
+            // فتح الملف للقراءة
+            if (($handle = fopen($csvFile->getRealPath(), 'r')) !== false) {
+                // قراءة عنوان الأعمدة من السطر الأول
+                $header = fgetcsv($handle);
+
+                // قراءة باقي الصفوف
+                while (($row = fgetcsv($handle)) !== false) {
+                    // تحويل الصف إلى مصفوفة مع مفاتيح من العنوان
+                    $data = array_combine($header, $row);
+
+                    // هنا يمكنك معالجة البيانات حسب الحاجة
+                    // مثلاً: حفظ بيانات الفيديو في قاعدة البيانات وربطها بمعرف الدورة $courseId
+                    CourseVideo::create([
+                        'course_id' => $courseId,
+                        'title' => $data['title'],
+                        'video' => $data['video'],
+                        'description' => $data['description'],
+                        'question' => $data['question'] ?? null,
+                        'duration' => $data['duration'],
+                    ]);
+                }
+
+                fclose($handle);
+            }
+        }
+
+        return redirect()->back()->with('success', 'تم رفع الملف ومعالجة البيانات بنجاح');
     }
 
     public function reorder(Request $request)
