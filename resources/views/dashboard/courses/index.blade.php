@@ -75,14 +75,6 @@
                                 <textarea name="description" class="form-control" rows="3" required></textarea>
                             </div>
                             <div class="mb-3">
-                                <label for="price" class="form-label">السعر</label>
-                                <input type="number" step="0.01" name="price" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="duration_in_hours" class="form-label">المدة (بالساعات)</label>
-                                <input type="number" name="duration_in_hours" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
                                 <label for="difficulty_level" class="form-label">مستوى الصعوبة</label>
                                 <select name="difficulty_level" class="form-select" required>
                                     <option value="beginner">مبتدئ</option>
@@ -130,7 +122,5 @@
                 </div>
             </div>
         </div>
-        <!-- Add Excel Modal -->
-
     </div>
 @endsection

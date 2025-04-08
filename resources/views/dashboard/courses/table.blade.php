@@ -111,16 +111,6 @@
                                     <textarea name="description" class="form-control" rows="3" required>{{ $course->description }}</textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="price" class="form-label">السعر</label>
-                                    <input type="number" step="0.01" name="price" class="form-control"
-                                        value="{{ $course->price }}" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="duration_in_hours" class="form-label">المدة (بالساعات)</label>
-                                    <input type="number" name="duration_in_hours" class="form-control"
-                                        value="{{ $course->duration_in_hours }}" required>
-                                </div>
-                                <div class="mb-3">
                                     <label for="difficulty_level" class="form-label">مستوى الصعوبة</label>
                                     <select name="difficulty_level" class="form-select" required>
                                         <option value="beginner"
@@ -144,8 +134,7 @@
                                     <select name="status" class="form-select" required>
                                         <option value="active" {{ $course->status == 'active' ? 'selected' : '' }}>
                                             نشطة</option>
-                                        <option value="inactive"
-                                            {{ $course->status == 'inactive' ? 'selected' : '' }}>
+                                        <option value="inactive" {{ $course->status == 'inactive' ? 'selected' : '' }}>
                                             غير نشطة</option>
                                         <option value="draft" {{ $course->status == 'draft' ? 'selected' : '' }}>
                                             مسودة</option>
