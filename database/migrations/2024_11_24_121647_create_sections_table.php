@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name')->unique();
             $table->string('image')->nullable();
+            $table->enum('type', ['ambitious_program', 'ambitious_program2', 'entrepreneurship_program'])->default('ambitious_program');
             $table->text('description')->nullable();
             $table->text('meeting_link')->nullable();
             $table->timestamps();

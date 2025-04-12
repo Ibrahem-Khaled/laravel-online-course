@@ -1,132 +1,188 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">إدارة الأقسام</h2>
-        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#createSectionModal">إضافة قسم
-            جديد</button>
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                        <h6>إدارة الأقسام</h6>
+                        <button class="btn btn-primary mb-0" data-toggle="modal" data-target="#createSectionModal">
+                            <i class="fas fa-plus me-1"></i> إضافة قسم جديد
+                        </button>
+                    </div>
 
-        <!-- جدول عرض الأقسام -->
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>الرقم</th>
-                    <th>الاسم</th>
-                    <th>الوصف</th>
-                    <th>رابط الاجتماع</th>
-                    <th>الصورة</th>
-                    <th>الإجراءات</th>
-                </tr>
-            </thead>
-            <tbody id="sectionsTable">
-                @foreach ($sections as $section)
-                    <tr>
-                        <td>{{ $section->id }}</td>
-                        <td>
-                            <a href="{{ route('sections.show', $section->id) }}">
-                                {{ $section->name }}</a>
-                        </td>
-                        <td>{{ $section->description }}</td>
-                        <td>{{ $section->meeting_link }}</td>
-                        <td>
-                            @if($section->image)
-                                <img src="{{ asset('storage/' . $section->image) }}" alt="صورة القسم" style="width: 50px; height: 50px;">
-                            @else
-                                لا توجد صورة
-                            @endif
-                        </td>
-                        <td>
-                            <button class="btn btn-warning btn-sm" data-toggle="modal"
-                                data-target="#editSectionModal{{ $section->id }}">تعديل</button>
-                            <form action="{{ route('sections.destroy', $section->id) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">حذف</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <!-- Modal تعديل القسم -->
-                    <div class="modal fade" id="editSectionModal{{ $section->id }}" tabindex="-1"
-                        aria-labelledby="editSectionModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <form action="{{ route('sections.update', $section->id) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editSectionModalLabel">تعديل القسم</h5>
-                                        <button type="button" class="btn-close" data-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">اسم القسم</label>
-                                            <input type="text" class="form-control" name="name"
-                                                value="{{ $section->name }}" required>
+                    <!-- إحصائيات الأقسام -->
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="row mx-3 mb-3">
+                            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                                <div class="card bg-gradient-primary shadow-primary">
+                                    <div class="card-body p-3">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="numbers">
+                                                    <p class="text-white text-sm mb-0 text-uppercase font-weight-bold">
+                                                        إجمالي الأقسام</p>
+                                                    <h5 class="text-white font-weight-bolder mb-0">
+                                                        {{ $stats['total_sections'] }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 text-end">
+                                                <div class="icon icon-shape bg-white shadow rounded-circle">
+                                                    <i class="fas fa-layer-group text-primary text-lg"></i>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="description" class="form-label">الوصف</label>
-                                            <textarea class="form-control" name="description" rows="3">{{ $section->description }}</textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="meeting_link" class="form-label">رابط الاجتماع</label>
-                                            <input type="url" class="form-control" name="meeting_link"
-                                                value="{{ $section->meeting_link }}">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="image" class="form-label">الصورة</label>
-                                            <input type="file" class="form-control" name="image">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">إغلاق</button>
-                                        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                                <div class="card bg-gradient-success shadow-success">
+                                    <div class="card-body p-3">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="numbers">
+                                                    <p class="text-white text-sm mb-0 text-uppercase font-weight-bold">
+                                                        البرنامج الطموح 1</p>
+                                                    <h5 class="text-white font-weight-bolder mb-0">
+                                                        {{ $stats['ambitious_program'] }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 text-end">
+                                                <div class="icon icon-shape bg-white shadow rounded-circle">
+                                                    <i class="fas fa-star text-success text-lg"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+                                <div class="card bg-gradient-info shadow-info">
+                                    <div class="card-body p-3">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="numbers">
+                                                    <p class="text-white text-sm mb-0 text-uppercase font-weight-bold">
+                                                        البرنامج الطموح 2</p>
+                                                    <h5 class="text-white font-weight-bolder mb-0">
+                                                        {{ $stats['ambitious_program2'] }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 text-end">
+                                                <div class="icon icon-shape bg-white shadow rounded-circle">
+                                                    <i class="fas fa-star-half-alt text-info text-lg"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-sm-6">
+                                <div class="card bg-gradient-danger shadow-danger">
+                                    <div class="card-body p-3">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <div class="numbers">
+                                                    <p class="text-white text-sm mb-0 text-uppercase font-weight-bold">ريادة
+                                                        الأعمال</p>
+                                                    <h5 class="text-white font-weight-bolder mb-0">
+                                                        {{ $stats['entrepreneurship'] }}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 text-end">
+                                                <div class="icon icon-shape bg-white shadow rounded-circle">
+                                                    <i class="fas fa-lightbulb text-danger text-lg"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
 
-    <!-- Modal إضافة قسم جديد -->
-    <div class="modal fade" id="createSectionModal" tabindex="-1" aria-labelledby="createSectionModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <form action="{{ route('sections.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createSectionModalLabel">إضافة قسم جديد</h5>
-                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">اسم القسم</label>
-                            <input type="text" class="form-control" name="name" required>
+                        <!-- ألسنة التبويب -->
+                        <ul class="nav nav-tabs" id="sectionsTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="all-tab" data-toggle="tab" data-target="#all"
+                                    type="button" role="tab">
+                                    الكل
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="ambitious1-tab" data-toggle="tab" data-target="#ambitious1"
+                                    type="button" role="tab">
+                                    البرنامج الطموح 1
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="ambitious2-tab" data-toggle="tab" data-target="#ambitious2"
+                                    type="button" role="tab">
+                                    البرنامج الطموح 2
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="entrepreneurship-tab" data-toggle="tab"
+                                    data-target="#entrepreneurship" type="button" role="tab">
+                                    ريادة الأعمال
+                                </button>
+                            </li>
+                        </ul>
+
+                        <!-- محتوى التبويبات -->
+                        <div class="tab-content" id="sectionsTabContent">
+                            <div class="tab-pane fade show active" id="all" role="tabpanel">
+                                @include('dashboard.sections.sections_table', [
+                                    'sections' => $sections,
+                                ])
+                            </div>
+                            <div class="tab-pane fade" id="ambitious1" role="tabpanel">
+                                @include('dashboard.sections.sections_table', [
+                                    'sections' => $sections->where('type', 'ambitious_program'),
+                                ])
+                            </div>
+                            <div class="tab-pane fade" id="ambitious2" role="tabpanel">
+                                @include('dashboard.sections.sections_table', [
+                                    'sections' => $sections->where('type', 'ambitious_program2'),
+                                ])
+                            </div>
+                            <div class="tab-pane fade" id="entrepreneurship" role="tabpanel">
+                                @include('dashboard.sections.sections_table', [
+                                    'sections' => $sections->where('type', 'entrepreneurship_program'),
+                                ])
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">الوصف</label>
-                            <textarea class="form-control" name="description" rows="3"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="meeting_link" class="form-label">رابط الاجتماع</label>
-                            <input type="url" class="form-control" name="meeting_link">
-                        </div>
-                        <div class="mb-3">
-                            <label for="image" class="form-label">الصورة</label>
-                            <input type="file" class="form-control" name="image">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">إغلاق</button>
-                        <button type="submit" class="btn btn-primary">إضافة</button>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
+
+    @include('dashboard.sections.create')
+    @foreach ($sections as $section)
+        @include('dashboard.sections.edit', ['section' => $section])
+    @endforeach
 @endsection
+
+@push('scripts')
+    <script>
+        // تفعيل ألسنة التبويب
+        const tabElms = document.querySelectorAll('button[data-toggle="tab"]');
+        tabElms.forEach(tabElm => {
+            tabElm.addEventListener('shown.bs.tab', event => {
+                localStorage.setItem('activeSectionTab', event.target.id);
+            });
+        });
+
+        // استعادة التبويب النشط عند تحميل الصفحة
+        const activeTab = localStorage.getItem('activeSectionTab');
+        if (activeTab) {
+            const tab = new bootstrap.Tab(document.getElementById(activeTab));
+            tab.show();
+        }
+    </script>
+@endpush

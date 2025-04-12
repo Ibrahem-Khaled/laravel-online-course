@@ -68,6 +68,51 @@
                         <a class="nav-link {{ Route::currentRouteName() == 'all-courses' && !request()->route('category_id') ? 'active' : '' }}"
                             href="{{ route('all-courses') }}">الدورات</a>
                     </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {{ Route::currentRouteName() == 'all-courses' && request()->route('category_id') ? 'active' : '' }}"
+                            href="#" data-toggle="dropdown">
+                            البرامج التدريبية
+                        </a>
+                        <ul class="dropdown-menu">
+                            @foreach (App\Models\Category::where('status', 'active')->get() as $category)
+                                <li>
+                                    <a class="dropdown-item {{ request()->route('category_id') == $category->id ? 'active' : '' }}"
+                                        href="{{ route('all-courses', $category->id) }}">
+                                        {{ $category->name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">المسارات</a>
+                        {{-- <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">برنامج رياده</a> --}}
+                        <ul class="dropdown-menu">
+                            @foreach (App\Models\Route::all() as $path)
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('routes.courses', $path->id) }}">
+                                        {{ $path->name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        {{-- <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">المسارات</a> --}}
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">برنامج رياده</a>
+                        <ul class="dropdown-menu">
+                            @foreach (App\Models\Route::all() as $path)
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('routes.courses', $path->id) }}">
+                                        {{ $path->name }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </li>
+
                     <li class="nav-item dropdown">
                         @if (
                             (Auth::check() && Auth::user()->sections->count() > 1) ||
@@ -98,36 +143,6 @@
                                 برنامج طموح
                             </a>
                         @endif
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {{ Route::currentRouteName() == 'all-courses' && request()->route('category_id') ? 'active' : '' }}"
-                            href="#" data-toggle="dropdown">
-                            البرامج التدريبية
-                        </a>
-                        <ul class="dropdown-menu">
-                            @foreach (App\Models\Category::where('status', 'active')->get() as $category)
-                                <li>
-                                    <a class="dropdown-item {{ request()->route('category_id') == $category->id ? 'active' : '' }}"
-                                        href="{{ route('all-courses', $category->id) }}">
-                                        {{ $category->name }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        {{-- <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">المسارات</a> --}}
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">برنامج رياده</a>
-                        <ul class="dropdown-menu">
-                            @foreach (App\Models\Route::all() as $path)
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('routes.courses', $path->id) }}">
-                                        {{ $path->name }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
                     </li>
 
                     <li class="nav-item">

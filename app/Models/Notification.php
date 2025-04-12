@@ -13,7 +13,9 @@ class Notification extends Model
         'related_user_id',
         'type',
         'message',
-        'is_read'
+        'is_read',
+        'related_id',
+        'related_type',
     ];
 
     public function user()
@@ -24,5 +26,10 @@ class Notification extends Model
     public function relatedUser()
     {
         return $this->belongsTo(User::class, 'related_user_id');
+    }
+
+    public function related()
+    {
+        return $this->morphTo();
     }
 }

@@ -14,9 +14,11 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // صاحب الإشعار
             $table->foreignId('related_user_id')->nullable()->constrained('users')->onDelete('cascade'); // المرسل إليه (اختياري)
-            $table->string('type'); // نوع الإشعار مثل "comment", "assignment", "message"
             $table->text('message'); // محتوى الإشعار
             $table->boolean('is_read')->default(false); // حالة قراءة الإشعار
+
+            $table->string('related_id')->nullable(); // معرف الكائن المرتبط (اختياري)
+            $table->string('related_type')->nullable(); // نوع الإشعار (اختياري)
             $table->timestamps();
         });
     }

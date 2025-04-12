@@ -10,10 +10,19 @@ use Illuminate\Http\Request;
 
 class SectionsController extends Controller
 {
+    // عرض صفحة الأقسام الرئيسية مع الإحصائيات
     public function index()
     {
-        $sections = Section::all();
-        return view('dashboard.sections.index', compact('sections'));
+        $sections = Section::withCount(['users', 'courses'])->get();
+        $stats = [
+            'total_sections' => Section::count(),
+            'total_courses' => Course::count(),
+            'ambitious_program' => Section::where('type', 'ambitious_program')->count(),
+            'ambitious_program2' => Section::where('type', 'ambitious_program2')->count(),
+            'entrepreneurship' => Section::where('type', 'entrepreneurship_program')->count(),
+        ];
+
+        return view('dashboard.sections.index', compact('sections', 'stats'));
     }
 
     public function store(Request $request)
@@ -21,6 +30,7 @@ class SectionsController extends Controller
         $request->validate([
             'name' => 'required|unique:sections|max:255',
             'description' => 'nullable|string|max:500',
+            'type' => 'required|in:ambitious_program,ambitious_program2,entrepreneurship_program',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'meeting_link' => 'nullable|url',
         ]);
@@ -43,6 +53,7 @@ class SectionsController extends Controller
         $request->validate([
             'name' => 'required|unique:sections,name,' . $id . '|max:255',
             'description' => 'nullable|string|max:500',
+            'type' => 'required|in:ambitious_program,ambitious_program2,entrepreneurship_program',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'meeting_link' => 'nullable|url',
         ]);
@@ -52,6 +63,7 @@ class SectionsController extends Controller
         // تحديث البيانات
         $section->name = $request->input('name');
         $section->description = $request->input('description');
+        $section->type = $request->input('type');
         $section->meeting_link = $request->input('meeting_link');
 
         // معالجة رفع الصورة
@@ -79,7 +91,7 @@ class SectionsController extends Controller
         if ($section->image && \Storage::exists($section->image)) {
             \Storage::delete($section->image);
         }
-
+        $section->calendars()->delete();
         $section->delete();
 
         return redirect()->route('sections.index')->with('success', 'تم حذف القسم بنجاح.');
