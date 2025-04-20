@@ -217,9 +217,6 @@
 
     @include('homeComponents.footer')
 
-    <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
     <script>
         // Create floating particles effect
         document.addEventListener('DOMContentLoaded', function() {

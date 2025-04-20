@@ -107,16 +107,27 @@ class SectionsController extends Controller
         return view('dashboard.sections.show', compact('section', 'students', 'teachers', 'courses'));
     }
 
-    public function addUsers(Request $request, $id)
+    public function addUsers(Request $request, Section $section)
     {
         $request->validate([
-            'users' => 'required|array',
-            'users.*' => 'exists:users,id',
+            'students' => 'nullable|array|required_without:teachers',
+            'students.*' => 'exists:users,id',
+            'teachers' => 'nullable|array|required_without:students',
+            'teachers.*' => 'exists:users,id',
         ]);
 
-        $section = Section::findOrFail($id);
-        $section->users()->syncWithoutDetaching($request->users);
-
+        // إضافة كل طالب مختار
+        if ($request->filled('students')) {
+            foreach ($request->students as $userId) {
+                $section->users()->syncWithoutDetaching([$userId => ['role' => 'student']]);
+            }
+        }
+        // إضافة كل معلم مختار
+        if ($request->filled('teachers')) {
+            foreach ($request->teachers as $userId) {
+                $section->users()->syncWithoutDetaching([$userId => ['role' => 'teacher']]);
+            }
+        }
         return redirect()->back()->with('success', 'Users added to section successfully.');
     }
 

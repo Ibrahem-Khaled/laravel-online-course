@@ -94,6 +94,10 @@ Route::group(['middleware' => ['auth', 'isActive']], function () {
     Route::get('/routes/{route}/courses', [HomeController::class, 'showRoutesCourses'])->name('routes.courses');
 });
 
+
+
+///////////////////////////////////////{this routes for dashboard}\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admin,supervisor']], function () {
 
     Route::get('/', [HomeController::class, 'dashboard'])->name('home.dashboard');
@@ -132,7 +136,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     //this routes sectios 
     Route::resource('sections', SectionsController::class);
     Route::get('section/{id}', [SectionsController::class, 'showUsers'])->name('sections.show');
-    Route::post('sections/{id}/add-users', [SectionsController::class, 'addUsers'])->name('sections.addUsers');
+    Route::post('sections/{section}/add-users', [SectionsController::class, 'addUsers'])->name('sections.addUsers');
     Route::delete('sections/{section}/users/{user}', [SectionsController::class, 'removeUser'])->name('sections.removeUser');
     Route::resource('section-calendars', SectionCalendarController::class);
 

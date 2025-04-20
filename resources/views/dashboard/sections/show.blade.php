@@ -1,17 +1,20 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="container">
-        <button class="btn btn-primary mt-3" data-toggle="modal" data-target="#addUsersModal">إضافة
-            مستخدمين</button>
+    <div class="container py-4">
+        <!-- زر فتح نافذة إضافة المستخدمين -->
+        <button class="btn btn-primary mb-4" data-toggle="modal" data-target="#addUsersModal">
+            إضافة مستخدمين
+        </button>
 
+        <!-- عنوان الفصل والوصف -->
+        <h1 class="mb-2">الفصل: {{ $section->name }}</h1>
+        <p class="text-muted">{{ $section->description }}</p>
 
-        <h1>الفصل: {{ $section->name }}</h1>
-        <p>{{ $section->description }}</p>
-
+        <!-- عرض أخطاء التحقق -->
         @if ($errors->any())
             <div class="alert alert-danger">
-                <ul>
+                <ul class="mb-0">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -38,9 +41,8 @@
                     role="tab" aria-controls="calendar" aria-selected="false">التقويم</button>
             </li>
         </ul>
-
         <div class="tab-content mt-3" id="sectionTabsContent">
-            <!-- عرض الكل -->
+            <!-- تبويب: الكل -->
             <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                 <h3>كل المستخدمين</h3>
                 <ul class="list-group">
@@ -49,13 +51,11 @@
                             {{ $user->name }} ({{ $user->email }})
                             <form
                                 action="{{ route('sections.removeUser', ['section' => $section->id, 'user' => $user->id]) }}"
-                                method="POST" style="display:inline;">
+                                method="POST" class="m-0">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('هل أنت متأكد من حذف هذا المستخدم؟')">
-                                    حذف
-                                </button>
+                                    onclick="return confirm('هل أنت متأكد من حذف هذا المستخدم؟')">حذف</button>
                             </form>
                         </li>
                     @empty
@@ -64,7 +64,7 @@
                 </ul>
             </div>
 
-            <!-- عرض الطلاب -->
+            <!-- تبويب: الطلاب -->
             <div class="tab-pane fade" id="students" role="tabpanel" aria-labelledby="students-tab">
                 <h3>الطلاب</h3>
                 <ul class="list-group">
@@ -73,13 +73,11 @@
                             {{ $student->name }} ({{ $student->email }})
                             <form
                                 action="{{ route('sections.removeUser', ['section' => $section->id, 'user' => $student->id]) }}"
-                                method="POST" style="display:inline;">
+                                method="POST" class="m-0">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('هل أنت متأكد من حذف هذا الطالب؟')">
-                                    حذف
-                                </button>
+                                    onclick="return confirm('هل أنت متأكد من حذف هذا الطالب؟')">حذف</button>
                             </form>
                         </li>
                     @empty
@@ -88,7 +86,7 @@
                 </ul>
             </div>
 
-            <!-- عرض المعلمين -->
+            <!-- تبويب: المعلمين -->
             <div class="tab-pane fade" id="teachers" role="tabpanel" aria-labelledby="teachers-tab">
                 <h3>المعلمين</h3>
                 <ul class="list-group">
@@ -97,13 +95,11 @@
                             {{ $teacher->name }} ({{ $teacher->email }})
                             <form
                                 action="{{ route('sections.removeUser', ['section' => $section->id, 'user' => $teacher->id]) }}"
-                                method="POST" style="display:inline;">
+                                method="POST" class="m-0">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('هل أنت متأكد من حذف هذا المعلم؟')">
-                                    حذف
-                                </button>
+                                    onclick="return confirm('هل أنت متأكد من حذف هذا المعلم؟')">حذف</button>
                             </form>
                         </li>
                     @empty
@@ -112,134 +108,127 @@
                 </ul>
             </div>
 
-            <div class="tab-content mt-3" id="sectionTabsContent">
-                <!-- تبويب التقويم -->
-                <div class="tab-pane fade" id="calendar" role="tabpanel" aria-labelledby="calendar-tab">
-                    <h3>التقويم الأسبوعي</h3>
-                    <table class="table table-bordered text-center">
-                        <thead>
-                            <tr>
-                                <th>اليوم</th>
-                                <th>المواد</th>
-                                <th>الأوقات</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+            <!-- تبويب: التقويم -->
+            <div class="tab-pane fade" id="calendar" role="tabpanel" aria-labelledby="calendar-tab">
+                <h3>التقويم الأسبوعي</h3>
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>اليوم</th>
+                            <th>المواد</th>
+                            <th>الأوقات</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $days = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+                        @endphp
+                        @foreach ($days as $index => $day)
                             @php
-                                $days = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+                                $schedules = $section->calendars->where('day_number', $index + 1);
                             @endphp
-                            @foreach ($days as $dayIndex => $day)
-                                <tr>
-                                    <td>{{ $day }}</td>
-                                    <td>
-                                        @php
-                                            $daySchedule = $section->calendars->where('day_number', $dayIndex + 1);
-                                        @endphp
-                                        @if ($daySchedule->isNotEmpty())
-                                            <ul class="list-unstyled">
-                                                @foreach ($daySchedule as $schedule)
-                                                    <li>{{ $schedule->course->title ?? 'لا توجد مادة' }}</li>
-                                                @endforeach
-                                            </ul>
-                                        @else
-                                            <span class="text-muted">إجازة</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($daySchedule->isNotEmpty())
-                                            <ul class="list-unstyled">
-                                                @foreach ($daySchedule as $schedule)
-                                                    @php
-                                                        $time = \Carbon\Carbon::createFromFormat(
-                                                            'H:i:s',
-                                                            $schedule->start_time,
-                                                        )->format('h:i A');
-                                                        $timeInArabic = str_replace(
-                                                            ['AM', 'PM'],
-                                                            ['صباحًا', 'مساءً'],
-                                                            $time,
-                                                        );
-                                                    @endphp
-                                                    <li>{{ $timeInArabic }}</li>
-                                                @endforeach
-
-                                            </ul>
-                                        @else
-                                            <span class="text-muted">---</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if (auth()->user()->role == 'admin' || auth()->user()->role == 'supervisor')
-                                            <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                                data-target="#editCalendarModal{{ $dayIndex + 1 }}">اضافة</button>
-                                            @foreach ($daySchedule as $schedule)
-                                                <form action="{{ route('section-calendars.destroy', $schedule->id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">حذف</button>
-                                                </form>
+                            <tr>
+                                <td>{{ $day }}</td>
+                                <td>
+                                    @if ($schedules->isNotEmpty())
+                                        <ul class="list-unstyled mb-0">
+                                            @foreach ($schedules as $sch)
+                                                <li>{{ $sch->course->title }}</li>
                                             @endforeach
-                                        @else
-                                            <span class="text-muted">غير مسموح</span>
-                                        @endif
-                                    </td>
-                                </tr>
-                                <!-- تعديل التقويم -->
-                                @if (auth()->user()->role == 'admin' || auth()->user()->role == 'supervisor')
-                                    <div class="modal fade" id="editCalendarModal{{ $dayIndex + 1 }}" tabindex="-1"
-                                        aria-labelledby="editCalendarModalLabel{{ $dayIndex + 1 }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <form action="{{ route('section-calendars.store') }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="section_id" value="{{ $section->id }}">
-                                                    <input type="hidden" name="day_number" value="{{ $dayIndex + 1 }}">
-
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title"
-                                                            id="editCalendarModalLabel{{ $dayIndex + 1 }}">
-                                                            تعديل جدول {{ $day }}</h5>
-                                                        <button type="button" class="btn-close" data-dismiss="modal"
-                                                            aria-label="إغلاق"></button>
+                                        </ul>
+                                    @else
+                                        <span class="text-muted">إجازة</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($schedules->isNotEmpty())
+                                        <ul class="list-unstyled mb-0">
+                                            @foreach ($schedules as $sch)
+                                                @php
+                                                    $time = \Carbon\Carbon::parse($sch->start_time)->format('g:i A');
+                                                    $time = str_replace(['AM', 'PM'], ['صباحًا', 'مساءً'], $time);
+                                                @endphp
+                                                <li>{{ $time }}</li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <span class="text-muted">---</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (auth()->user()->role === 'admin' || auth()->user()->role === 'supervisor')
+                                        <button class="btn btn-sm btn-primary" data-toggle="modal"
+                                            data-target="#editCalendarModal{{ $index }}">إضافة</button>
+                                        @foreach ($schedules as $sch)
+                                            <form action="{{ route('section-calendars.destroy', $sch->id) }}"
+                                                method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                                            </form>
+                                        @endforeach
+                                    @else
+                                        <span class="text-muted">غير مسموح</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            @if (auth()->user()->role === 'admin' || auth()->user()->role === 'supervisor')
+                                <!-- مودال تعديل/إضافة للتقويم -->
+                                <div class="modal fade" id="editCalendarModal{{ $index }}" tabindex="-1"
+                                    aria-labelledby="editCalendarModalLabel{{ $index }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form action="{{ route('section-calendars.store') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="section_id" value="{{ $section->id }}">
+                                                <input type="hidden" name="day_number" value="{{ $index + 1 }}">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="editCalendarModalLabel{{ $index }}">
+                                                        جدول {{ $day }}
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-dismiss="modal"
+                                                        aria-label="إغلاق"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="mb-3">
+                                                        <label for="course_id{{ $index }}" class="form-label">اختر
+                                                            المادة</label>
+                                                        <select name="course_id" id="course_id{{ $index }}"
+                                                            class="form-select" required>
+                                                            @foreach ($courses as $c)
+                                                                <option value="{{ $c->id }}">{{ $c->title }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <label for="course_id">اختر المادة</label>
-                                                            <select name="course_id" id="course_id" class="form-control">
-                                                                @foreach ($courses as $course)
-                                                                    <option value="{{ $course->id }}">
-                                                                        {{ $course->title }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group mt-3">
-                                                            <label for="start_time">وقت البداية</label>
-                                                            <input type="time" name="start_time" class="form-control"
-                                                                value="{{ old('start_time') }}">
-                                                        </div>
+                                                    <div class="mb-3">
+                                                        <label for="start_time{{ $index }}" class="form-label">وقت
+                                                            البداية</label>
+                                                        <input type="time" name="start_time"
+                                                            id="start_time{{ $index }}" class="form-control"
+                                                            required>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary">حفظ
-                                                            التعديلات</button>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">إلغاء</button>
+                                                    <button type="submit" class="btn btn-primary">حفظ</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-
         </div>
     </div>
 
-    <!-- نافذة إضافة المستخدمين -->
+    <!-- مودال إضافة المستخدمين -->
     <div class="modal fade" id="addUsersModal" tabindex="-1" aria-labelledby="addUsersModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -250,46 +239,34 @@
                         <button type="button" class="btn-close" data-dismiss="modal" aria-label="إغلاق"></button>
                     </div>
                     <div class="modal-body">
-                        <!-- عرض الأخطاء -->
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
                         <!-- اختيار الطلاب -->
-                        <div class="form-group">
-                            <label for="students">اختر الطلاب</label>
-                            <select name="users[]" id="students" class="form-control" multiple required>
+                        <div class="mb-3">
+                            <label for="students" class="form-label">اختر الطلاب</label>
+                            <select name="students[]" id="students" class="form-select" multiple>
                                 @foreach ($students as $user)
                                     <option value="{{ $user->id }}"
-                                        {{ in_array($user->id, old('users', [])) ? 'selected' : '' }}>
+                                        {{ in_array($user->id, old('students', [])) ? 'selected' : '' }}>
                                         {{ $user->name }} ({{ $user->email }})
                                     </option>
                                 @endforeach
                             </select>
-                            <small class="text-muted">يمكنك اختيار أكثر من مستخدم بالضغط على Ctrl (أو Cmd على Mac).</small>
                         </div>
-
                         <!-- اختيار المعلمين -->
-                        <div class="form-group mt-3">
-                            <label for="teachers">اختر المعلمين</label>
-                            <select name="users[]" id="teachers" class="form-control" multiple>
+                        <div class="mb-3">
+                            <label for="teachers" class="form-label">اختر المعلمين</label>
+                            <select name="teachers[]" id="teachers" class="form-select" multiple>
                                 @foreach ($teachers as $user)
                                     <option value="{{ $user->id }}"
-                                        {{ in_array($user->id, old('users', [])) ? 'selected' : '' }}>
+                                        {{ in_array($user->id, old('teachers', [])) ? 'selected' : '' }}>
                                         {{ $user->name }} ({{ $user->email }})
                                     </option>
                                 @endforeach
                             </select>
-                            <small class="text-muted">يمكنك اختيار أكثر من مستخدم بالضغط على Ctrl (أو Cmd على Mac).</small>
                         </div>
+                        <small class="text-muted">يجب اختيار طالب أو معلم على الأقل.</small>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
                         <button type="submit" class="btn btn-primary">إضافة المستخدمين</button>
                     </div>
                 </form>

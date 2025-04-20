@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{{ asset('assets/css/website.css') }}">
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     @php
-        $sections = App\Models\Section::all();
+        $entrepreneurship = App\Models\Section::where('type', 'entrepreneurship_program')->get();
     @endphp
     <div class="container-fluid">
         <div class="navbar-content">
@@ -40,9 +40,9 @@
                     <!-- الإشعارات -->
                     <a href="{{ route('notifications.index') }}" class="nav-icon position-relative">
                         <i class="fas fa-bell"></i>
-                        @if (Auth::user()->notifications()->where('is_read', false)->count() > 0)
+                        @if (Auth::user()->user_notifications()->where('is_read', false)->count() > 0)
                             <span
-                                class="notification-badge">{{ Auth::user()->notifications()->where('is_read', false)->count() }}</span>
+                                class="notification-badge">{{ Auth::user()->user_notifications()->where('is_read', false)->count() }}</span>
                         @endif
                     </a>
 
@@ -100,17 +100,35 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        {{-- <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">المسارات</a> --}}
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">برنامج رياده</a>
-                        <ul class="dropdown-menu">
-                            @foreach (App\Models\Route::all() as $path)
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('routes.courses', $path->id) }}">
-                                        {{ $path->name }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+                        @if (
+                            (Auth::check() && Auth::user()->entrepreneurshipPrograms->count() > 1) ||
+                                Auth::user()?->role === 'admin' ||
+                                Auth::user()?->role === 'supervisor')
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                                برنامج رياده
+                            </a>
+                            <ul class="dropdown-menu">
+                                @php
+                                    $sections =
+                                        Auth::user()?->role === 'admin' || Auth::user()?->role === 'supervisor'
+                                            ? $entrepreneurship
+                                            : Auth::user()->entrepreneurshipPrograms;
+                                @endphp
+                                @foreach ($entrepreneurship as $section)
+                                    <li>
+                                        <a class="dropdown-item"
+                                            href="{{ route('user-section', ['section_id' => $section->id]) }}">
+                                            {{ $section->name }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <a class="nav-link {{ Route::currentRouteName() == 'user-section' ? 'active' : '' }}"
+                                href="{{ route('user-section') }}">
+                                برنامج رياده
+                            </a>
+                        @endif
                     </li>
 
                     <li class="nav-item dropdown">
@@ -125,7 +143,7 @@
                                 @php
                                     $sections =
                                         Auth::user()?->role === 'admin' || Auth::user()?->role === 'supervisor'
-                                            ? \App\Models\Section::all()
+                                            ? \App\Models\Section::where('type', 'ambitious_program')->get()
                                             : Auth::user()->sections;
                                 @endphp
                                 @foreach ($sections as $section)

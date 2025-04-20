@@ -25,10 +25,11 @@ class UserController extends Controller
 
         $users = $query->get();
         $studentsWithSections = User::where('role', 'student')->whereHas('sections')->get();
+        $studentsWithEntrepreneurship = User::where('role', 'student')->whereHas('entrepreneurshipPrograms')->get();
         $studentsWithoutSections = User::where('role', 'student')->whereDoesntHave('sections')->get();
         $inactiveStudents = User::where('role', 'student')->where('status', 'inactive')->get();
 
-        return view('dashboard.users.index', compact('users', 'studentsWithSections', 'studentsWithoutSections', 'inactiveStudents'));
+        return view('dashboard.users.index', compact('users', 'studentsWithSections', 'studentsWithoutSections', 'inactiveStudents', 'studentsWithEntrepreneurship'));
     }
 
     public function changeStatus(User $user)
