@@ -57,12 +57,12 @@
     }
 
     .course-card-title {
-        font-size: 1.1rem;
+        font-size: .9rem;
         font-weight: 700;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         color: #fff;
         position: relative;
-        padding-bottom: 8px;
+        padding-bottom: 5px;
     }
 
     .course-card-title::after {
