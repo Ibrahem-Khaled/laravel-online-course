@@ -110,7 +110,7 @@
     }
 
     .course-description {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         color: rgba(255, 255, 255, 0.8);
         line-height: 1.5;
         margin-bottom: 15px;
