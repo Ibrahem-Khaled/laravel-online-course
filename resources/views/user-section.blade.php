@@ -295,65 +295,6 @@
             font-size: 1rem;
         }
 
-        /* Course Cards - Elegant Design */
-        .course-card {
-            background: rgba(2, 71, 94, 0.5);
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 25px;
-            transition: all 0.3s ease;
-            border: var(--classic-border);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .course-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .course-card-img {
-            height: 180px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        .course-card-img::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(7, 45, 56, 0.9), transparent);
-        }
-
-        .course-card-body {
-            padding: 20px;
-        }
-
-        .course-card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--text-light);
-        }
-
-        .course-card-text {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        .course-card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
         /* Teacher & Student Cards */
         .profile-card {
             background: rgba(2, 71, 94, 0.5);
@@ -471,24 +412,6 @@
             }
         }
 
-        /* Classic Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--primary-dark);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-color);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #d45a1f;
-        }
-
         /* Animated Underline */
         .animated-underline {
             position: relative;
@@ -562,22 +485,9 @@
                 <h2 class="info-header">المنهج والدورات</h2>
                 <div class="row g-4">
                     @foreach ($sectionCourses as $course)
-                        <div  class="col-md-4 col-sm-6">
-                            <div class="course-card">
-                                <div class="course-card-img"
-                                    style="background-image: url('{{ $course->image ? asset('storage/' . $course->image) : 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80' }}');">
-                                </div>
-                                <div class="course-card-body">
-                                    <h3 class="course-card-title">{{ $course->title }}</h3>
-                                    <p class="course-card-text">{{ Str::limit($course->description, 100) }}</p>
-                                    <div class="course-card-footer">
-                                        <span class="text-muted"><i class="far fa-clock me-1"></i>
-                                            {{ $course->duration }} ساعة</span>
-                                        <a href="{{ route('courses.videos', $course->id) }}" class="btn btn-sm btn-outline-accent">عرض التفاصيل</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @include('homeComponents.home.course-card', [
+                            'course' => $course,
+                        ])
                     @endforeach
                 </div>
             </section>
