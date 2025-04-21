@@ -123,7 +123,7 @@
 
     .course-details {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
         gap: 12px;
         margin-top: 10px;
     }
@@ -132,7 +132,7 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        font-size: 0.75rem;
+        font-size: 0.70rem;
         background: rgba(255, 255, 255, 0.1);
         padding: 8px;
         border-radius: 6px;
@@ -309,7 +309,7 @@
             <!-- محتوى الكارد -->
             <div class="card-body">
                 <!-- عنوان الكورس -->
-                <h5 class="course-card-title">{{ $course->title }}</h5>
+                <h5 class="course-card-title" >{{ $course->title }}</h5>
 
                 <!-- وصف الكورس -->
                 <p class="course-description">
