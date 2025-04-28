@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SectionsController extends Controller
 {
@@ -110,26 +111,32 @@ class SectionsController extends Controller
     public function addUsers(Request $request, Section $section)
     {
         $request->validate([
-            'students' => 'nullable|array|required_without:teachers',
-            'students.*' => 'exists:users,id',
-            'teachers' => 'nullable|array|required_without:students',
-            'teachers.*' => 'exists:users,id',
+            'students' => ['nullable', 'array', 'required_without:teachers'],
+            'students.*' => [
+                'integer',
+                Rule::exists('users', 'id')->where('role', 'student')
+            ],
+            'teachers' => ['nullable', 'array', 'required_without:students'],
+            'teachers.*' => [
+                'integer',
+                Rule::exists('users', 'id')->where('role', 'teacher')
+            ],
         ]);
 
-        // إضافة كل طالب مختار
+        // إضافة الطلاب
         if ($request->filled('students')) {
-            foreach ($request->students as $userId) {
-                $section->users()->syncWithoutDetaching([$userId => ['role' => 'student']]);
-            }
+            $section->students()->syncWithoutDetaching($request->students);
         }
-        // إضافة كل معلم مختار
+
+        // إضافة المعلمين
         if ($request->filled('teachers')) {
-            foreach ($request->teachers as $userId) {
-                $section->users()->syncWithoutDetaching([$userId => ['role' => 'teacher']]);
-            }
+            $section->teachers()->syncWithoutDetaching($request->teachers);
         }
-        return redirect()->back()->with('success', 'Users added to section successfully.');
+
+        return redirect()->back()
+            ->with('success', 'تم إضافة المستخدمين إلى القسم بنجاح.');
     }
+
 
     public function removeUser($sectionId, $userId)
     {
