@@ -69,23 +69,21 @@ class Course extends Model
     }
 
 
-
-
-
-
+    //this accessors functions
     public function getDurationInHoursAttribute()
     {
-        $totalSeconds = $this->videos()->get()->reduce(function ($carry, $video) {
-            $startOfDay = \Carbon\Carbon::today(); // بداية اليوم الحالي
-            $durationInSeconds = \Carbon\Carbon::parse($video->duration)->diffInSeconds($startOfDay);
+        // 1) نجمع ثواني كل الفيديوهات
+        $totalSeconds = $this->videos->sum(function ($video) {
+            [$h, $m, $s] = explode(':', $video->duration);
+            return $h * 3600 + $m * 60 + $s;
+        });
 
-            return $carry + $durationInSeconds;
-        }, 0);
-
+        // 2) نحسب الساعات والدقائق والثواني من المجموع
         $hours = floor($totalSeconds / 3600);
         $minutes = floor(($totalSeconds % 3600) / 60);
         $seconds = $totalSeconds % 60;
 
+        // 3) نعيد الصيغة HH:MM:SS
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 
