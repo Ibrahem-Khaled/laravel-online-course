@@ -74,8 +74,15 @@ class Course extends Model
     {
         // 1) نجمع ثواني كل الفيديوهات
         $totalSeconds = $this->videos->sum(function ($video) {
-            [$h, $m, $s] = explode(':', $video->duration);
-            return $h * 3600 + $m * 60 + $s;
+            // قسّم السلسلة ثم اعكس الترتيب: [الثواني, الدقائق, الساعات]
+            $segments = array_reverse(explode(':', $video->duration));
+
+            // استخدم isset أو ?? للحصول على قيمة أو صفر إذا لم توجد
+            $seconds = isset($segments[0]) ? (int) $segments[0] : 0;
+            $minutes = isset($segments[1]) ? (int) $segments[1] : 0;
+            $hours = isset($segments[2]) ? (int) $segments[2] : 0;
+
+            return $hours * 3600 + $minutes * 60 + $seconds;
         });
 
         // 2) نحسب الساعات والدقائق والثواني من المجموع
@@ -86,5 +93,6 @@ class Course extends Model
         // 3) نعيد الصيغة HH:MM:SS
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
+
 
 }
