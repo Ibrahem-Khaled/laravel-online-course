@@ -8,6 +8,7 @@ import DiscussionSection from '../components/video/DiscussionSection';
 import HomeworkSection from '../components/video/HomeworkSection';
 import AttachmentsSection from '../components/video/AttachmentsSection';
 import Player from '@vimeo/player';
+import axios from 'axios';
 
 
 const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
@@ -253,6 +254,6 @@ const Video = ({ course, userRole, duration_in_hours, user, rating }) => {
       </div>
     </div>
   );
-};
+}; 
 
 export default Video;

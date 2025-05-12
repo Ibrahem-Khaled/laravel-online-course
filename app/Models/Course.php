@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\CourseRelations;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    use HasFactory;
-
+    use HasFactory, CourseRelations;
+    protected $appends = [
+        'duration_in_hours',
+        'user_subscription_from_this_course',
+    ];
     protected $fillable = [
         'user_id',
         'category_id',
@@ -26,48 +30,6 @@ class Course extends Model
         'meta_description',
         'published_at',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function videos()
-    {
-        return $this->hasMany(CourseVideo::class);
-    }
-    public function parts()
-    {
-        return $this->hasMany(Part::class);
-    }
-
-    public function ratings()
-    {
-        return $this->hasMany(CourseRating::class);
-    }
-
-    public function sections()
-    {
-        return $this->belongsToMany(Section::class, 'section_courses', 'course_id', 'section_id');
-    }
-
-
-    public function sectionCalendars()
-    {
-        return $this->hasMany(SectionCalendar::class);
-    }
-
-    public function softwaresUsages()
-    {
-        return $this->hasMany(inVideoUsage::class, 'course_video_id')
-            ->where('type', 'software');
-    }
-
 
     //this accessors functions
     public function getDurationInHoursAttribute()
@@ -94,5 +56,10 @@ class Course extends Model
         return sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
     }
 
-
+    public function getUserSubscriptionFromThisCourseAttribute()
+    {
+        return $this->userSubscription()
+            ->where('user_id', auth()->id())
+            ->first() ? true : false;
+    }
 }

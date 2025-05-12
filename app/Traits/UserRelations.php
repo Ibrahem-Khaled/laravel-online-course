@@ -65,5 +65,10 @@ trait UserRelations
         return $this->hasMany(Notification::class, 'related_user_id');
     }
 
-
+    public function CoursesSubscriptions()
+    {
+        return $this->belongsToMany(Course::class, 'user_courses', 'user_id', 'course_id')
+            ->withPivot(['is_active'])
+            ->withTimestamps();
+    }
 }

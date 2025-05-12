@@ -77,4 +77,9 @@ class CourseVideo extends Model
     {
         return $this->belongsTo(Part::class);
     }
+
+
+
+    // this accessor methods
+    
 }

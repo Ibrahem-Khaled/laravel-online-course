@@ -13,6 +13,7 @@ use App\Http\Controllers\dashboard\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\webController\messagesController;
 use App\Http\Controllers\webController\notificationController;
+use App\Http\Controllers\webController\SubscriptionController;
 use App\Http\Controllers\webController\UserSectionController;
 use App\Http\Controllers\webController\videoCourseController;
 use Illuminate\Support\Facades\Route;
@@ -92,6 +93,11 @@ Route::group(['middleware' => ['auth', 'isActive']], function () {
 
     //this routes RoutesCourses controller
     Route::get('/routes/{route}/courses', [HomeController::class, 'showRoutesCourses'])->name('routes.courses');
+
+
+    Route::post('/courses/{course}/subscribe', [SubscriptionController::class, 'subscribe']);
+    Route::delete('/courses/{course}/unsubscribe', [SubscriptionController::class, 'unsubscribe']);
+    Route::get('/my-subscriptions', [SubscriptionController::class, 'userSubscriptions']);
 });
 
 
@@ -120,7 +126,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     Route::post('/course-parts/reorder', [CourseController::class, 'reorderParts'])->name('course_parts.reorder');
     Route::delete('/course_parts/{id}', [CourseController::class, 'deletePart'])->name('course_parts.destroy');
     Route::post('/corse/{course}/add-software', [CourseController::class, 'addSoftware'])->name('courses.addSoftware');
-    
+
     //this contact-us controller for dashboard
     Route::resource('contact_us', ContactUsController::class);
 
