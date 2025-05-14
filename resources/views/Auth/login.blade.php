@@ -91,7 +91,7 @@
 <body>
 
     @include('homeComponents.header')
-    @include('homeComponents.alerts')
+    @include('components.alerts')
     <div class="login-container">
         <div class="login-card" style="background-color: #035971;">
             <h3 class="text-center mb-4 text-white">أهلا بعودتك</h3>

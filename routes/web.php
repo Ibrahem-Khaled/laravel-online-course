@@ -144,6 +144,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     Route::get('section/{id}', [SectionsController::class, 'showUsers'])->name('sections.show');
     Route::post('sections/{section}/add-users', [SectionsController::class, 'addUsers'])->name('sections.addUsers');
     Route::delete('sections/{section}/users/{user}', [SectionsController::class, 'removeUser'])->name('sections.removeUser');
+    Route::post('sections/{section}/add-courses', [SectionsController::class, 'addCourse'])->name('sections.addCourse');
     Route::resource('section-calendars', SectionCalendarController::class);
 
     //this routes route

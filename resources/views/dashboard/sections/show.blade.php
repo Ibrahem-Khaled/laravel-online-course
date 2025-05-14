@@ -6,21 +6,16 @@
         <button class="btn btn-primary mb-4" data-toggle="modal" data-target="#addUsersModal">
             إضافة مستخدمين
         </button>
-
+        <button type="button" class="btn btn-success mb-4" data-toggle="modal" data-target="#addCourseModal">
+            إضافة كورسات
+        </button>
+        @include('dashboard.sections.modals.add-courses')
         <!-- عنوان الفصل والوصف -->
         <h1 class="mb-2">الفصل: {{ $section->name }}</h1>
         <p class="text-muted">{{ $section->description }}</p>
 
         <!-- عرض أخطاء التحقق -->
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('components.alerts')
 
         <!-- نظام التبويبات -->
         <ul class="nav nav-tabs" id="sectionTabs" role="tablist">

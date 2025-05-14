@@ -447,7 +447,7 @@
         </div>
     </section>
 
-    @include('homeComponents.alerts')
+    @include('components.alerts')
 
     <!-- Classic Modern Tabs -->
     <ul class="nav nav-tabs" id="sectionTabs" role="tablist">

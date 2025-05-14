@@ -384,7 +384,7 @@
     @include('homeComponents.header')
 
     <div class="container py-5" dir="rtl">
-        @include('homeComponents.alerts')
+        @include('components.alerts')
 
         <!-- Header Section - Redesigned -->
         <div class="profile-header fade-in">

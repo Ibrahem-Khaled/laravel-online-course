@@ -45,7 +45,7 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sections.index') }}">
             <i class="fas fa-fw fa-columns"></i>
-            <span>إدارة الفصول<br>(برنامج طموح)</span>
+            <span>إدارة الفصول<br>(جميع البرامج)</span>
         </a>
     </li>
     <li class="nav-item">

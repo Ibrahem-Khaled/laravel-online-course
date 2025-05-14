@@ -148,4 +148,26 @@ class SectionsController extends Controller
         }
         return redirect()->back()->with('error', 'حدث خطأ أثناء محاولة إزالة المستخدم.');
     }
+
+
+    public function addCourse(Request $request, Section $section)
+    {
+        $request->validate([
+            'courses' => ['required', 'array'],
+            'courses.*.id' => ['required', 'exists:courses,id'],
+            'courses.*.status' => ['required', 'in:active,inactive,draft'], // لاحظ إضافة inactive
+        ]);
+
+        foreach ($request->courses as $courseData) {
+            // تحديث حالة الكورس في جدول courses
+            $course = \App\Models\Course::find($courseData['id']);
+            $course->status = $courseData['status'];
+            $course->save();
+
+            // ربط الكورس بالقسم
+            $section->courses()->attach($course->id);
+        }
+
+        return redirect()->back()->with('success', 'تم تعيين الكورسات وتحديث حالتها بنجاح.');
+    }
 }

@@ -7,7 +7,7 @@
         <!-- زر إضافة دورة جديدة -->
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addCourseModal">إضافة دورة جديدة</button>
             
-        @include('homeComponents.alerts')
+        @include('components.alerts')
 
         <ul class="nav nav-tabs mb-4" id="courseStatusTabs" role="tablist">
             <li class="nav-item" role="presentation">

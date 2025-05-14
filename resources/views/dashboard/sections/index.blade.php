@@ -15,94 +15,14 @@
                     <!-- إحصائيات الأقسام -->
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="row mx-3 mb-3">
-                            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                                <div class="card bg-gradient-primary shadow-primary">
-                                    <div class="card-body p-3">
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <div class="numbers">
-                                                    <p class="text-white text-sm mb-0 text-uppercase font-weight-bold">
-                                                        إجمالي الأقسام</p>
-                                                    <h5 class="text-white font-weight-bolder mb-0">
-                                                        {{ $stats['total_sections'] }}
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 text-end">
-                                                <div class="icon icon-shape bg-white shadow rounded-circle">
-                                                    <i class="fas fa-layer-group text-primary text-lg"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                                <div class="card bg-gradient-success shadow-success">
-                                    <div class="card-body p-3">
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <div class="numbers">
-                                                    <p class="text-white text-sm mb-0 text-uppercase font-weight-bold">
-                                                        البرنامج الطموح 1</p>
-                                                    <h5 class="text-white font-weight-bolder mb-0">
-                                                        {{ $stats['ambitious_program'] }}
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 text-end">
-                                                <div class="icon icon-shape bg-white shadow rounded-circle">
-                                                    <i class="fas fa-star text-success text-lg"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                                <div class="card bg-gradient-info shadow-info">
-                                    <div class="card-body p-3">
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <div class="numbers">
-                                                    <p class="text-white text-sm mb-0 text-uppercase font-weight-bold">
-                                                        البرنامج الطموح 2</p>
-                                                    <h5 class="text-white font-weight-bolder mb-0">
-                                                        {{ $stats['ambitious_program2'] }}
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 text-end">
-                                                <div class="icon icon-shape bg-white shadow rounded-circle">
-                                                    <i class="fas fa-star-half-alt text-info text-lg"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-sm-6">
-                                <div class="card bg-gradient-danger shadow-danger">
-                                    <div class="card-body p-3">
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <div class="numbers">
-                                                    <p class="text-white text-sm mb-0 text-uppercase font-weight-bold">ريادة
-                                                        الأعمال</p>
-                                                    <h5 class="text-white font-weight-bolder mb-0">
-                                                        {{ $stats['entrepreneurship'] }}
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                            <div class="col-4 text-end">
-                                                <div class="icon icon-shape bg-white shadow rounded-circle">
-                                                    <i class="fas fa-lightbulb text-danger text-lg"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-stat-card title="الأقسام" count="{{ $stats['total_sections'] }}" icon="layer-group"
+                                color="primary" />
+                            <x-stat-card title="البرنامج الطموح" count="{{ $stats['ambitious_program'] }}" icon="star"
+                                color="success" />
+                            <x-stat-card title="البرنامج الطموح 2" count="{{ $stats['ambitious_program2'] }}" icon="star"
+                                color="info" />
+                            <x-stat-card title="ريادة الأعمال" count="{{ $stats['entrepreneurship'] }}" icon="lightbulb"
+                                color="danger" />
                         </div>
 
                         <!-- ألسنة التبويب -->

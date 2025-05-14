@@ -281,7 +281,7 @@
             <p>{{ $user->email }}</p>
         </div>
 
-        @include('homeComponents.alerts')
+        @include('components.alerts')
 
         <!-- Main Form -->
         <form action="{{ route('user.update') }}" method="POST" enctype="multipart/form-data" class="fade-in delay-1">

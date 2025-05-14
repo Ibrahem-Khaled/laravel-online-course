@@ -12,7 +12,7 @@
             </button>
         </div>
 
-        @include('homeComponents.alerts')
+        @include('components.alerts')
 
         <!-- إحصائيات المسارات -->
         <div class="row mb-4">

@@ -7,7 +7,7 @@
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addVideoModal">إضافة فيديو جديد</button>
         <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addPartModal">إضافة قسم جديد</button>
         @include('dashboard.course_videos.uploadCSV', ['courseId' => $course->id])
-        @include('homeComponents.alerts')
+        @include('components.alerts')
 
         <!-- عرض الأقسام مع إمكانية إعادة الترتيب -->
         <ul class="list-group sortable-parts mb-4">

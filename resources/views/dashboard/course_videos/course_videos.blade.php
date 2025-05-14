@@ -6,7 +6,7 @@
 
         <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addVideoModal">إضافة فيديو جديد</button>
 
-        @include('homeComponents.alerts')
+        @include('components.alerts')
         <table class="table table-bordered">
             <thead>
                 <tr>
