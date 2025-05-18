@@ -112,6 +112,9 @@
                                 <i class="fas fa-trash me-1"></i> حذف
                             </button>
                         </form>
+                        <a href="{{ route('sections.courses', $section->id) }}" class="btn btn-sm btn-outline-info mb-0">
+                            <i class="fas fa-book-open me-1"></i> الدورات
+                        </a>
                     </td>
                 </tr>
             @empty

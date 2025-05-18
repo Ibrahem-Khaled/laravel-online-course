@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class SectionsController extends Controller
@@ -70,8 +71,8 @@ class SectionsController extends Controller
         // معالجة رفع الصورة
         if ($request->hasFile('image')) {
             // حذف الصورة القديمة إذا وجدت
-            if ($section->image && \Storage::exists($section->image)) {
-                \Storage::delete($section->image);
+            if ($section->image && Storage::exists($section->image)) {
+                Storage::delete($section->image);
             }
 
             // رفع الصورة الجديدة وتحديث المسار
@@ -89,8 +90,8 @@ class SectionsController extends Controller
         $section = Section::findOrFail($id);
 
         // حذف الصورة إذا وجدت
-        if ($section->image && \Storage::exists($section->image)) {
-            \Storage::delete($section->image);
+        if ($section->image && Storage::exists($section->image)) {
+            Storage::delete($section->image);
         }
         $section->calendars()->delete();
         $section->delete();
@@ -169,5 +170,31 @@ class SectionsController extends Controller
         }
 
         return redirect()->back()->with('success', 'تم تعيين الكورسات وتحديث حالتها بنجاح.');
+    }
+
+    public function removeCourse($section, $course)
+    {
+        $section = Section::findOrFail($section);
+
+        if ($section->courses()->detach($course)) {
+            return redirect()->back()->with('success', 'تم حذف الكورس من القسم بنجاح.');
+        }
+        return redirect()->back()->with('error', 'حدث خطأ أثناء محاولة حذف الكورس من القسم.');
+    }
+
+    public function showCourses(Section $section)
+    {
+        $courses = $section->courses()
+            ->with(['user', 'category'])
+            ->withCount(['videos'])
+            ->paginate(12);
+
+        $stats = [
+            'total_courses' => $section->courses()->count(),
+            'active_courses' => $section->courses()->where('status', 'active')->count(),
+            'total_students' => $section->users()->where('role', 'student')->count(),
+        ];
+
+        return view('dashboard.sections.courses', compact('section', 'courses', 'stats'));
     }
 }

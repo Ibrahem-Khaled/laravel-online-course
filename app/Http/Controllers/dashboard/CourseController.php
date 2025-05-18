@@ -12,12 +12,37 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $courses = Course::all();
+        $activeCourses = Course::with(['user', 'category'])
+            ->where('status', 'active')
+            ->paginate(10, ['*'], 'active_page'); // اسم صفحة الباجينيشن لهذا التبويب
+
+        $inactiveCourses = Course::with(['user', 'category'])
+            ->where('status', 'inactive')
+            ->paginate(10, ['*'], 'inactive_page'); // اسم مختلف لهذا التبويب
+
         $users = User::where('role', 'teacher')->get();
         $categories = Category::all();
-        return view('dashboard.courses.index', compact('courses', 'users', 'categories'));
+
+        $stats = [
+            'total_courses' => Course::count(),
+            'active_courses' => Course::where('status', 'active')->count(),
+            'inactive_courses' => Course::where('status', 'inactive')->count(),
+            'featured_courses' => Course::where('is_featured', true)->count(),
+            'popular_categories' => Category::withCount('courses')
+                ->orderBy('courses_count', 'desc')
+                ->take(3)
+                ->get(),
+        ];
+
+        return view('dashboard.courses.index', compact(
+            'activeCourses',
+            'inactiveCourses',
+            'users',
+            'categories',
+            'stats'
+        ));
     }
 
     public function store(Request $request)
