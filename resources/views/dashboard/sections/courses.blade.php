@@ -96,12 +96,12 @@
                                         </div>
                                     </div>
                                     <div class="card-footer bg-white border-0 d-flex justify-content-between">
-                                        <a href="{{ route('courses.show', $course) }}"
+                                        <a href="{{ route('course_videos.by_course', $course->id) }}"
                                             class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-eye me-1"></i> عرض
                                         </a>
                                         <form
-                                            action="{{ route('sections.removeCourse', ['section' => $section, 'course' => $course]) }}"
+                                             action="{{ route('sections.removeCourse', ['section' => $section, 'course' => $course]) }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
