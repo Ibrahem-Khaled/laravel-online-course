@@ -254,8 +254,9 @@ const Sidebar = ({ course, video, setVideo }) => {
                             <i className="fas fa-comment" />
                         </a>
                         <a
-                            href={`https://wa.me/${course.user.phone || '966581870300'}`}//should numper is  +966000000000
+                            href={`https://wa.me/${course.user.phone ?? '966581870300'}`}// إضافة رقم الهاتف هنا
                             target="_blank"
+                            rel="noopener noreferrer"
                             className="d-flex justify-content-center align-items-center text-white"
                             style={{ width: '40px', height: '40px', fontSize: '25px' }}
                         >
