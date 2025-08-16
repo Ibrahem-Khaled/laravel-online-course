@@ -71,4 +71,11 @@ trait UserRelations
             ->withPivot(['is_active'])
             ->withTimestamps();
     }
+
+    public function coursesAsInstructor()
+    {
+        return $this->belongsToMany(Course::class, 'course_instructors')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
 }

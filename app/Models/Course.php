@@ -31,6 +31,14 @@ class Course extends Model
         'published_at',
     ];
 
+
+    public function instructors()
+    {
+        return $this->belongsToMany(User::class, 'course_instructors')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
     //this accessors functions
     public function getDurationInHoursAttribute()
     {

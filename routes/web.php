@@ -3,6 +3,7 @@
 use App\Http\Controllers\dashboard\CategoryController;
 use App\Http\Controllers\dashboard\ContactUsController;
 use App\Http\Controllers\dashboard\CourseController;
+use App\Http\Controllers\dashboard\CourseInstructorController;
 use App\Http\Controllers\dashboard\CourseRatingController;
 use App\Http\Controllers\dashboard\CourseVideoController;
 use App\Http\Controllers\dashboard\RouteController;
@@ -139,7 +140,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     Route::post('/course/{courseId}/upload-csv', [CourseVideoController::class, 'addVideoFromCsvFile'])->name('course.addVideoFromCsvFile');
     Route::post('/course-videos/reorder', [CourseVideoController::class, 'reorder'])->name('course_videos.reorder');
 
-    //this routes sectios 
+    //this routes sectios
     Route::resource('sections', SectionsController::class);
     Route::get('section/{id}', [SectionsController::class, 'showUsers'])->name('sections.show');
     Route::post('sections/{section}/add-users', [SectionsController::class, 'addUsers'])->name('sections.addUsers');
@@ -157,6 +158,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'check.role:admi
     Route::post('/route-courses', [RouteCourseController::class, 'store'])->name('route_courses.store');
     Route::put('/route-courses/{routeCourse}', [RouteCourseController::class, 'update'])->name('route_courses.update');
     Route::delete('/route-courses/{routeCourse}', [RouteCourseController::class, 'destroy'])->name('route_courses.destroy');
+
+    Route::resource('instructors', CourseInstructorController::class)->except(['show']);
 });
 
 
